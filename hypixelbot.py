@@ -440,14 +440,6 @@ async def skywars(ctx, username:str=None):
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
             await ctx.send(embed=embed)
 
-@bot.command(aliases=['g'])
-async def guild(ctx, *guildname:str=None):
-    if guildname==None:
-        embed = discord.Embed(title="Error", description="""Please provide a guild name.""", color=0xff0000)
-        await ctx.send(embed=embed)
-        return
-    else:
-
 
 @bot.event
 async def on_command_error(ctx, error):
