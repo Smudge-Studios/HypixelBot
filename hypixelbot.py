@@ -9,7 +9,7 @@ import math
 
 
 
-TOKEN = <Discord Bot Token
+TOKEN = <Discord Bot Token>
 API_KEY = <API key>
 
 bot = commands.Bot(command_prefix = "/", case_insensitive=True)
