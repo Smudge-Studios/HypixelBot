@@ -6,13 +6,16 @@ import asyncio
 import requests
 from mojang import MojangAPI
 import math
+from datetime import datetime
 
 
 
 TOKEN = <Discord Bot Token>
 API_KEY = <API key>
 
-bot = commands.Bot(command_prefix = "/", case_insensitive=True)
+
+bot = commands.Bot(command_prefix = "h!", case_insensitive=True)
+bot.remove_command('help')
 
 
 delay = 30
@@ -30,9 +33,26 @@ async def on_ready():
     print('HypixelBot - Logged in as ' + bot.user.name + ' | ' + str(bot.user.id) + '.')
     await bot.loop.create_task(statuses())
 
+@bot.command()
+async def help(ctx):
+    if ctx.channel.type == 'dm':
+        return
+    else:
+        color=random.randint(1, 16777215)
+        embed = discord.Embed(title="Help", description="""`h!help` - Displays this.
+        `h!player <player>` - Returns the specified player's profile.
+        `h!bedwars <player>` - Returns the specified player's Bedwars statistics.
+        `h!skywars <player>` - Returns the specified player's Skywars statistics.""", color = color)
+        embed.set_footer(text='Unofficial Hypixel Discord Bot')
+        await ctx.send(embed=embed)
+
 @bot.command(aliases=['p'])
 async def player(ctx, username:str=None):
     #verify if player exists
+    if username==None:
+        embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
     uuid = MojangAPI.get_uuid(str(username))
     if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
         embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
@@ -46,13 +66,13 @@ async def player(ctx, username:str=None):
     r = requests.get(url = 'https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
     data = r.json()
     #errors
-    if data['success'] == 'false':
+    if data['success'] == False:
         embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
         await ctx.send(embed=embed)
         return
     #it worked!
     elif data['success'] == True:
-        if data['player']=='null':
+        if data['player']==None:
             embed = discord.Embed(title="Error", description="""That player has never joined the Hypixel Network.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
@@ -74,6 +94,14 @@ async def player(ctx, username:str=None):
                 rank = "VIP+"
             elif rank == "MVP_PLUS":
                 rank = "MVP+"
+            elif rank == "YOUTUBER":
+                rank = "YouTube"
+            elif rank == "ADMIN":
+                rank = "Administrator"
+            elif rank == "MODERATOR":
+                rank = "Moderator"
+            elif rank == "HELPER":
+                rank = "Helper"
             try:
                 recent = data['player']['mostRecentGameType']
                 if recent == "QUAKECRAFT":
@@ -133,20 +161,48 @@ async def player(ctx, username:str=None):
 
             except:
                 recent = 'N/A'
-            karma = data["player"]["karma"] if "karma" in data["player"] else 0
-                
-            
+            try:
+                karma = data["player"]["karma"] if "karma" in data["player"] else 0
+            except:
+                karma = 'N/A'
+            try:
+                if data['player']['lastLogin'] > data['player']['lastLogout']:
+                    status = 'Online'
+                elif data['player']['lastLogin'] < data['player']['lastLogout']:
+                    time = datetime.fromtimestamp(data['player']['lastLogout']/1000.0)
+                    date = time.strftime("%m/%d/%Y")
+                    minute = time.strftime("%M")
+                    if int(time.strftime('%H')) == 12:
+                        ampm = 'PM'
+                        hour = time.strftime('%H')
+                    elif int(time.strftime('%H')) > 12:
+                        hour = int(time.strftime('%H')) - 12
+                        ampm = 'PM'
+                    elif int(time.strftime('%H')) < 12:
+                        ampm = 'AM'
+                        hour = time.strftime('%H')
+
+                    date_time = time.strftime("%m/%d/%Y at %H:%M")
+                    status = 'Offline - Last seen on ' + date + ' at ' + hour + ':' + minute + ' ' + ampm + ', EST'
+                else:
+                    status = 'N/A'
+            except:
+                status = 'N/A'
+  
         except:
             embed = discord.Embed(title="Error", description="""An error occured while retriving data on """ + username + ". Please try again later.", color=0xff0000)
             await ctx.send(embed=embed)
             return
         
         color=random.randint(1, 16777215)
-        embed = discord.Embed(title=data['player']['playername'] + "'s Profile", color=0xff0000)
+        r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+        data = r.json()
+        embed = discord.Embed(title=data['name'] + "'s Profile", color=0xff0000)
         embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
         embed.add_field(name="Rank", value=str(rank), inline=True)
         embed.add_field(name="Karma", value=str(karma), inline=True)
         embed.add_field(name="Recently Played", value=str(recent), inline=True)
+        embed.add_field(name="Status", value=str(status), inline=True)
         embed.set_footer(text='Unofficial Hypixel Discord Bot')
         await ctx.send(embed=embed)
     else:
@@ -155,6 +211,10 @@ async def player(ctx, username:str=None):
 @bot.command(aliases=['bw'])   
 async def bedwars(ctx, username:str=None):
     #verify if player exists
+    if username==None:
+        embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
     uuid = MojangAPI.get_uuid(str(username))
     if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
         embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
@@ -168,9 +228,9 @@ async def bedwars(ctx, username:str=None):
     r = requests.get(url = 'https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
     data = r.json()
     #errors
-    if data['success'] == 'false':
+    if data['success'] == False:
         if data['cause'] == 'Malformed UUID':
-            embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
+            embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
         else:
@@ -179,6 +239,10 @@ async def bedwars(ctx, username:str=None):
             return
     #it worked!
     elif data['success'] == True:
+        if data['player'] == None:
+            embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
         try:
             level = data['player']['achievements']['bedwars_level']
         except:
@@ -231,9 +295,15 @@ async def bedwars(ctx, username:str=None):
             losses = data['player']['stats']['Bedwars']['losses_bedwars']
         except:
             losses = 'N/A'
+        try:
+            winstreak = data['player']['stats']['Bedwars']['winstreak']
+        except:
+            winstreak = 'N/A'
         
         color=random.randint(1, 16777215)
-        embed = discord.Embed(title=data['player']['playername'] + "'s Bedwars Stats", color=0xff0000)
+        r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+        data = r.json()
+        embed = discord.Embed(title=data['name'] + "'s Bedwars Stats", color=0xff0000)
         embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
         embed.add_field(name="Level", value=str(level), inline=True)
         embed.add_field(name="Games Played", value=str(games_played), inline=True)
@@ -252,7 +322,151 @@ async def bedwars(ctx, username:str=None):
         embed.add_field(name="W/L Ratio", value=str(round(wins/losses, 2)), inline=True)
         embed.add_field(name="Beds Lost", value=str(beds_lost), inline=True)
         embed.add_field(name="Beds Broken", value=str(beds_broken), inline=True)
+        embed.add_field(name="Winstreak", value=str(winstreak), inline=True)
         embed.set_footer(text='Unofficial Hypixel Discord Bot')
         await ctx.send(embed=embed)
+
+
+@bot.command(aliases=['sw'])   
+async def skywars(ctx, username:str=None):
+    #verify if player exists
+    if username==None:
+        embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
+    uuid = MojangAPI.get_uuid(str(username))
+    if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
+        embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
+    elif not uuid:
+        embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
+    #send request
+    r = requests.get(url = 'https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
+    data = r.json()
+    #errors
+    if data['success'] == False:
+        if data['cause'] == 'Malformed UUID':
+            embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        else:
+            embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+    #it worked!
+    elif data['success'] == True:
+        if data['player'] == None:
+            embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        else:
+            try:
+                xp = data['player']['stats']['SkyWars']['skywars_experience']
+                xps = [0, 20, 70, 150, 250, 500, 1000, 2000, 3500, 6000, 10000, 15000]
+                if xp >= 15000:
+                    level = (xp - 15000) / 10000. + 12
+                else:
+                    for i in range(len(xps)):
+                        if xp < xps[i]:
+                            level = 1 + i + float(xp - xps[i-1]) / (xps[i] - xps[i-1])
+            except:
+                level = 'N/A'
+            try:
+                games_played = data['player']['stats']['SkyWars']['games_played_skywars']
+            except:
+                games_played = 'N/A'
+            try:
+                winstreak = data['player']['stats']['SkyWars']['win_streak']
+            except:
+                winstreak = 'N/A'
+            try:
+                kills = data['player']['stats']['SkyWars']['kills']
+            except:
+                kills = 'N/A'
+            try:
+                deaths = data['player']['stats']['SkyWars']['deaths']
+            except:
+                deaths = 'N/A'
+            try:
+                top_winstreak = data['player']['stats']['SkyWars']['highestWinstreak']
+            except:
+                top_winstreak = 'N/A'
+            try:
+                coins = data['player']['stats']['SkyWars']['coins']
+            except:
+                coins = 'N/A'
+            try:
+                souls = data['player']['stats']['SkyWars']['souls']
+            except:
+                souls = 'N/A'
+            try:
+                wins = data['player']['stats']['SkyWars']['wins']
+            except:
+                wins = 'N/A'
+            try:
+                losses = data['player']['stats']['SkyWars']['losses']
+            except:
+                losses = 'N/A'
+            
+            color=random.randint(1, 16777215)
+            r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+            data = r.json()
+            embed = discord.Embed(title=data['name'] + "'s Skywars Stats", color=0xff0000)
+            embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
+            try:
+                embed.add_field(name="Level", value=str(round(level, 0)), inline=True)
+            except:
+                embed.add_field(name="Level", value='N/A', inline=True)
+            embed.add_field(name="Games Played", value=str(games_played), inline=True)
+            embed.add_field(name="Coins", value=str(coins), inline=True)
+            embed.add_field(name="Souls", value=str(souls), inline=True)
+            embed.add_field(name="Winstreak", value=str(winstreak), inline=True)
+            embed.add_field(name="Highest Winstreak", value=str(top_winstreak), inline=True)
+            embed.add_field(name="Kills", value=str(kills), inline=True)
+            embed.add_field(name="Deaths", value=str(deaths), inline=True)
+            try:
+                embed.add_field(name="K/D Ratio", value=str(round(int(kills)/int(deaths), 2)), inline=True)
+            except:
+                embed.add_field(name="K/D Ratio", value='N/A', inline=True)
+            embed.add_field(name="Wins", value=str(wins), inline=True)
+            embed.add_field(name="Losses", value=str(losses), inline=True)
+            try:
+                embed.add_field(name="W/L Ratio", value=str(round(int(wins)/int(losses), 2)), inline=True)
+            except:
+                embed.add_field(name="W/L Ratio", value='N/A', inline=True)
+            embed.set_footer(text='Unofficial Hypixel Discord Bot')
+            await ctx.send(embed=embed)
+
+@bot.command(aliases=['g'])
+async def guild(ctx, *guildname:str=None):
+    if guildname==None:
+        embed = discord.Embed(title="Error", description="""Please provide a guild name.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
+    else:
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+    elif isinstance(error, commands.MissingRequiredArgument):
+        embed = discord.Embed(title="Error", description="""Missing Required Argument.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        return
+    else:
+        embed = discord.Embed(title="Error", description="""An unknown error occurred. This error has been reported.""", color=0xff0000)
+        await ctx.send(embed=embed)
+        print("---------------")
+        print("An unknown error occurred.")
+        print("")
+        print("=====(BEGIN ERROR OUTPUT)=====")
+        raise(error)
+        print("=====(END ERROR OUTPUT)=====")
+        return
+
 
 bot.run(TOKEN)
