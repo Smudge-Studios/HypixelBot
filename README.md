@@ -12,11 +12,13 @@ requests - `pip install requests`
 discord.py - `py -3 -m pip install -U discord.py`
 
 ## Commands
-`/help` - A list of commands (will be made custom)
+`h!help` - A list of commands.
 
-`/player <playername>` - Info on a specified player.
+`h!player <playername>` - Info on a specified player.
 
-`/bedwars <playername>` - Bedwars Stats for a specified player.
+`h!bedwars <playername>` - Bedwars Stats for a specified player.
+
+`h!skywars <playername>` - Skywars Stats for a specified player.
 
 ## Invite
 To add this bot to your server, click [here](https://discord.com/api/oauth2/authorize?client_id=764677833820995605&permissions=0&scope=bot).
