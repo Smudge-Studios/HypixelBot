@@ -1,6 +1,8 @@
 # HypixelBot
 A Hypixel Discord Bot
 
+This bot will soon be heavily modified to implement the usage of discord.py's cogs.
+
 To run this bot, change `<Discord Bot Token>` in hypixelbot.py to your Discord Bot Token, which can be retrieved from your Discord Developer Portal, and change `<API key>` in hypixelbot.py to your Hypixel API Key, which can be created by connecting to mc.hypixel.net and running the `/api new` command.
 
 This bot retrieves stats from the official public [Hypixel API](https://api.hypixel.net). Documentation for the API can be found at [https://github.com/HypixelDev/PublicAPI/tree/master/Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation)
