@@ -1,1 +1,3 @@
-**/.vscode
+commands/__pycache__/**.pyc
+commands/owner/__pycache__/**.pyc
+events/__pycache__/**.pyc
