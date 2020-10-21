@@ -11,7 +11,7 @@ class OnReady(commands.Cog):
     async def help(self, ctx):
         color=random.randint(1, 16777215)
         embed = discord.Embed(title="Help", description="""`h!help` - Displays this.
-`h!ping - Displays the bot's latency.
+`h!ping` - Displays the bot's latency.
 `h!player <player>` - Returns the specified player's profile.
 `h!bedwars <player>` - Returns the specified player's Bedwars statistics.
 `h!skywars <player>` - Returns the specified player's Skywars statistics.
