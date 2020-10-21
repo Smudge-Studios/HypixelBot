@@ -87,7 +87,7 @@ class GuildCMD(commands.Cog):
                 hour = time.strftime('%H')
 
             date_time = time.strftime("%m/%d/%Y at %H:%M")
-            created = date + ' at ' + hour + ':' + minute + ' ' + ampm + ', EST'
+            created = str(date) + ' at ' + str(hour) + ':' + str(minute) + ' ' + ampm + ', EST'
         except:
             created = 'N/A'
         try:
