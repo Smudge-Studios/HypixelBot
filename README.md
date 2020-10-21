@@ -17,6 +17,8 @@ discord.py - `py -3 -m pip install -U discord.py`
 ## Commands
 `h!help` - A list of commands.
 
+`h!ping` - Check the bot's latency.
+
 `h!player <playername>` - Info on a specified player.
 
 `h!bedwars <playername>` - Bedwars Stats for a specified player.
