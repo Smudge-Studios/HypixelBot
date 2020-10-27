@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-
+import traceback
+import sys
 
 class CMDError(commands.Cog):
 
@@ -23,11 +24,10 @@ class CMDError(commands.Cog):
             embed = discord.Embed(title="Error", description="""An unknown error occurred. This error has been reported.
             `""" + str(error) + '`', color=0xff0000)
             await ctx.send(embed=embed)
-            print("---------------")
-            print("An unknown error occurred.")
             print("")
+            print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             print("=====(BEGIN ERROR OUTPUT)=====")
-            raise (error)
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
             print("=====(END ERROR OUTPUT)=====")
             return
 
