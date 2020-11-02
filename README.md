@@ -8,11 +8,11 @@ This bot retrieves statistics from the official public [Hypixel API](https://api
 Thanks to [@DimBis](https://dimmy.xyz) for helping me with this project.
 
 ## Requirements
-mojang - `python -m pip install mojang`
+- mojang - `python -m pip install mojang`
 
-requests - `pip install requests`
+- requests - `pip install requests`
 
-discord.py - `py -3 -m pip install -U discord.py`
+- discord.py - `py -3 -m pip install -U discord.py`
 
 ## Commands
 
@@ -20,29 +20,29 @@ discord.py - `py -3 -m pip install -U discord.py`
 
 These commands can be used by anyone.
 
-`h!help` - A list of commands.
+- `h!help` - A list of commands.
 
-`h!ping` - Check the bot's latency.
+- `h!ping` - Check the bot's latency.
 
-`h!player <playername>` - Info on a specified player.
+- `h!player <playername>` - Info on a specified player.
 
-`h!bedwars <playername>` - Bedwars Stats for a specified player.
+- `h!bedwars <playername>` - Bedwars Stats for a specified player.
 
-`h!skywars <playername>` - Skywars Stats for a specified player.
+- `h!skywars <playername>` - Skywars Stats for a specified player.
 
-`h!guild <guild>` - Information on a specified guild.
+- `h!guild <guild>` - Information on a specified guild.
 
 ### Restricted Commands
 
 These commands can only be used by a bot owner.
 
-`h!load <extension>` - Load a discord.py extension.
+- `h!load <extension>` - Load a discord.py extension.
 
-`h!unload <extension>` - Unload a discord.py extension.
+- `h!unload <extension>` - Unload a discord.py extension.
 
-`h!reload <extension>` - Reload a discord.py extension.
+- `h!reload <extension>` - Reload a discord.py extension.
 
-`h!stop` - Shutdown the bot.
+- `h!stop` - Shutdown the bot.
 
 ## Invite
 To add this bot to your server, click [here](https://discord.com/api/oauth2/authorize?client_id=764677833820995605&permissions=0&scope=bot).
