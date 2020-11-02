@@ -9,7 +9,9 @@ class PingCMD(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f"Pong! **`{round(self.bot.latency * 1000)}`ms.**")
+        msg = await ctx.send('Pong!')
+        ms = (msg.created_at-ctx.message.created_at).total_seconds() * 1000
+        await msg.edit(content=f"Pong!  `{int(ms)}ms`")
 
 def setup(bot):
     bot.add_cog(PingCMD(bot))
