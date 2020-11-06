@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
-import requests
+from urllib.request import Request, urlopen
+import json
 from mojang import MojangAPI
-import math
 from datetime import datetime
 from configparser import ConfigParser
 
@@ -32,8 +32,10 @@ class PlayerCMD(commands.Cog):
             await ctx.send(embed=embed)
             return
         #send request
-        r = requests.get(url = 'https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
-        data = r.json()
+        req = Request('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
+        req.add_header('plun1331', 'https://plun1331.github.io')
+        content = urlopen(req)
+        data = json.load(content) 
         #errors
         if data['success'] == False:
             embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
@@ -161,6 +163,7 @@ class PlayerCMD(commands.Cog):
                     exp = data['player']['networkExp']
                     network_level = (((2 * exp) + 30625)**(1/2) / 50) - 2.5
                     level = round(network_level, 0)
+                    level = int(level)
                 except:
                     level = 'N/A'
             except Exception as e:
@@ -168,21 +171,21 @@ class PlayerCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             try:
-                r = requests.get(url = 'https://api.hypixel.net/guild?key=' + API_KEY + '&player=' + uuid)
-                data = r.json()
                 guild = data['guild']['name']
                 if guild == None:
                     guild = 'None'
             except:
                 guild = 'None'
-            r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
-            data = r.json()
+            req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+            req.add_header('plun1331', 'https://plun1331.github.io')
+            content = urlopen(req)
+            data = json.load(content)
             embed = discord.Embed(title=data['name'] + "'s Profile", color=0xff0000)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
             embed.add_field(name="Rank", value=str(rank), inline=True)
             embed.add_field(name="Karma", value=str(karma), inline=True)
             embed.add_field(name="Guild", value=str(guild), inline=True)
-            embed.add_field(name="Level", value=str(int(level)), inline=True)
+            embed.add_field(name="Level", value=str(level), inline=True)
             embed.add_field(name="Recently Played", value=str(recent), inline=True)
             embed.add_field(name="Status", value=str(status), inline=True)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')

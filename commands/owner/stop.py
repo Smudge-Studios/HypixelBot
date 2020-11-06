@@ -8,12 +8,13 @@ class StopCMD(commands.Cog):
 
     @commands.command(aliases=['shutdown','logout'], hidden=True)
     @commands.is_owner()
-    async def stop(self, ctx, *, cog: str):
+    async def stop(self, ctx):
         print('Bot shutting down...')
+        await ctx.send('Stopping the bot...')
         try:
-            self.bot.logout()
+            await self.bot.logout()
         except Exception as e:
-            embed = discordEmbed(title='Error', description=str(e), color=0xff0000)
+            embed = discord.Embed(title='Error', description=str(e), color=0xff0000)
             await ctx.send(embed=embed)
             print(f"Couldn't stop the bot: {e}")
 

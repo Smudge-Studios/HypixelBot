@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
-import requests
+from urllib.request import Request, urlopen
+import json
 from mojang import MojangAPI
 from configparser import ConfigParser
+from utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -29,8 +31,10 @@ class SkywarsCMD(commands.Cog):
             await ctx.send(embed=embed)
             return
         #send request
-        r = requests.get(url = 'https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
-        data = r.json()
+        req = Request('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
+        req.add_header('plun1331', 'https://plun1331.github.io')
+        content = urlopen(req)
+        data = json.load(content) 
         #errors
         if data['success'] == False:
             if data['cause'] == 'Malformed UUID':
@@ -56,7 +60,7 @@ class SkywarsCMD(commands.Cog):
                     else:
                         for i in range(len(xps)):
                             if xp < xps[i]:
-                                level = 1 + i + float(xp - xps[i-1]) / (xps[i] - xps[i-1])
+                                level = str(utils.comma(int(round(int(1 + i + float(xp - xps[i-1]) / (xps[i] - xps[i-1], 0)))))) + ' ⭐'
                 except:
                     level = 'N/A'
                 try:
@@ -95,30 +99,31 @@ class SkywarsCMD(commands.Cog):
                     losses = data['player']['stats']['SkyWars']['losses']
                 except:
                     losses = 'N/A'
-                
-                r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
-                data = r.json()
+                req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+                req.add_header('plun1331', 'https://plun1331.github.io')
+                content = urlopen(req)
+                data = json.load(content)
                 embed = discord.Embed(title=data['name'] + "'s Skywars Stats", color=0xff0000)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                 try:
-                    embed.add_field(name="Level", value=str(str(int(level)) + ' ⭐'), inline=True)
+                    embed.add_field(name="Level", value=str(level), inline=True)
                 except:
                     embed.add_field(name="Level", value='N/A', inline=True)
-                embed.add_field(name="Games Played", value=str(round(games_played, 0)), inline=True)
-                embed.add_field(name="Coins", value=str(coins), inline=True)
-                embed.add_field(name="Souls", value=str(souls), inline=True)
-                embed.add_field(name="Winstreak", value=str(winstreak), inline=True)
-                embed.add_field(name="Highest Winstreak", value=str(top_winstreak), inline=True)
-                embed.add_field(name="Kills", value=str(kills), inline=True)
-                embed.add_field(name="Deaths", value=str(deaths), inline=True)
+                embed.add_field(name="Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
+                embed.add_field(name="Coins", value=str(utils.comma(coins)), inline=True)
+                embed.add_field(name="Souls", value=str(utils.comma(souls)), inline=True)
+                embed.add_field(name="Winstreak", value=str(utils.comma(winstreak)), inline=True)
+                embed.add_field(name="Highest Winstreak", value=str(utils.comma(top_winstreak)), inline=True)
+                embed.add_field(name="Kills", value=str(utils.comma(kills)), inline=True)
+                embed.add_field(name="Deaths", value=str(utils.comma(deaths)), inline=True)
                 try:
-                    embed.add_field(name="K/D Ratio", value=str(round(int(kills)/int(deaths), 2)), inline=True)
+                    embed.add_field(name="K/D Ratio", value=str(utils.comma(round(int(kills)/int(deaths), 2))), inline=True)
                 except:
                     embed.add_field(name="K/D Ratio", value='N/A', inline=True)
-                embed.add_field(name="Wins", value=str(wins), inline=True)
-                embed.add_field(name="Losses", value=str(losses), inline=True)
+                embed.add_field(name="Wins", value=str(utils.comma(wins)), inline=True)
+                embed.add_field(name="Losses", value=str(utils.comma(losses)), inline=True)
                 try:
-                    embed.add_field(name="W/L Ratio", value=str(round(int(wins)/int(losses), 2)), inline=True)
+                    embed.add_field(name="W/L Ratio", value=str(utils.comma(round(int(wins)/int(losses), 2))), inline=True)
                 except:
                     embed.add_field(name="W/L Ratio", value='N/A', inline=True)
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')

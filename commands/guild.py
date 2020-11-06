@@ -1,43 +1,14 @@
 import discord
 from discord.ext import commands
-import requests
+from urllib.request import Request, urlopen
+import json
 from configparser import ConfigParser
+from datetime import datetime
+from utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
-
-def getLevelFromXP(xp):
-        REQ_EXP = [
-        100000,
-        150000,
-        250000,
-        500000,
-        750000,
-        1000000,
-        1250000,
-        1500000,
-        2000000,
-        2500000,
-        2500000,
-        2500000,
-        2500000,
-        2500000,
-        3000000
-        ]
-        lvl = 0
-        for i in range(1000):
-            needed = 0
-            if  i >= len(REQ_EXP):
-                needed = REQ_EXP[len(REQ_EXP) - 1]
-            else:
-                needed = REQ_EXP[i]
-            xp -= needed
-            if xp < 0:
-                return lvl
-            else:
-                lvl += 1
-        return 'N/A'
 
 class GuildCMD(commands.Cog):
 
@@ -52,26 +23,31 @@ class GuildCMD(commands.Cog):
             await ctx.send(embed=embed)
             return
         gnamesearch = '%20'.join(guildname)
-        r = requests.get(url='https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + gnamesearch)
-        data = r.json()
+        req = Request('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + gnamesearch)
+        req.add_header('plun1331', 'https://plun1331.github.io')
+        content = urlopen(req)
+        data = json.load(content) 
         gid = data['guild']
         if gid == None:
             embed = discord.Embed(title="Error", description="""The guild """ + gname + ' does not exist.', color=0xff0000)
             await ctx.send(embed=embed)
             return
         else:
-            r = requests.get(url='https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid)
-            data = r.json()
+            req = Request('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid)
+            req.add_header('plun1331', 'https://plun1331.github.io')
+            content = urlopen(req)
+            data = json.load(content)
+        try:
+            glevel = utils.guildlevel(xp=data['guild']['exp'])
+        except Exception as e:
+            glevel = 'N/A'
+            print(f"Couldn't get guild level: {e}")
 
         try:
-            glevel = getLevelFromXP(xp=data['guild']['exp'])
-        except:
-            glevel = 'N/A'
-        try:
             gname = data['guild']['name']
-        except:
-            #should never happen
+        except Exception as e:
             gname = 'N/A'
+            print(f"Couldn't get guild name: {e}")
         try:
             time = datetime.fromtimestamp(data['guild']['created']/1000.0)
             date = time.strftime("%m/%d/%Y")
@@ -88,28 +64,42 @@ class GuildCMD(commands.Cog):
 
             date_time = time.strftime("%m/%d/%Y at %H:%M")
             created = str(date) + ' at ' + str(hour) + ':' + str(minute) + ' ' + ampm + ', EST'
-        except:
+        except Exception as e:
             created = 'N/A'
+            print(f"Couldn't get guild created date: {e}")
         try:
             desc = data['guild']['description']
-        except:
+        except Exception as e:
             desc = 'N/A'
+            print(f"Couldn't get guild description: {e}")
         try:
             tag = data['guild']['tag']
-        except:
+        except Exception as e:
             tag = 'N/A'
+            print(f"Couldn't get guild tag: {e}")
+        try:
+            mbrs = 0
+            for m in data['guild']['members']:
+                mbrs = mbrs + 1
+        except Exception as e:
+            mbrs = 'N/A'
+            print(f"Couldn't get guild members: {e}")
         try:
             gmuuid = data['guild']['members'][0]['uuid']
-            r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + gmuuid)
-            data = r.json()
+            req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + gmuuid)
+            req.add_header('plun1331', 'https://plun1331.github.io')
+            content = urlopen(req)
+            data = json.load(content)
             gm = data['name']
-        except:
+        except Exception as e:
             gm = 'N/A'
+            print(f"Couldn't get guild manager: {e}")
         embed = discord.Embed(title='Guild Info', color=0xff0000)
         embed.add_field(name="Guild Name", value=str(gname), inline=True)
         embed.add_field(name="Guild Manager", value=str(gm), inline=True)
+        embed.add_field(name="Members", value=str(mbrs), inline=True)
         embed.add_field(name="Created On", value=str(created), inline=True)
-        embed.add_field(name="Guild Level", value=str(int(glevel)), inline=True)
+        embed.add_field(name="Guild Level", value=str(utils.comma(int(glevel))), inline=True)
         embed.add_field(name="Guild Description", value=str(desc), inline=True)
         embed.add_field(name="Guild Tag", value=str(tag), inline=True)
         embed.set_footer(text='Unofficial Hypixel Discord Bot')

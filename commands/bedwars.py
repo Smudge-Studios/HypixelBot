@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
-import requests
+from urllib.request import Request, urlopen
+import json
 from mojang import MojangAPI
 from configparser import ConfigParser
+from utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -29,8 +31,10 @@ class BedwarsCMD(commands.Cog):
             await ctx.send(embed=embed)
             return
         #send request
-        r = requests.get(url = 'https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
-        data = r.json()
+        req = Request('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
+        req.add_header('plun1331', 'https://plun1331.github.io')
+        content = urlopen(req)
+        data = json.load(content) 
         #errors
         if data['success'] == False:
             if data['cause'] == 'Malformed UUID':
@@ -48,7 +52,7 @@ class BedwarsCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             try:
-                level = data['player']['achievements']['bedwars_level']
+                level = str(utils.comma(int(data['player']['achievements']['bedwars_level']))) + ' ⭐'
             except:
                 level = 'N/A'
             try:
@@ -69,6 +73,8 @@ class BedwarsCMD(commands.Cog):
                 normal_deaths = 'N/A'
             try:
                 total_deaths = final_deaths+normal_deaths
+                if total_deaths == 'N/AN/A':
+                    raise ValueError
             except:
                 total_deaths = 'N/A'
             try:
@@ -89,6 +95,8 @@ class BedwarsCMD(commands.Cog):
                 final_kills = 'N/A'
             try:
                 total_kills = final_kills+normal_kills
+                if total_kills == 'N/AN/A':
+                    raise ValueError
             except:
                 total_kills = 'N/A'
             try:
@@ -104,40 +112,42 @@ class BedwarsCMD(commands.Cog):
             except:
                 winstreak = 'N/A'
             
-            r = requests.get(url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
-            data = r.json()
+            req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+            req.add_header('plun1331', 'https://plun1331.github.io')
+            content = urlopen(req)
+            data = json.load(content) 
             embed = discord.Embed(title=data['name'] + "'s Bedwars Stats", color=0xff0000)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
-            embed.add_field(name="Level", value=str(str(int(level)) + ' ⭐'), inline=True)
-            embed.add_field(name="Games Played", value=str(games_played), inline=True)
-            embed.add_field(name="Experience", value=str(round(exp, 0)), inline=True)
-            embed.add_field(name="Normal Deaths", value=str(normal_deaths), inline=True)
-            embed.add_field(name="Final Deaths", value=str(final_deaths), inline=True)
-            embed.add_field(name="Total Deaths", value=str(total_deaths), inline=True)
-            embed.add_field(name="Normal Kills", value=str(normal_kills), inline=True)
-            embed.add_field(name="Final Kills", value=str(final_kills), inline=True)
-            embed.add_field(name="Total Kills", value=str(total_kills), inline=True)
+            embed.add_field(name="Level", value=str(level), inline=True)
+            embed.add_field(name="Games Played", value=str(utils.comma(games_played)), inline=True)
+            embed.add_field(name="Experience", value=str(utils.comma(round(exp, 0))), inline=True)
+            embed.add_field(name="Normal Deaths", value=str(utils.comma(normal_deaths)), inline=True)
+            embed.add_field(name="Final Deaths", value=str(utils.comma(final_deaths)), inline=True)
+            embed.add_field(name="Total Deaths", value=str(utils.comma(total_deaths)), inline=True)
+            embed.add_field(name="Normal Kills", value=str(utils.comma(normal_kills)), inline=True)
+            embed.add_field(name="Final Kills", value=str(utils.comma(final_kills)), inline=True)
+            embed.add_field(name="Total Kills", value=str(utils.comma(total_kills)), inline=True)
             try:
-                embed.add_field(name="Normal K/D Ratio", value=str(round(normal_kills/normal_deaths, 2)), inline=True)
+                embed.add_field(name="Normal K/D Ratio", value=str(utils.comma(round(normal_kills/normal_deaths, 2))), inline=True)
             except:
                 embed.add_field(name="Normal K/D Ratio", value=str('N/A'), inline=True)
             try:
-                embed.add_field(name="Final K/D Ratio", value=str(round(final_kills/final_deaths, 2)), inline=True)
+                embed.add_field(name="Final K/D Ratio", value=str(utils.comma(round(final_kills/final_deaths, 2))), inline=True)
             except:
                 embed.add_field(name="Final K/D Ratio", value=str('N/A'), inline=True)
             try:
-                embed.add_field(name="K/D Ratio", value=str(round(total_kills/total_deaths, 2)), inline=True)
+                embed.add_field(name="K/D Ratio", value=str(utils.comma(round(total_kills/total_deaths, 2))), inline=True)
             except:
                 embed.add_field(name="K/D Ratio", value=str('N/A'), inline=True)
-            embed.add_field(name="Wins", value=str(wins), inline=True)
-            embed.add_field(name="Losses", value=str(losses), inline=True)
+            embed.add_field(name="Wins", value=str(utils.comma(wins)), inline=True)
+            embed.add_field(name="Losses", value=str(utils.comma(losses)), inline=True)
             try:
-                embed.add_field(name="W/L Ratio", value=str(round(wins/losses, 2)), inline=True)
+                embed.add_field(name="W/L Ratio", value=str(utils.comma(round(wins/losses, 2))), inline=True)
             except:
                 embed.add_field(name="W/L Ratio", value=str('N/A'), inline=True)
-            embed.add_field(name="Beds Lost", value=str(beds_lost), inline=True)
-            embed.add_field(name="Beds Broken", value=str(beds_broken), inline=True)
-            embed.add_field(name="Winstreak", value=str(winstreak), inline=True)
+            embed.add_field(name="Beds Lost", value=str(utils.comma(beds_lost)), inline=True)
+            embed.add_field(name="Beds Broken", value=str(utils.comma(beds_broken)), inline=True)
+            embed.add_field(name="Winstreak", value=str(utils.comma(winstreak)), inline=True)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
             await ctx.send(embed=embed)
 

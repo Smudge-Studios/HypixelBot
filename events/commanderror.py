@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-import traceback
 import sys
+import traceback
 
 class CMDError(commands.Cog):
 
