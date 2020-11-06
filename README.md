@@ -10,8 +10,6 @@ Thanks to [@DimBis](https://dimmy.xyz) for helping me with this project.
 ## Requirements
 - mojang - `python -m pip install mojang`
 
-- requests - `pip install requests`
-
 - discord.py - `py -3 -m pip install -U discord.py`
 
 ## Commands
