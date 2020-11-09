@@ -18,8 +18,8 @@ class OnReady(commands.Cog):
 `h!pit <player>` - Returns the specified player's Pit statistics.
 `h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
 `h!guild <guild name>` - Returns information on the specified guild.
-
-If you require more assistance, [join the support server](https://discord.gg/gxB8mRC).""", color = color)
+`h!link <player>` - 'Link' a player to your account.
+`h!unlink` - Removes a linked player from your account.""", color = color)
         embed.set_footer(text='Unofficial Hypixel Discord Bot')
         await ctx.send(embed=embed)
 

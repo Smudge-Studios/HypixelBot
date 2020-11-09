@@ -1,5 +1,9 @@
 import datetime
 from datetime import datetime
+import sqlite3
+from mojang import MojangAPI
+
+conn = sqlite3.connect('db\\data.db')
 
 class con:
     def log(text):
@@ -147,5 +151,28 @@ class utils:
             level = int(level)
         except:
             level = 'N/A'
+
+    def link(self, ctx, ign):
+        uuid = MojangAPI.get_uuid(str(ign))
+        if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
+            raise ValueError
+        cursor = conn.execute("SELECT * from LINKS")
+        for row in cursor:
+            if row[0] == ctx.author.id:
+                conn.execute(f"UPDATE LINKS set IGN = {ign} where USER = {ctx.author.id}")
+                conn.commit()
+                return
+        conn.execute(f"INSERT INTO LINKS (USER, IGN) \
+            VALUES ({ctx.author.id}, {ign})")
+        conn.commit()
+
+    def unlink(self, ctx):
+        cursor = conn.execute("SELECT * from LINKS")
+        for row in cursor:
+            if row[0] == ctx.author.id:
+                conn.execute(f"DELETE from LINKS where USER = {ctx.author.id}")
+                conn.commit()
+                return row[1]
+        raise ValueError
 
 utils = utils()

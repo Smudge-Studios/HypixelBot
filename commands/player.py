@@ -5,11 +5,12 @@ import json
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
+import sqlite3
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
-
+conn = sqlite3.connect('db\\data.db')
 
 class PlayerCMD(commands.Cog):
 
@@ -19,9 +20,15 @@ class PlayerCMD(commands.Cog):
     @commands.command(aliases=['p'])
     async def player(self, ctx, username:str=None):
         if username==None:
-            embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
-            await ctx.send(embed=embed)
-            return
+            cursor = conn.execute("SELECT * from LINKS")
+            for row in cursor:
+                if row[0] == ctx.author.id:
+                    username = row[1]
+                    break
+            if username is None:
+                embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
         uuid = MojangAPI.get_uuid(str(username))
         if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
             embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
