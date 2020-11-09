@@ -2,11 +2,9 @@ import discord
 from discord.ext import commands
 from urllib.request import Request, urlopen
 import json
-from discord.ext.commands.converter import GameConverter
 from mojang import MojangAPI
-from datetime import datetime
 from configparser import ConfigParser
-from utils import utils
+from utils.utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')

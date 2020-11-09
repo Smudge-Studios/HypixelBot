@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from utils import con
+from utils.utils import con
 
 class LoadCMD(commands.Cog):
 

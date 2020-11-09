@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
-from datetime import datetime
+import sys
 import traceback
-from utils import con
+from utils.utils import con
 
 class CMDError(commands.Cog):
 
@@ -25,14 +25,11 @@ class CMDError(commands.Cog):
             embed = discord.Embed(title="Error", description="""An unknown error occurred. This error has been reported.
             `""" + str(error) + '`', color=0xff0000)
             await ctx.send(embed=embed)
-            print("")
-            con.log(f'Ignoring exception in command {ctx.command}: {str(error)}\nThe full traceback has been sent to logs\\errors.log')
-            with open('logs\\errors.log', 'a') as logfile:
-                now = datetime.now()
-                time = now.strftime("%d/%m/%Y at %H:%M")
-                logfile.write(f"An unhandled exception occurred in command {ctx.command} on {time}:\n\n")
-                traceback.print_exception(type(error), error, error.__traceback__, file=logfile)
-                logfile.write('\n============')
+            con.log("")
+            con.log('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
+            con.log("=====(BEGIN ERROR OUTPUT)=====")
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+            con.log("=====(END ERROR OUTPUT)=====")
             return
 
 def setup(bot):

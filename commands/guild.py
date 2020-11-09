@@ -4,7 +4,7 @@ from urllib.request import Request, urlopen
 import json
 from configparser import ConfigParser
 from datetime import datetime
-from utils import utils
+from utils.utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')

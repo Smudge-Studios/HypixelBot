@@ -4,7 +4,7 @@ from urllib.request import Request, urlopen
 import json
 from mojang import MojangAPI
 from configparser import ConfigParser
-from utils import *
+from utils.utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')

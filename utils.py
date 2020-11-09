@@ -8,6 +8,7 @@ class con:
             time = now.strftime("%d/%m/%Y %H:%M")
             logfile.write(f"{time}: {text}\n")
         print(f"{time}: {text}")
+    
     def wipe():
         with open('logs\\bot.log', 'w'):
             pass

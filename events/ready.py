@@ -3,7 +3,8 @@ from discord.ext import commands
 import asyncio
 from urllib.request import Request, urlopen
 import json
-from utils import *
+from utils.utils import *
+
 class OnReady(commands.Cog):
 
     def __init__(self, bot):
