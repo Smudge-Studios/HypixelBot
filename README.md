@@ -10,6 +10,8 @@ This bot retrieves statistics from the official public [Hypixel API](https://api
 
 Thanks to [@DimBis](https://dimmy.xyz) for helping me with this project.
 
+This bot is currently in development, there may be some bugs.
+
 ## Requirements
 - mojang - `python -m pip install mojang`
 
@@ -36,8 +38,6 @@ These commands can be used by anyone.
 - `h!pit <playername>` - Pit stats for a specified player.
 
 - `h!guild <guild>` - Information on a specified guild.
-
-This bot is currently in development, there may be some bugs.
 
 ### Restricted Commands
 
