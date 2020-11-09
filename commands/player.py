@@ -2,9 +2,11 @@ import discord
 from discord.ext import commands
 from urllib.request import Request, urlopen
 import json
+from discord.ext.commands.converter import GameConverter
 from mojang import MojangAPI
 from datetime import datetime
 from configparser import ConfigParser
+from utils import utils
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -73,99 +75,13 @@ class PlayerCMD(commands.Cog):
                     rank = "Moderator"
                 elif rank == "HELPER":
                     rank = "Helper"
-                try:
-                    recent = data['player']['mostRecentGameType']
-                    if recent == "QUAKECRAFT":
-                        recent = "Quake"
-                    elif recent == "WALLS":
-                        recent = 'Walls'
-                    elif recent == 'PAINTBALL':
-                        recent == 'paintball'
-                    elif recent == 'SURVIVAL_GAMES':
-                        recent = 'Blitz Survival Games'
-                    elif recent == 'TNTGAMES':
-                        recent = 'TNT Games'
-                    elif recent == 'VAMPIREZ':
-                        recent = 'VampireZ'
-                    elif recent == 'WALLS3':
-                        recent = 'Mega Walls'
-                    elif recent == 'ARCADE':
-                        recent = 'Arcade'
-                    elif recent == 'ARENA':
-                        recent = 'Arena'
-                    elif recent == 'UHC':
-                        recent = 'UHC Champions'
-                    elif recent == 'MCGO':
-                        recent = 'Cops and Crims'
-                    elif recent == 'BATTLEGROUND':
-                        recent = 'Warlords'
-                    elif recent == 'SUPER_SMASH':
-                        recent = 'Smash Heroes'
-                    elif recent == 'GINGERBREAD':
-                        recent = 'Turbo Kart Racers'
-                    elif recent == 'HOUSING':
-                        recent = 'Housing'
-                    elif recent == 'SKYWARS':
-                        recent = 'Skywars'
-                    elif recent == 'TRUE_COMBAT':
-                        recent = 'Crazy Walls'
-                    elif recent == 'SPEED_UHC':
-                        recent = 'Speed UHC'
-                    elif recent == 'SKYCLASH':
-                        recent = 'SkyClash'
-                    elif recent == 'LEGACY':
-                        recent = 'Classic Games'
-                    elif recent == 'PROTOTYPE':
-                        recent = 'Prototype'
-                    elif recent == 'BEDWARS':
-                        recent = 'BedWars'
-                    elif recent == 'MURDER_MYSTERY':
-                        recent = 'Murder Mystery'
-                    elif recent == 'BUILD_BATTLE':
-                        recent = 'Build Battle'
-                    elif recent == 'DUELS':
-                        recent = 'Duels'
-                    elif recent == 'SKYBLOCK':
-                        recent = 'Skyblock'
-                    elif recent == 'PIT':
-                        recent = 'The Pit'
-
-                except:
-                    recent = 'N/A'
+                recent = utils.gameconverter(data['player']['mostRecentGameType'])
                 try:
                     karma = data["player"]["karma"] if "karma" in data["player"] else 0
                 except:
                     karma = 'N/A'
-                try:
-                    if data['player']['lastLogin'] > data['player']['lastLogout']:
-                        status = 'Online'
-                    elif data['player']['lastLogin'] < data['player']['lastLogout']:
-                        time = datetime.fromtimestamp(data['player']['lastLogout']/1000.0)
-                        date = time.strftime("%m/%d/%Y")
-                        minute = time.strftime("%M")
-                        if int(time.strftime('%H')) == 12:
-                            ampm = 'PM'
-                            hour = time.strftime('%H')
-                        elif int(time.strftime('%H')) > 12:
-                            hour = int(time.strftime('%H')) - 12
-                            ampm = 'PM'
-                        elif int(time.strftime('%H')) < 12:
-                            ampm = 'AM'
-                            hour = time.strftime('%H')
-
-                        date_time = time.strftime("%m/%d/%Y at %H:%M")
-                        status = 'Offline - Last seen on ' + str(date) + ' at ' + str(hour) + ':' + str(minute) + ' ' + ampm + ', EST'
-                    else:
-                        status = 'N/A'
-                except Exception as e:
-                    status = 'N/A'
-                try:
-                    exp = data['player']['networkExp']
-                    network_level = (((2 * exp) + 30625)**(1/2) / 50) - 2.5
-                    level = round(network_level, 0)
-                    level = int(level)
-                except:
-                    level = 'N/A'
+                status = utils.timeconverter(data['player']['lastLogin'], data['player']['lastLogout'])
+                level = utils.networklevel(data['player']['networkExp'])
             except Exception as e:
                 embed = discord.Embed(title="Error", description="""An error occured while retriving data on """ + username + f" - {e}", color=0xff0000)
                 await ctx.send(embed=embed)
@@ -183,9 +99,9 @@ class PlayerCMD(commands.Cog):
             embed = discord.Embed(title=data['name'] + "'s Profile", color=0xff0000)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
             embed.add_field(name="Rank", value=str(rank), inline=True)
-            embed.add_field(name="Karma", value=str(karma), inline=True)
-            embed.add_field(name="Guild", value=str(guild), inline=True)
-            embed.add_field(name="Level", value=str(level), inline=True)
+            embed.add_field(name="Karma", value=str(utils.comma(karma)), inline=True)
+            embed.add_field(name="Guild", value=str(utils.comma(guild)), inline=True)
+            embed.add_field(name="Level", value=str(utils.comma(level)), inline=True)
             embed.add_field(name="Recently Played", value=str(recent), inline=True)
             embed.add_field(name="Status", value=str(status), inline=True)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')

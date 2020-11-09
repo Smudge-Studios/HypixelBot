@@ -1,4 +1,6 @@
 # HypixelBot
+![HypixelBot on top.gg](https://top.gg/bot/764677833820995605)
+
 A Hypixel Discord Bot made purely for displaying Hypixel statistics.
 
 To run this bot, change `<TOKEN>` in `botconfig.ini` to your Discord Bot Token, which can be retrieved from your Discord Developer Portal, and change `<API KEY>`, also in `botconfig.ini` to your Hypixel API Key, which can be created by connecting to mc.hypixel.net and running the `/api new` command.
@@ -24,9 +26,13 @@ These commands can be used by anyone.
 
 - `h!player <playername>` - Info on a specified player.
 
-- `h!bedwars <playername>` - Bedwars Stats for a specified player.
+- `h!bedwars <playername>` - Bedwars stats for a specified player.
 
-- `h!skywars <playername>` - Skywars Stats for a specified player.
+- `h!skywars <playername>` - Skywars stats for a specified player.
+
+- `h!murdermystery <playername>` - Murder Mystery stats for a specified player.
+
+- `h!pit <playername>` - Pit stats for a specified player.
 
 - `h!guild <guild>` - Information on a specified guild.
 

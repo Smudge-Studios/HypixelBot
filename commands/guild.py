@@ -16,20 +16,19 @@ class GuildCMD(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=['g'])
-    async def guild(self, ctx, *guildname):
-        gname = ' '.join(guildname)
-        if not gname:
+    async def guild(self, ctx, *, guildname:str=None):
+        if guildname is None:
             embed = discord.Embed(title="Error", description='Please provide a guild to search for.', color=0xff0000)
             await ctx.send(embed=embed)
             return
-        gnamesearch = '%20'.join(guildname)
+        gnamesearch = guildname.replace(' ','%20')
         req = Request('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + gnamesearch)
         req.add_header('plun1331', 'https://plun1331.github.io')
         content = urlopen(req)
         data = json.load(content) 
         gid = data['guild']
         if gid == None:
-            embed = discord.Embed(title="Error", description="""The guild """ + gname + ' does not exist.', color=0xff0000)
+            embed = discord.Embed(title="Error", description="""The guild """ + guildname + ' does not exist.', color=0xff0000)
             await ctx.send(embed=embed)
             return
         else:
