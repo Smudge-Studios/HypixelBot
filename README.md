@@ -1,5 +1,5 @@
 # HypixelBot
-![HypixelBot on top.gg](https://top.gg/bot/764677833820995605)
+[![HypixelBot on top.gg](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
 
 A Hypixel Discord Bot made purely for displaying Hypixel statistics.
 
