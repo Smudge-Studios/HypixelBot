@@ -26,7 +26,7 @@ class CMDError(commands.Cog):
             `""" + str(error) + '`', color=0xff0000)
             await ctx.send(embed=embed)
             print("")
-            con.log(f'Ignoring exception in command {ctx.command}: {str(error)}\nThe full traceback has been sent to errors.log')
+            con.log(f'Ignoring exception in command {ctx.command}: {str(error)}\nThe full traceback has been sent to logs\\errors.log')
             with open('logs\\errors.log', 'a') as logfile:
                 now = datetime.now()
                 time = now.strftime("%d/%m/%Y at %H:%M")
