@@ -1,5 +1,6 @@
 # HypixelBot
 [![HypixelBot on top.gg](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
+[![Discord Bots](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
 
 A Hypixel Discord Bot made purely for displaying Hypixel statistics.
 
@@ -36,9 +37,7 @@ These commands can be used by anyone.
 
 - `h!guild <guild>` - Information on a specified guild.
 
-- `h!link <player>` - Link a user to your account.
-
-- `h!unlink` - Remove a linked user from your account.
+This bot is currently in development, there may be some bugs.
 
 ### Restricted Commands
 
