@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from utils import utils
+from utils.utils import utils
 
 class LinkCMDs(commands.Cog):
 
