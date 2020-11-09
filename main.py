@@ -1,12 +1,10 @@
-from utils import con
-con.wipe()
-con.log('Starting bot...')
-con.log(' Importing Modules...')
+print('Starting bot...')
+print(' Importing Modules...')
 import discord
 from discord.ext import commands
 import asyncio
 from configparser import ConfigParser
-con.log(' Modules imported.')
+print(' Modules imported.')
 
 
 parser = ConfigParser()
@@ -41,18 +39,18 @@ initial_extensions = ['commands.help',
                       'events.commanderror',
                       'events.ready']
 
-con.log(' Loading Cogs...')
+print(' Loading Cogs...')
 if __name__ == '__main__':
     for extension in initial_extensions:
-        con.log("     Loading extension " + extension + '...')
+        print("     Loading extension " + extension + '...')
         bot.load_extension(extension)
-        con.log('     Extension ' + extension + ' loaded.')
-con.log(' Cogs loaded.')
+        print('     Extension ' + extension + ' loaded.')
+print(' Cogs loaded.')
 
 
 
-con.log(' Logging In...')
+print(' Logging In...')
 try:
     bot.run(TOKEN, bot=True, reconnect=True)
 except Exception as e:
-    con.log(' ' + str(e))
+    print(' ' + str(e))

@@ -36,6 +36,10 @@ These commands can be used by anyone.
 
 - `h!guild <guild>` - Information on a specified guild.
 
+- `h!link <player>` - Link a user to your account.
+
+- `h!unlink` - Remove a linked user from your account.
+
 ### Restricted Commands
 
 These commands can only be used by a bot owner.
