@@ -3,7 +3,7 @@ from discord.ext import commands
 import asyncio
 from urllib.request import Request, urlopen
 import json
-from utils import utils
+from utils import *
 class OnReady(commands.Cog):
 
     def __init__(self, bot):
@@ -11,7 +11,7 @@ class OnReady(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(' Successfully logged in as ' + self.bot.user.name + ' | ' + str(self.bot.user.id) + '.')
+        con.log(' Successfully logged in as ' + self.bot.user.name + ' | ' + str(self.bot.user.id) + '.')
         delay=60
         req = Request('https://api.hypixel.net/playerCount?key=abe73fdc-9735-4677-859a-a34fa0cb14e4')
         req.add_header('plun1331', 'https://plun1331.github.io')

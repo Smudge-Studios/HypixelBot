@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from utils import con
 
 initial_extensions = ['commands.help',
                       'commands.player',
@@ -23,14 +24,14 @@ class ReloadCMD(commands.Cog):
     async def reload(self, ctx, *, cog: str):
         try:
             self.bot.unload_extension(cog)
-            print(f' Unloaded extension {cog}.')
+            con.log(f' Unloaded extension {cog}.')
             self.bot.load_extension(cog)
-            print(f' Loaded extension {cog}.')
-            print(f'Successfully reloaded extension {cog}.')
+            con.log(f' Loaded extension {cog}.')
+            con.log(f'Successfully reloaded extension {cog}.')
         except Exception as e:
             embed = discord.Embed(title='Error', description=str(e), color=0xff0000)
             await ctx.send(embed=embed)
-            print(f"Couldn't reload extension {cog}: {e}")
+            con.log(f"Couldn't reload extension {cog}: {e}")
         else:
             embed = discord.Embed(title='Success', description=f'Successfully reloaded extension {cog}', color=0xff0000)
             await ctx.send(embed=embed)

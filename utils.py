@@ -1,4 +1,17 @@
 import datetime
+from datetime import datetime
+
+class con:
+    def log(text):
+        with open('logs\\bot.log', 'a') as logfile:
+            now = datetime.now()
+            time = now.strftime("%d/%m/%Y %H:%M")
+            logfile.write(f"{time}: {text}\n")
+        print(f"{time}: {text}")
+    def wipe():
+        with open('logs\\bot.log', 'w'):
+            pass
+
 class utils:
     def comma(self, num):
         '''Add comma to every 3rd digit. Takes int or float and

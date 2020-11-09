@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from utils import con
 
 class StopCMD(commands.Cog):
 
@@ -9,14 +10,14 @@ class StopCMD(commands.Cog):
     @commands.command(aliases=['shutdown','logout'], hidden=True)
     @commands.is_owner()
     async def stop(self, ctx):
-        print('Bot shutting down...')
+        con.log('Bot shutting down...')
         await ctx.send('Stopping the bot...')
         try:
             await self.bot.logout()
         except Exception as e:
             embed = discord.Embed(title='Error', description=str(e), color=0xff0000)
             await ctx.send(embed=embed)
-            print(f"Couldn't stop the bot: {e}")
+            con.log(f"Couldn't stop the bot: {e}")
 
 def setup(bot):
     bot.add_cog(StopCMD(bot))
