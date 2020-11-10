@@ -16,7 +16,7 @@ This bot is currently in development, there may be some bugs.
 [plun1331/HypixelBot](https://github.com/plun1331/HypixelBot) is licensed under the MIT License. This license can be viewed [here](https://github.com/plun1331/HypixelBot/blob/main/LICENSE).
 
 # Disclaimer
-This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypixel.net). All product names, logos, brands, trademarks and registered trademarks are property of their respective owners.
+This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypixel.net). All product names, logos, brands, trademarks, and registered trademarks are property of their respective owners.
 
 # Requirements
 - mojang
