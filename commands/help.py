@@ -2,7 +2,9 @@ import discord
 from discord.ext import commands
 import random
 
-class OnReady(commands.Cog):
+from discord.ext.commands.help import HelpCommand
+
+class HelpCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -13,6 +15,7 @@ class OnReady(commands.Cog):
             color=random.randint(1, 16777215)
             embed = discord.Embed(title="Help", description="""`h!help` - Displays this.
 `h!ping` - Displays the bot's latency.
+`h!info` - Displays some info and stats about the bot.
 `h!player <player>` - Returns the specified player's profile.
 `h!bedwars <player>` - Returns the specified player's Bedwars statistics.
 `h!skywars <player>` - Returns the specified player's Skywars statistics.
@@ -36,4 +39,4 @@ If you require more assistance, [join the support server](https://discord.gg/gxB
                     return
 
 def setup(bot):
-    bot.add_cog(OnReady(bot))
+    bot.add_cog(HelpCMD(bot))

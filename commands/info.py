@@ -1,8 +1,16 @@
 import discord
 from discord.ext import commands
+from urllib.request import Request, urlopen
+import json
+from configparser import ConfigParser
+from utils.utils import utils
 import random
 
-class OnReady(commands.Cog):
+parser = ConfigParser()
+parser.read('botconfig.ini')
+API_KEY = parser.get('CONFIG', 'api_key')
+
+class InfoCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -10,19 +18,24 @@ class OnReady(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         try:
+            req = Request('https://api.hypixel.net/key?key=' + API_KEY)
+            req.add_header('plun1331', 'https://plun1331.github.io')
+            content = urlopen(req)
+            data = json.load(content)
+            try:
+                queries = data['record']['totalQueries']
+            except:
+                queries = 'N/A'
+            try:
+                queriesmin = data['record']['queriesInPastMin']
+            except:
+                queriesmin = 'N/A'
             color=random.randint(1, 16777215)
-            embed = discord.Embed(title="Help", description="""`h!help` - Displays this.
-`h!ping` - Displays the bot's latency.
-`h!player <player>` - Returns the specified player's profile.
-`h!bedwars <player>` - Returns the specified player's Bedwars statistics.
-`h!skywars <player>` - Returns the specified player's Skywars statistics.
-`h!pit <player>` - Returns the specified player's Pit statistics.
-`h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
-`h!guild <guild name>` - Returns information on the specified guild.
-`h!playercount` - Returns Hypixel player counts.
-`h!watchdog` - Returns Hypixel Watchdog statistics.
+            embed = discord.Embed(title="Bot Information", description=f"""This bot was coded by plun1331#5535.
+This bot is also open-sourced. You can view the source code [here](https://github.com/plun1331/HypixelBot)
 
-If you require more assistance, [join the support server](https://discord.gg/gxB8mRC).""", color = color)
+Amount of API Requests made in the past minute: {queriesmin}
+Total API Requests: {queries}""", color = color)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
             await ctx.send(embed=embed)
         except discord.Forbidden:
@@ -36,4 +49,4 @@ If you require more assistance, [join the support server](https://discord.gg/gxB
                     return
 
 def setup(bot):
-    bot.add_cog(OnReady(bot))
+    bot.add_cog(InfoCMD(bot))

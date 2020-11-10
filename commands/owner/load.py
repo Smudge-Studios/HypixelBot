@@ -7,7 +7,7 @@ class LoadCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
+        
     @commands.command()
     @commands.is_owner()
     async def load(self, ctx, *, cog: str):
