@@ -5,12 +5,10 @@ import json
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
-import sqlite3
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
-conn = sqlite3.connect('db\\data.db')
 
 class SkywarsCMD(commands.Cog):
     def __init__(self, bot):
@@ -20,15 +18,9 @@ class SkywarsCMD(commands.Cog):
     async def skywars(self, ctx, username:str=None):
         #verify if player exists
         if username==None:
-            cursor = conn.execute("SELECT * from LINKS")
-            for row in cursor:
-                if row[0] == ctx.author.id:
-                    username = row[1]
-                    break
-            if username is None:
-                embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
-                await ctx.send(embed=embed)
-                return
+            embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
         uuid = MojangAPI.get_uuid(str(username))
         if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
             embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
@@ -61,6 +53,7 @@ class SkywarsCMD(commands.Cog):
                 return
             else:
                 try:
+                    level = 'N/A'
                     xp = data['player']['stats']['SkyWars']['skywars_experience']
                     xps = [0, 20, 70, 150, 250, 500, 1000, 2000, 3500, 6000, 10000, 15000]
                     if xp >= 15000:

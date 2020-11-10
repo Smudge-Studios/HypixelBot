@@ -10,7 +10,7 @@ class con:
         with open('logs\\bot.log', 'a') as logfile:
             now = datetime.now()
             time = now.strftime("%d/%m/%Y %H:%M")
-            logfile.write(f"{time}: {text}\n")
+            logfile.write(f"{time}: {text}\n\n")
         print(f"{time}: {text}")
     
     def wipe():
@@ -136,6 +136,9 @@ class utils:
                 elif int(time.strftime('%H')) < 12:
                     ampm = 'AM'
                     hour = time.strftime('%H')
+                else: # should never happen
+                    hour = None
+                    ampm = None
 
                 date_time = time.strftime("%m/%d/%Y at %H:%M")
                 status = 'Offline - Last seen on ' + str(date) + ' at ' + str(hour) + ':' + str(minute) + ' ' + ampm + ', EST'
@@ -151,28 +154,5 @@ class utils:
             level = int(level)
         except:
             level = 'N/A'
-
-    def link(self, ctx, ign):
-        uuid = MojangAPI.get_uuid(str(ign))
-        if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
-            raise ValueError
-        cursor = conn.execute("SELECT * from LINKS")
-        for row in cursor:
-            if row[0] == ctx.author.id:
-                conn.execute(f"UPDATE LINKS set IGN = {ign} where USER = {ctx.author.id}")
-                conn.commit()
-                return
-        conn.execute(f"INSERT INTO LINKS (USER, IGN) \
-            VALUES ({ctx.author.id}, {ign})")
-        conn.commit()
-
-    def unlink(self, ctx):
-        cursor = conn.execute("SELECT * from LINKS")
-        for row in cursor:
-            if row[0] == ctx.author.id:
-                conn.execute(f"DELETE from LINKS where USER = {ctx.author.id}")
-                conn.commit()
-                return row[1]
-        raise ValueError
 
 utils = utils()

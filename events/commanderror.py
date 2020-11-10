@@ -26,7 +26,7 @@ class CMDError(commands.Cog):
             `""" + str(error) + '`', color=0xff0000)
             await ctx.send(embed=embed)
             con.log("")
-            con.log('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
+            con.log('Ignoring exception in command {}:'.format(ctx.command))
             con.log("=====(BEGIN ERROR OUTPUT)=====")
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
             con.log("=====(END ERROR OUTPUT)=====")

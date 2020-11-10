@@ -60,6 +60,9 @@ class GuildCMD(commands.Cog):
             elif int(time.strftime('%H')) < 12:
                 ampm = 'AM'
                 hour = time.strftime('%H')
+            else: #this should never happen
+                hour = None
+                ampm = None
 
             date_time = time.strftime("%m/%d/%Y at %H:%M")
             created = str(date) + ' at ' + str(hour) + ':' + str(minute) + ' ' + ampm + ', EST'
