@@ -1,8 +1,9 @@
 from utils.utils import con
-con.wipe()
 con.log('Starting bot...')
 con.log(' Importing Modules...')
+import discord
 from discord.ext import commands
+import asyncio
 from configparser import ConfigParser
 con.log(' Modules imported.')
 
@@ -32,12 +33,15 @@ initial_extensions = ['commands.help',
                       'commands.guild',
                       'commands.murdermystery',
                       'commands.ping',
+                      'commands.playercount',
+                      'commands.watchdog',
                       'commands.owner.load',
                       'commands.owner.unload',
                       'commands.owner.reload',
                       'commands.owner.stop',
                       'events.commanderror',
                       'events.ready',
+                      'tasks.botlists',
                       'tasks.statuses']
 
 con.log(' Loading Cogs...')

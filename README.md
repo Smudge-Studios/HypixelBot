@@ -39,6 +39,10 @@ These commands can be used by anyone.
 
 - `h!guild <guild>` - Information on a specified guild.
 
+- `h!playercount` - Hypixel player counts.
+
+- `h!watchdog` - Hypixel Watchdog statistics.
+
 ### Restricted Commands
 
 These commands can only be used by a bot owner.

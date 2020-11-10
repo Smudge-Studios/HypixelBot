@@ -10,7 +10,7 @@ class StopCMD(commands.Cog):
     @commands.command(aliases=['shutdown','logout'], hidden=True)
     @commands.is_owner()
     async def stop(self, ctx):
-        con.log('Bot shutting down...')
+        con.log(f'{ctx.author.id} is attempting to remotely shutdown the bot...')
         await ctx.send('Stopping the bot...')
         try:
             await self.bot.logout()
