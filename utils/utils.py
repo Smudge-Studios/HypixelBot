@@ -9,7 +9,7 @@ class con:
     def log(text):
         with open('logs\\bot.log', 'a') as logfile:
             now = datetime.now()
-            time = now.strftime("%d/%m/%Y %H:%M")
+            time = now.strftime("%m/%d/%Y %H:%M")
             logfile.write(f"{time}: {text}\n\n")
         print(f"{time}: {text}")
     
