@@ -12,6 +12,9 @@ Thanks to [@DimBis](https://dimmy.xyz) for helping me with this project.
 
 This bot is currently in development, there may be some bugs.
 
+## License
+[plun1331/HypixelBot](https://github.com/plun1331/HypixelBot) is licensed under the MIT License. This license can be viewed [here](https://github.com/plun1331/HypixelBot/blob/main/LICENSE).
+
 ## Requirements
 - mojang - `python -m pip install mojang`
 
