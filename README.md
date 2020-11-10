@@ -15,17 +15,6 @@ This bot is currently in development, there may be some bugs.
 # License
 [plun1331/HypixelBot](https://github.com/plun1331/HypixelBot) is licensed under the MIT License. This license can be viewed [here](https://github.com/plun1331/HypixelBot/blob/main/LICENSE).
 
-# Hypixel Bot
-An open-sourced Hypixel Discord Bot
-
-This bot was made specifically for retrieving stats from the official public [Hypixel API](https://api.hypixel.net).
-
-Need help? [Join the support server](https://discord.gg/gxB8mRC).
-
-This bot is open-sourced, you can view the source code [here](https://github.com/plun1331/HypixelBot).
-
-This bot is currently in development, there may be some bugs.
-
 # Disclaimer
 This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypixel.net). All product names, logos, brands, trademarks and registered trademarks are property of their respective owners.
 
