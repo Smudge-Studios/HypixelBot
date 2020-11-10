@@ -26,25 +26,33 @@ This bot is currently in development, there may be some bugs.
 
 These commands can be used by anyone.
 
-- `h!help` - A list of commands.
+#### Bot Info
 
-- `h!ping` - Check the bot's latency.
+- `h!help` - Displays this.
 
-- `h!player <playername>` - Info on a specified player.
+- `h!ping` - Displays the bot's latency.
 
-- `h!bedwars <playername>` - Bedwars stats for a specified player.
+- `h!info` - Displays some info and stats about the bot.
 
-- `h!skywars <playername>` - Skywars stats for a specified player.
+#### Hypixel Stats
 
-- `h!murdermystery <playername>` - Murder Mystery stats for a specified player.
+- `h!player <player>` - Returns the specified player's profile.
 
-- `h!pit <playername>` - Pit stats for a specified player.
+- `h!bedwars <player>` - Returns the specified player's Bedwars statistics.
 
-- `h!guild <guild>` - Information on a specified guild.
+- `h!skywars <player>` - Returns the specified player's Skywars statistics.
 
-- `h!playercount` - Hypixel player counts.
+- `h!pit <player>` - Returns the specified player's Pit statistics.
 
-- `h!watchdog` - Hypixel Watchdog statistics.
+- `h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
+
+- `h!guild <guild name>` - Returns information on the specified guild.
+
+#### Hypixel Info
+
+- `h!playercount` - Returns Hypixel player counts.
+
+- `h!watchdog` - Returns Hypixel Watchdog statistics.
 
 ### Restricted Commands
 
