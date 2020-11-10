@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
-from utils.utils import con, utils
+from utils.utils import utils
 from urllib.request import Request, urlopen
 from configparser import ConfigParser
 import json
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -126,40 +127,41 @@ class OnReady(commands.Cog):
                     network = data['playerCount']
                 except:
                     network = 'N/A'
-                embed = discord.Embed(title="Hypixel Player Counts", color = 0xff0000)
-                embed.add_field(name='Total', value=utils.comma(network))
-                embed.add_field(name='Main Lobby', value=utils.comma(lobby))
-                embed.add_field(name='Queue', value=utils.comma(queue))
+                color=random.randint(1, 16777215)
+                embed = discord.Embed(title="Hypixel Player Counts", color = color)
+                embed.add_field(name='Total', value=str(utils.comma(network)))
+                embed.add_field(name='Main Lobby', value=str(utils.comma(lobby)))
+                embed.add_field(name='Queue', value=str(utils.comma(queue)))
 
-                embed.add_field(name='Bedwars', value=utils.comma(bedwars))
-                embed.add_field(name='Skywars', value=utils.comma(skywars))
-                embed.add_field(name='Skyblock', value=utils.comma(skyblock))
+                embed.add_field(name='Bedwars', value=str(utils.comma(bedwars)))
+                embed.add_field(name='Skywars', value=str(utils.comma(skywars)))
+                embed.add_field(name='Skyblock', value=str(utils.comma(skyblock)))
 
-                embed.add_field(name='Arcade', value=utils.comma(arcade))
-                embed.add_field(name='Duels', value=utils.comma(duels))
-                embed.add_field(name='UHC', value=utils.comma(uhc))
+                embed.add_field(name='Arcade', value=str(utils.comma(arcade)))
+                embed.add_field(name='Duels', value=str(utils.comma(duels)))
+                embed.add_field(name='UHC', value=str(utils.comma(uhc)))
 
-                embed.add_field(name='TNT Games', value=utils.comma(tnt_games))
-                embed.add_field(name='Classic Games', value=utils.comma(classic_games))
-                embed.add_field(name='Blitz Survival Games', value=utils.comma(blitz_survival_games))
+                embed.add_field(name='TNT Games', value=str(utils.comma(tnt_games)))
+                embed.add_field(name='Classic Games', value=str(utils.comma(classic_games)))
+                embed.add_field(name='Blitz Survival Games', value=str(utils.comma(blitz_survival_games)))
                 
-                embed.add_field(name='Build Battle', value=utils.comma(build_battle))
-                embed.add_field(name='Murder Mystery', value=utils.comma(murder_mystery))
-                embed.add_field(name='Housing', value=utils.comma(housing))
+                embed.add_field(name='Build Battle', value=str(utils.comma(build_battle)))
+                embed.add_field(name='Murder Mystery', value=str(utils.comma(murder_mystery)))
+                embed.add_field(name='Housing', value=str(utils.comma(housing)))
 
-                embed.add_field(name='Smash Heroes', value=utils.comma(smash_heroes))
-                embed.add_field(name='Speed UHC', value=utils.comma(speed_uhc))
-                embed.add_field(name='Mega Walls', value=utils.comma(mega_walls))
+                embed.add_field(name='Smash Heroes', value=str(utils.comma(smash_heroes)))
+                embed.add_field(name='Speed UHC', value=str(utils.comma(speed_uhc)))
+                embed.add_field(name='Mega Walls', value=str(utils.comma(mega_walls)))
 
-                embed.add_field(name='The Pit', value=utils.comma(the_pit))
-                embed.add_field(name='Cops and Crims', value=utils.comma(cops_and_crims))
-                embed.add_field(name='Warlords', value=utils.comma(warlords))
+                embed.add_field(name='The Pit', value=str(utils.comma(the_pit)))
+                embed.add_field(name='Cops and Crims', value=str(utils.comma(cops_and_crims)))
+                embed.add_field(name='Warlords', value=str(utils.comma(warlords)))
 
-                embed.add_field(name='Prototype', value=utils.comma(prototype))
-                embed.add_field(name='Limbo', value=utils.comma(limbo))
-                embed.add_field(name='Replay', value=utils.comma(replay))
+                embed.add_field(name='Prototype', value=str(utils.comma(prototype)))
+                embed.add_field(name='Limbo', value=str(utils.comma(limbo)))
+                embed.add_field(name='Replay', value=str(utils.comma(replay)))
 
-                embed.add_field(name='Idle', value=utils.comma(idle))
+                embed.add_field(name='Idle', value=str(utils.comma(idle)))
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')
                 await ctx.send(embed=embed)
             else:

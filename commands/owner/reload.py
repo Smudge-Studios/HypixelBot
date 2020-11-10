@@ -1,19 +1,7 @@
 import discord
 from discord.ext import commands
 from utils.utils import con
-
-initial_extensions = ['commands.help',
-                      'commands.player',
-                      'commands.bedwars',
-                      'commands.skywars',
-                      'commands.guild',
-                      'commands.owner.load',
-                      'commands.owner.unload',
-                      'commands.owner.reload',
-                      'commands.owner.stop',
-                      'events.commanderror',
-                      'events.ready']
-
+import random
 class ReloadCMD(commands.Cog):
 
     def __init__(self, bot):
@@ -33,7 +21,8 @@ class ReloadCMD(commands.Cog):
             await ctx.send(embed=embed)
             con.log(f"Couldn't reload extension {cog}: {e}")
         else:
-            embed = discord.Embed(title='Success', description=f'Successfully reloaded extension {cog}', color=0xff0000)
+            color=random.randint(1, 16777215)
+            embed = discord.Embed(title='Success', description=f'Successfully reloaded extension {cog}', color=color)
             await ctx.send(embed=embed)
 
 def setup(bot):

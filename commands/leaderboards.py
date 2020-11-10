@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 from urllib.request import Request, urlopen
 import json
-from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -78,7 +78,8 @@ Supported games: `skywars`, `bedwars`""", color=0xff0000)
                     except:
                         amnt = 'N/A'
                     msg = msg + f"{name} - {amnt}\n"
-                embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg)
+                color=random.randint(1, 16777215)
+                embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg, color=color)
                 await ctx.send(embed=embed)
         except discord.Forbidden:
             try:

@@ -4,6 +4,7 @@ from utils.utils import con, utils
 from urllib.request import Request, urlopen
 from configparser import ConfigParser
 import json
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -30,7 +31,8 @@ class WatchDogCMD(commands.Cog):
                     stafftotal = data['watchdog_total']
                 except:
                     stafftotal = 'N/A'
-                embed = discord.Embed(title="Hypixel Watchdog Statistics", color = 0xff0000)
+                color=random.randint(1, 16777215)
+                embed = discord.Embed(title="Hypixel Watchdog Statistics", color = color)
                 embed.add_field(name="Watchdog Bans", value=str(utils.comma(wdtotal)))
                 embed.add_field(name="Staff Bans", value=str(utils.comma(stafftotal)))
                 try:

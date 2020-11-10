@@ -5,6 +5,7 @@ import json
 from configparser import ConfigParser
 from datetime import datetime
 from utils.utils import utils
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -97,7 +98,8 @@ class GuildCMD(commands.Cog):
             except Exception as e:
                 gm = 'N/A'
                 print(f"Couldn't get guild manager: {e}")
-            embed = discord.Embed(title='Guild Info', color=0xff0000)
+            color=random.randint(1, 16777215)
+            embed = discord.Embed(title='Guild Info', color=color)
             embed.add_field(name="Guild Name", value=str(gname), inline=True)
             embed.add_field(name="Guild Manager", value=str(gm), inline=True)
             embed.add_field(name="Members", value=str(mbrs), inline=True)

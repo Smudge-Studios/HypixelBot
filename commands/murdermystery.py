@@ -5,6 +5,7 @@ import json
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -81,7 +82,8 @@ class MurderMysteryCMD(commands.Cog):
             req.add_header('plun1331', 'https://plun1331.github.io')
             content = urlopen(req)
             data = json.load(content)
-            embed = discord.Embed(title=data['name'] + "'s Murder Mystery Stats", color=0xff0000)
+            color=random.randint(1, 16777215)
+            embed = discord.Embed(title=data['name'] + "'s Murder Mystery Stats", color=color)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
             embed.add_field(name='Games Played', value=str(utils.comma(played)))
             embed.add_field(name='Wins', value=str(utils.comma(wins)))

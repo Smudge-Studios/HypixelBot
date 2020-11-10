@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from utils.utils import con
+import random
 
 class LoadCMD(commands.Cog):
 
@@ -22,7 +23,8 @@ class LoadCMD(commands.Cog):
             await ctx.send(embed=embed)
             con.log(f"Couldn't load extension {cog}: {e}")
         else:
-            embed = discord.Embed(title='Success', description=f'Successfully loaded extension {cog}', color=0xff0000)
+            color=random.randint(1, 16777215)
+            embed = discord.Embed(title='Success', description=f'Successfully loaded extension {cog}', color=color)
             await ctx.send(embed=embed)
 
 def setup(bot):

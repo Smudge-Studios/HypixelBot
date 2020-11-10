@@ -5,6 +5,7 @@ import json
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -105,7 +106,8 @@ class SkywarsCMD(commands.Cog):
                     req.add_header('plun1331', 'https://plun1331.github.io')
                     content = urlopen(req)
                     data = json.load(content)
-                    embed = discord.Embed(title=data['name'] + "'s Skywars Stats", color=0xff0000)
+                    color=random.randint(1, 16777215)
+                    embed = discord.Embed(title=data['name'] + "'s Skywars Stats", color=color)
                     embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                     try:
                         embed.add_field(name="Level", value=str(int(level))+' ⭐', inline=True)

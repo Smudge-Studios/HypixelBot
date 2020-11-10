@@ -5,6 +5,7 @@ import json
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -116,8 +117,9 @@ class BedwarsCMD(commands.Cog):
                 req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
                 req.add_header('plun1331', 'https://plun1331.github.io')
                 content = urlopen(req)
-                data = json.load(content) 
-                embed = discord.Embed(title=data['name'] + "'s Bedwars Stats", color=0xff0000)
+                data = json.load(content)
+                color=random.randint(1, 16777215) 
+                embed = discord.Embed(title=data['name'] + "'s Bedwars Stats", color=color)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                 embed.add_field(name="Level", value=str(level), inline=True)
                 embed.add_field(name="Games Played", value=str(utils.comma(games_played)), inline=True)

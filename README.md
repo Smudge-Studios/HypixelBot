@@ -1,6 +1,6 @@
 # HypixelBot
-[![HypixelBot on top.gg](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
-[![Discord Bots](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
+[![TOP.GG](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
+[![Discord Bot List](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
 
 A Hypixel Discord Bot made purely for displaying Hypixel statistics.
 
@@ -16,9 +16,9 @@ This bot is currently in development, there may be some bugs.
 [plun1331/HypixelBot](https://github.com/plun1331/HypixelBot) is licensed under the MIT License. This license can be viewed [here](https://github.com/plun1331/HypixelBot/blob/main/LICENSE).
 
 ## Requirements
-- mojang - `python -m pip install mojang`
+- mojang
 
-- discord.py - `py -3 -m pip install -U discord.py`
+- discord.py
 
 ## Commands
 

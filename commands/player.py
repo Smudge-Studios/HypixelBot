@@ -5,6 +5,7 @@ import json
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
+import random
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -94,7 +95,8 @@ class PlayerCMD(commands.Cog):
                 req.add_header('plun1331', 'https://plun1331.github.io')
                 content = urlopen(req)
                 data = json.load(content)
-                embed = discord.Embed(title=data['name'] + "'s Profile", color=0xff0000)
+                color=random.randint(1, 16777215)
+                embed = discord.Embed(title=data['name'] + "'s Profile", color=color)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                 embed.add_field(name="Rank", value=str(rank), inline=True)
                 embed.add_field(name="Karma", value=str(utils.comma(karma)), inline=True)
