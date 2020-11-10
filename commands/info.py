@@ -16,7 +16,7 @@ class InfoCMD(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def help(self, ctx):
+    async def info(self, ctx):
         try:
             req = Request('https://api.hypixel.net/key?key=' + API_KEY)
             req.add_header('plun1331', 'https://plun1331.github.io')
