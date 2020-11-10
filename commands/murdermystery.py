@@ -55,10 +55,6 @@ class MurderMysteryCMD(commands.Cog):
                     await ctx.send(embed=embed)
                     return
             try:
-                gold = data['player']['stats']['MurderMystery']['coins']
-            except:
-                gold = 'N/A'
-            try:
                 played = data['player']['stats']['MurderMystery']['games']
             except:
                 played = 'N/A'

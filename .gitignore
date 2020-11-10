@@ -2,3 +2,4 @@ commands/__pycache__/**.pyc
 commands/owner/__pycache__/**.pyc
 events/__pycache__/**.pyc
 tasks/botlists.py
+commands/commandtemplate.py
