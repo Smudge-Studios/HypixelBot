@@ -12,21 +12,24 @@ Thanks to [@DimBis](https://dimmy.xyz) for helping me with this project.
 
 This bot is currently in development, there may be some bugs.
 
-## License
+# License
 [plun1331/HypixelBot](https://github.com/plun1331/HypixelBot) is licensed under the MIT License. This license can be viewed [here](https://github.com/plun1331/HypixelBot/blob/main/LICENSE).
 
-## Requirements
+# Disclaimer
+This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypixel.net). All product names, logos, brands, trademarks, and registered trademarks are property of their respective owners.
+
+# Requirements
 - mojang
 
 - discord.py
 
-## Commands
+# Commands
 
-### Public Commands
+## Public Commands
 
 These commands can be used by anyone.
 
-#### Bot Info
+### Bot Info
 
 - `h!help` - Displays this.
 
@@ -34,7 +37,7 @@ These commands can be used by anyone.
 
 - `h!info` - Displays some info and stats about the bot.
 
-#### Hypixel Stats
+### Hypixel Stats
 
 - `h!player <player>` - Returns the specified player's profile.
 
@@ -48,13 +51,13 @@ These commands can be used by anyone.
 
 - `h!guild <guild name>` - Returns information on the specified guild.
 
-#### Hypixel Info
+### Hypixel Info
 
 - `h!playercount` - Returns Hypixel player counts.
 
 - `h!watchdog` - Returns Hypixel Watchdog statistics.
 
-### Restricted Commands
+## Restricted Commands
 
 These commands can only be used by a bot owner.
 
@@ -66,5 +69,5 @@ These commands can only be used by a bot owner.
 
 - `h!stop` - Shutdown the bot.
 
-## Invite
+# Invite
 To add this bot to your server, click [here](https://discord.com/api/oauth2/authorize?client_id=764677833820995605&permissions=0&scope=bot).
