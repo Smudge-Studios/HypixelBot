@@ -72,4 +72,4 @@ These commands can only be used by a bot owner.
 - `h!stop` - Shutdown the bot.
 
 # Invite
-To add this bot to your server, click [here](https://discord.com/api/oauth2/authorize?client_id=764677833820995605&permissions=0&scope=bot).
+To add this bot to your server, click [here](https://plun1331.github.io/hypixelbot/add).
