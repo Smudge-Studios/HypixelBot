@@ -21,12 +21,11 @@ class LeaderboardCMD(commands.Cog):
         try:
             #verify if player exists
             if game is None:
-                embed = discord.Embed(title="Error", description="""Please provide a game.
-Supported games: `skywars`, `bedwars`""", color=0xff0000)
+                embed = discord.Embed(title="Error", description="""Please provide a game.""", color=0xff0000)
                 await ctx.send(embed=embed)
                 return
             if type is None:
-                embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+                embed = discord.Embed(title="Error", description="""Please provide a leaderboard.""", color=0xff0000)
                 await ctx.send(embed=embed)
                 return
             #send request
@@ -41,18 +40,12 @@ Supported games: `skywars`, `bedwars`""", color=0xff0000)
                 return
             #it worked!
             elif data['success'] == True:
-                if game.lower() == 'skywars':
-                    data = data['leaderboards']['SKYWARS']
-                elif game.lower() == 'bedwars':
-                    data = data['leaderboards']['BEDWARS']
-                else:
-                    embed = discord.Embed(title='Error', description='Unsupported game type.', color=0xff0000)
-                    await ctx.send(embed=embed)
-                    return
+                game = game.upper()
                 type = type.lower()
                 leaders = None
                 path = None
-                for lb in data:
+                for lb in data['leaderboards']:
+                    print(lb)
                     if lb['path'].replace('_', ' ') == type:
                         path = lb['path']
                         leaders = lb['leaders']
@@ -62,6 +55,7 @@ Supported games: `skywars`, `bedwars`""", color=0xff0000)
                     await ctx.send(embed=embed)
                     return
                 msg = ''
+                await ctx.send("Gathering data, please wait.")
                 for uid in leaders:
                     uid = uid.replace('-','')
                     req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uid)
@@ -69,15 +63,7 @@ Supported games: `skywars`, `bedwars`""", color=0xff0000)
                     content = urlopen(req)
                     data = json.load(content)
                     name = data['name']
-                    req = Request('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uid)
-                    req.add_header('plun1331', 'https://plun1331.github.io')
-                    content = urlopen(req)
-                    data = json.load(content)
-                    try:
-                        amnt = utils.comma(data['player']['stats'][game.lower().capitalize()][path])
-                    except:
-                        amnt = 'N/A'
-                    msg = msg + f"{name} - {amnt}\n"
+                    msg = msg + f"{name}\n"
                 color=random.randint(1, 16777215)
                 embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg, color=color)
                 await ctx.send(embed=embed)

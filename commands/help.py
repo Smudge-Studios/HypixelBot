@@ -21,6 +21,7 @@ class HelpCMD(commands.Cog):
 `h!skywars <player>` - Returns the specified player's Skywars statistics.
 `h!pit <player>` - Returns the specified player's Pit statistics.
 `h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
+`h!buildbattle <player>` - Returns the specified player's Build Battle statistics.
 `h!guild <guild name>` - Returns information on the specified guild.
 `h!playercount` - Returns Hypixel player counts.
 `h!watchdog` - Returns Hypixel Watchdog statistics.

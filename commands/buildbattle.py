@@ -11,13 +11,13 @@ parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
 
-class MurderMysteryCMD(commands.Cog):
+class BuildBattleCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['mm'])
-    async def murdermystery(self, ctx, username:str=None):
+    @commands.command(aliases=['bb'])
+    async def buildbattle(self, ctx, username:str=None):
         try:
             #verify if player exists
             if username==None:
@@ -55,45 +55,27 @@ class MurderMysteryCMD(commands.Cog):
                     await ctx.send(embed=embed)
                     return
             try:
-                gold = data['player']['stats']['MurderMystery']['coins']
+                wins = data['player']['stats']['BuildBattle']['wins']
             except:
-                gold = 'N/A'
+                wins = 'N/A'
             try:
-                played = data['player']['stats']['MurderMystery']['games']
+                played = data['player']['stats']['BuildBattle']['games_played']
             except:
                 played = 'N/A'
             try:
-                deaths = data['player']['stats']['MurderMystery']['deaths']
+                coins = data['player']['stats']['BuildBattle']['coins']
             except:
-                deaths = 'N/A'
-            try:
-                kkills = data['player']['stats']['MurderMystery']['knife_kills']
-            except:
-                kkills = 'N/A'
-            try:
-                bkills = data['player']['stats']['MurderMystery']['bow_kills']
-            except:
-                bkills = 'N/A'
-            try:
-                wins = data['player']['stats']['MurderMystery']['wins']
-            except:
-                wins = 'N/A'
+                coins = 'N/A'
             req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
             req.add_header('plun1331', 'https://plun1331.github.io')
             content = urlopen(req)
             data = json.load(content)
             color=random.randint(1, 16777215)
-            embed = discord.Embed(title=data['name'] + "'s Murder Mystery Stats", color=color)
+            embed = discord.Embed(title=data['name'] + "'s Build battle Stats", color=color)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
             embed.add_field(name='Games Played', value=str(utils.comma(played)))
             embed.add_field(name='Wins', value=str(utils.comma(wins)))
-            embed.add_field(name='Deaths', value=str(utils.comma(deaths)))
-            embed.add_field(name='Knife Kills', value=str(utils.comma(kkills)))
-            embed.add_field(name='Bow Kills', value=str(utils.comma(bkills)))
-            try:
-                embed.add_field(name='Total Kills', value=str(utils.comma(int(kkills)+int(bkills))))
-            except:
-                embed.add_field(name='Total Kills', value='N/A')
+            embed.add_field(name='Coins', value=str(utils.comma(coins)))
             await ctx.send(embed=embed)
         except discord.Forbidden:
             try:
@@ -108,4 +90,4 @@ class MurderMysteryCMD(commands.Cog):
         
 
 def setup(bot):
-    bot.add_cog(MurderMysteryCMD(bot))
+    bot.add_cog(BuildBattleCMD(bot))

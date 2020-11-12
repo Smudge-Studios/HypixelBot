@@ -49,6 +49,8 @@ These commands can be used by anyone.
 
 - `h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
 
+- `h!buildbattle <player>` - Returns the specified player’s Build Battle statistics.
+
 - `h!guild <guild name>` - Returns information on the specified guild.
 
 ### Hypixel Info

@@ -1,9 +1,6 @@
 import datetime
 from datetime import datetime
-import sqlite3
 from mojang import MojangAPI
-
-conn = sqlite3.connect('db\\data.db')
 
 class con:
     def log(text):

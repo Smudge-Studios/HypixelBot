@@ -30,6 +30,8 @@ class CMDError(commands.Cog):
             con.log("=====(BEGIN ERROR OUTPUT)=====")
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
             con.log("=====(END ERROR OUTPUT)=====")
+            with open('utils\\logs\\error.log', 'a') as logfile:
+                traceback.print_exception(type(error), error, error.__traceback__, file=logfile)
             return
 
 def setup(bot):

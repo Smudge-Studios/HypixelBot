@@ -24,103 +24,103 @@ class OnReady(commands.Cog):
             data = json.load(content) 
             if data['success'] == True:
                 try:
-                    lobby = data['games']['MAIN_LOBBY']
+                    lobby = data['games']['MAIN_LOBBY']['players']
                 except:
                     lobby = 'N/A'
                 try:
-                    tournament_lobby = data['games']['TOURNAMENT_LOBBY']
+                    tournament_lobby = data['games']['TOURNAMENT_LOBBY']['players']
                 except:
                     tournament_lobby = 'N/A'
                 try:
-                    arcade = data['games']['ARCADE']
+                    arcade = data['games']['ARCADE']['players']
                 except:
                     arcade = 'N/A'
                 try:
-                    tnt_games = data['games']['TNTGAMES']
+                    tnt_games = data['games']['TNTGAMES']['players']
                 except:
                     tnt_games = 'N/A'
                 try:
-                    classic_games = data['games']['LEGACY']
+                    classic_games = data['games']['LEGACY']['players']
                 except:
                     classic_games = 'N/A'
                 try:
-                    duels = data['games']['DUELS']
+                    duels = data['games']['DUELS']['players']
                 except:
                     duels = 'N/A'
                 try:
-                    uhc = data['games']['UHC']
+                    uhc = data['games']['UHC']['players']
                 except:
                     uhc = 'N/A'
                 try:
-                    warlords = data['games']['BATTLEGROUND']
+                    warlords = data['games']['BATTLEGROUND']['players']
                 except:
                     warlords = 'N/A'
                 try:
-                    housing = data['games']['HOUSING']
+                    housing = data['games']['HOUSING']['players']
                 except:
                     housing = 'N/A'
                 try:
-                    bedwars = data['games']['BEDWARS']
+                    bedwars = data['games']['BEDWARS']['players']
                 except:
                     bedwars = 'N/A'
                 try:
-                    smash_heroes = data['games']['SUPER_SMASH']
+                    smash_heroes = data['games']['SUPER_SMASH']['players']
                 except:
                     smash_heroes = 'N/A'
                 try:
-                    skyblock = data['games']['SKYBLOCK']
+                    skyblock = data['games']['SKYBLOCK']['players']
                 except:
                     skyblock = 'N/A'
                 try:
-                    blitz_survival_games = data['games']['SURVIVAL_GAMES']
+                    blitz_survival_games = data['games']['SURVIVAL_GAMES']['players']
                 except:
                     blitz_survival_games = 'N/A'
                 try:
-                    speed_uhc = data['games']['SPEED_UHC']
+                    speed_uhc = data['games']['SPEED_UHC']['players']
                 except:
                     speed_uhc = 'N/A'
                 try:
-                    build_battle = data['games']['BUILD_BATTLE']
+                    build_battle = data['games']['BUILD_BATTLE']['players']
                 except:
                     build_battle = 'N/A'
                 try:
-                    mega_walls = data['games']['WALLS3']
+                    mega_walls = data['games']['WALLS3']['players']
                 except:
                     mega_walls = 'N/A'
                 try:
-                    murder_mystery = data['games']['MURDER_MYSTERY']
+                    murder_mystery = data['games']['MURDER_MYSTERY']['players']
                 except:
                     murder_mystery = 'N/A'
                 try:
-                    the_pit = data['games']['PIT']
+                    the_pit = data['games']['PIT']['players']
                 except:
                     the_pit = 'N/A'
                 try:
-                    skywars = data['games']['SKYWARS']
+                    skywars = data['games']['SKYWARS']['players']
                 except:
                     skywars = 'N/A'
                 try:
-                    replay = data['games']['REPLAY']
+                    replay = data['games']['REPLAY']['players']
                 except:
                     replay = 'N/A'
                 try:
-                    cops_and_crims = data['games']['MCGO']
+                    cops_and_crims = data['games']['MCGO']['players']
                 except:
                     cops_and_crims = 'N/A'
                 try:
-                    prototype = data['games']['PROTOTYPE']
+                    prototype = data['games']['PROTOTYPE']['players']
                 except:
                     prototype = 'N/A'
                 try:
-                    limbo = data['games']['LIMBO']
+                    limbo = data['games']['LIMBO']['players']
                 except:
                     limbo = 'N/A'
                 try:
-                    idle = data['games']['IDLE']
+                    idle = data['games']['IDLE']['players']
                 except:
                     idle = 'N/A'
                 try:
-                    queue = data['games']['QUEUE']
+                    queue = data['games']['QUEUE']['players']
                 except:
                     queue = 'N/A'
                 try:
@@ -131,7 +131,7 @@ class OnReady(commands.Cog):
                 embed = discord.Embed(title="Hypixel Player Counts", color = color)
                 embed.add_field(name='Total', value=str(utils.comma(network)))
                 embed.add_field(name='Main Lobby', value=str(utils.comma(lobby)))
-                embed.add_field(name='Queue', value=str(utils.comma(queue)))
+                embed.add_field(name='Tournament Lobby', value=str(utils.comma(tournament_lobby)))
 
                 embed.add_field(name='Bedwars', value=str(utils.comma(bedwars)))
                 embed.add_field(name='Skywars', value=str(utils.comma(skywars)))
@@ -162,6 +162,7 @@ class OnReady(commands.Cog):
                 embed.add_field(name='Replay', value=str(utils.comma(replay)))
 
                 embed.add_field(name='Idle', value=str(utils.comma(idle)))
+                embed.add_field(name='Queue', value=str(utils.comma(queue)))
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')
                 await ctx.send(embed=embed)
             else:

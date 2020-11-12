@@ -32,10 +32,10 @@ class InfoCMD(commands.Cog):
                 queriesmin = 'N/A'
             color=random.randint(1, 16777215)
             embed = discord.Embed(title="Bot Information", description=f"""This bot was coded by plun1331#5535.
-This bot is also open-sourced. You can view the source code [here](https://github.com/plun1331/HypixelBot)
-
-Amount of API Requests made in the past minute: {queriesmin}
-Total API Requests: {queries}""", color = color)
+This bot is also open-sourced. You can view the source code [here](https://github.com/plun1331/HypixelBot)""", color = color)
+            embed.add_field(name="Stats", value=f"""Amount of API Requests made in the past minute: {queriesmin}
+Total API Requests: {queries}
+Guilds: {utils.comma(len(self.bot.guilds))}""", inline=False)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
             await ctx.send(embed=embed)
         except discord.Forbidden:
