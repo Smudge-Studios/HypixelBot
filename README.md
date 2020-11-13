@@ -51,6 +51,8 @@ These commands can be used by anyone.
 
 - `h!buildbattle <player>` - Returns the specified player’s Build Battle statistics.
 
+- `h!uhc <player>` - Returns the specified player's UHC statistics.
+
 - `h!leaderboard <game> <type>` - Returns the leaders on the specified leaderboard.
 
 - `h!guild <guild name>` - Returns information on the specified guild.

@@ -53,16 +53,16 @@ class LeaderboardCMD(commands.Cog):
                     await ctx.send(embed=embed)
                     return
                 msg = ''
-                await ctx.send("Gathering data, please wait.")
-                for uid in leaders:
-                    uid = uid.replace('-','')
-                    async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uid) as response:
-                        data = await response.json()
-                    name = data['name']
-                    msg = msg + f"{name}\n"
-                color=random.randint(1, 16777215)
-                embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg, color=color)
-                await ctx.send(embed=embed)
+                async with ctx.channel.typing():
+                    for uid in leaders:
+                        uid = uid.replace('-','')
+                        async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uid) as response:
+                            data = await response.json()
+                        name = data['name']
+                        msg = msg + f"{name}\n"
+                    color=random.randint(1, 16777215)
+                    embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg, color=color)
+                    await ctx.send(embed=embed)
         except discord.Forbidden:
             try:
                 await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")

@@ -37,6 +37,7 @@ initial_extensions = ['commands.help',
                       'commands.murdermystery',
                       'commands.guild',
                       'commands.buildbattle',
+                      'commands.uhc',
                       'commands.leaderboards',
 
                       'commands.playercount',
