@@ -4,14 +4,14 @@ from mojang import MojangAPI
 
 class con:
     def log(text):
-        with open('logs\\bot.log', 'a') as logfile:
+        with open('utils\\logs\\bot.log', 'a') as logfile:
             now = datetime.now()
             time = now.strftime("%m/%d/%Y %H:%M")
             logfile.write(f"{time}: {text}\n\n")
         print(f"{time}: {text}")
     
     def wipe():
-        with open('logs\\bot.log', 'w'):
+        with open('utils\\logs\\bot.log', 'w'):
             pass
 
 class utils:

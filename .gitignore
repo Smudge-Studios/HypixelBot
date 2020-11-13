@@ -5,3 +5,6 @@ tasks/botlists.py
 commands/commandtemplate.py
 commands/owner/guilds.py
 .gitignore
+tasks/__pycache__/botlists.cpython-38.pyc
+tasks/__pycache__/statuses.cpython-38.pyc
+utils/__pycache__/utils.cpython-38.pyc

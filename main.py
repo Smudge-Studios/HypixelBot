@@ -2,7 +2,6 @@ from utils.utils import con
 con.log("Starting bot...")
 import discord
 from discord.ext import commands
-import asyncio
 from configparser import ConfigParser
 
 intents = discord.Intents.all()
