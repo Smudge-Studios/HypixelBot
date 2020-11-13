@@ -15,6 +15,9 @@ class BedwarsCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['bw'])   
     async def bedwars(self, ctx, username:str=None):
         try:

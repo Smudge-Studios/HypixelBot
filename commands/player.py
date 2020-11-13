@@ -16,6 +16,9 @@ class PlayerCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
     
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['p'])
     async def player(self, ctx, username:str=None):
         try:

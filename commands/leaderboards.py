@@ -12,6 +12,9 @@ class LeaderboardCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['lb'])   
     async def leaderboard(self, ctx, game: str=None, *, type: str=None):
         try:

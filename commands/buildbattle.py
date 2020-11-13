@@ -16,6 +16,9 @@ class BuildBattleCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['bb'])
     async def buildbattle(self, ctx, username:str=None):
         try:

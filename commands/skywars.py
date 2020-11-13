@@ -15,6 +15,9 @@ class SkywarsCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['sw'])   
     async def skywars(self, ctx, username:str=None):
         try:

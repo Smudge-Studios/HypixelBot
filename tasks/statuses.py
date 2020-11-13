@@ -15,6 +15,7 @@ class Statuses(commands.Cog):
         self.statuses.start()
 
     def cog_unload(self):
+        self.session.close()
         self.statuses.cancel()
     
     @tasks.loop(minutes=1.0)

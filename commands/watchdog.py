@@ -17,6 +17,9 @@ class WatchDogCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['wd','watchdog','wds'])
     async def watchdogstats(self, ctx):
         try:

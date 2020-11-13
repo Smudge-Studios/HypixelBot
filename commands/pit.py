@@ -16,6 +16,9 @@ class PitCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command()
     async def pit(self, ctx, username):
         try:

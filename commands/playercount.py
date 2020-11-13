@@ -15,6 +15,9 @@ class OnReady(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['players','count'])
     async def playercount(self, ctx):
         try:

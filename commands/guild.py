@@ -16,6 +16,9 @@ class GuildCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['g'])
     async def guild(self, ctx, *, guildname:str=None):
         try:

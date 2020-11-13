@@ -16,6 +16,9 @@ class MurderMysteryCMD(commands.Cog):
         self.bot = bot
         self.session = ClientSession()
 
+    def cog_unload(self):
+        self.session.close()
+
     @commands.command(aliases=['mm'])
     async def murdermystery(self, ctx, username:str=None):
         try:
@@ -52,10 +55,6 @@ class MurderMysteryCMD(commands.Cog):
                     embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
                     await ctx.send(embed=embed)
                     return
-            try:
-                gold = data['player']['stats']['MurderMystery']['coins']
-            except:
-                gold = 'N/A'
             try:
                 played = data['player']['stats']['MurderMystery']['games']
             except:
