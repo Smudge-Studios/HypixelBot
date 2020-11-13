@@ -12,7 +12,7 @@ class OnReady(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        con.log(' Successfully logged in as ' + self.bot.user.name + ' | ' + str(self.bot.user.id) + '.')
+        con.log('Successfully logged in as ' + self.bot.user.name + ' | ' + str(self.bot.user.id) + '.')
 
 def setup(bot):
     bot.add_cog(OnReady(bot))
