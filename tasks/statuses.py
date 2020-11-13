@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands, tasks
 from utils.utils import con, utils
-from urllib.request import Request, urlopen
+from aiohttp import ClientSession
 from configparser import ConfigParser
-import json
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -12,6 +11,7 @@ API_KEY = parser.get('CONFIG', 'api_key')
 class Statuses(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession()
         self.statuses.start()
 
     def cog_unload(self):
@@ -19,10 +19,8 @@ class Statuses(commands.Cog):
     
     @tasks.loop(minutes=1.0)
     async def statuses(self):
-        req = Request('https://api.hypixel.net/playerCount?key=' + API_KEY)
-        req.add_header('plun1331', 'https://plun1331.github.io')
-        content = urlopen(req)
-        data = json.load(content)
+        async with self.session.get('https://api.hypixel.net/playerCount?key=' + API_KEY) as response:
+            data = await response.json()
         if data['success'] != True:
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.streaming, name="on the Hypixel Network.", url = 'https://www.twitch.tv/technoblade'))
         else:

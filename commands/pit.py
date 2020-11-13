@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from urllib.request import Request, urlopen
-import json
+from aiohttp import ClientSession
 from mojang import MojangAPI
 from configparser import ConfigParser
 from utils.utils import utils
@@ -15,6 +14,7 @@ class PitCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession()
 
     @commands.command()
     async def pit(self, ctx, username):
@@ -34,10 +34,8 @@ class PitCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             #send request
-            req = Request('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid)
-            req.add_header('plun1331', 'https://plun1331.github.io')
-            content = urlopen(req)
-            data = json.load(content) 
+            async with self.session.get('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid) as response:
+                data = await response.json()
             #errors
             if data['success'] == False:
                 if data['cause'] == 'Malformed UUID':
@@ -98,10 +96,8 @@ class PitCMD(commands.Cog):
                 bhits = data['player']['stats']['Pit']['pit_stats_ptl']['arrow_hits']
             except:
                 bhits = 'N/A'
-            req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
-            req.add_header('plun1331', 'https://plun1331.github.io')
-            content = urlopen(req)
-            data = json.load(content)
+            async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
+                data = await response.json()
             color=random.randint(1, 16777215)
             embed = discord.Embed(title=data['name'] + "'s Pit Stats", color=color)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)

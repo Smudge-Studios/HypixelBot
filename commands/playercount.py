@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
 from utils.utils import utils
-from urllib.request import Request, urlopen
+from aiohttp import ClientSession
 from configparser import ConfigParser
-import json
 import random
 
 parser = ConfigParser()
@@ -14,14 +13,13 @@ class OnReady(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession()
 
     @commands.command(aliases=['players','count'])
     async def playercount(self, ctx):
         try:
-            req = Request('https://api.hypixel.net/gameCounts?key=' + API_KEY)
-            req.add_header('plun1331', 'https://plun1331.github.io')
-            content = urlopen(req)
-            data = json.load(content) 
+            async with self.session.get('https://api.hypixel.net/gameCounts?key=' + API_KEY) as response:
+                data = await response.json()
             if data['success'] == True:
                 try:
                     lobby = data['games']['MAIN_LOBBY']['players']

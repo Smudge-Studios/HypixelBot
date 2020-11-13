@@ -1,10 +1,11 @@
 import discord
 from discord.ext import commands
-from utils.utils import con, utils
-from urllib.request import Request, urlopen
+from utils.utils import utils
+from aiohttp import ClientSession
 from configparser import ConfigParser
 import json
 import random
+
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -14,21 +15,20 @@ class WatchDogCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession()
 
     @commands.command(aliases=['wd','watchdog','wds'])
     async def watchdogstats(self, ctx):
         try:
-            req = Request('https://api.hypixel.net/watchdogstats?key=' + API_KEY)
-            req.add_header('plun1331', 'https://plun1331.github.io')
-            content = urlopen(req)
-            data = json.load(content)
+            async with self.session.get('https://api.hypixel.net/watchdogstats?key=' + API_KEY) as response:
+                data = await response.json()
             if data['success'] == True:
                 try:
                     wdtotal = data['watchdog_total']
                 except:
                     wdtotal = 'N/A'
                 try:
-                    stafftotal = data['watchdog_total']
+                    stafftotal = data['staff_total']
                 except:
                     stafftotal = 'N/A'
                 color=random.randint(1, 16777215)

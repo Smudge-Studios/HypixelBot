@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from urllib.request import Request, urlopen
-import json
+from aiohttp import ClientSession
 from configparser import ConfigParser
 from datetime import datetime
 from utils.utils import utils
@@ -15,6 +14,7 @@ class GuildCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession()
 
     @commands.command(aliases=['g'])
     async def guild(self, ctx, *, guildname:str=None):
@@ -24,20 +24,17 @@ class GuildCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             gnamesearch = guildname.replace(' ','%20')
-            req = Request('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + gnamesearch)
-            req.add_header('plun1331', 'https://plun1331.github.io')
-            content = urlopen(req)
-            data = json.load(content) 
+            async with self.session.get('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + gnamesearch) as response:
+                data = await response.json()
             gid = data['guild']
             if gid == None:
                 embed = discord.Embed(title="Error", description="""The guild """ + guildname + ' does not exist.', color=0xff0000)
                 await ctx.send(embed=embed)
                 return
             else:
-                req = Request('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid)
-                req.add_header('plun1331', 'https://plun1331.github.io')
-                content = urlopen(req)
-                data = json.load(content)
+                async with ClientSession() as session:
+                    async with session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid) as response:
+                        data = await response.json()
             try:
                 glevel = utils.guildlevel(xp=data['guild']['exp'])
             except Exception as e:
@@ -90,10 +87,8 @@ class GuildCMD(commands.Cog):
                 print(f"Couldn't get guild members: {e}")
             try:
                 gmuuid = data['guild']['members'][0]['uuid']
-                req = Request("https://sessionserver.mojang.com/session/minecraft/profile/" + gmuuid)
-                req.add_header('plun1331', 'https://plun1331.github.io')
-                content = urlopen(req)
-                data = json.load(content)
+                async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + gmuuid) as response:
+                    data = await response.json()
                 gm = data['name']
             except Exception as e:
                 gm = 'N/A'

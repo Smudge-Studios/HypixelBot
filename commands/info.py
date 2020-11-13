@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from urllib.request import Request, urlopen
-import json
+from aiohttp import ClientSession
 from configparser import ConfigParser
 from utils.utils import utils
 import random
@@ -14,14 +13,13 @@ class InfoCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession()
 
     @commands.command()
     async def info(self, ctx):
         try:
-            req = Request('https://api.hypixel.net/key?key=' + API_KEY)
-            req.add_header('plun1331', 'https://plun1331.github.io')
-            content = urlopen(req)
-            data = json.load(content)
+            async with self.session.get('https://api.hypixel.net/key?key=' + API_KEY) as response:
+                data = await response.json()
             try:
                 queries = data['record']['totalQueries']
             except:
