@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands, tasks
-from utils.utils import con, utils
-from aiohttp import ClientSession
+from utils.utils import con, utils, hypixel
 from configparser import ConfigParser
 
 parser = ConfigParser()
@@ -11,18 +10,16 @@ API_KEY = parser.get('CONFIG', 'api_key')
 class Statuses(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.session = ClientSession()
         self.statuses.start()
 
     def cog_unload(self):
-        self.session.close()
         self.statuses.cancel()
     
     @tasks.loop(minutes=1.0)
     async def statuses(self):
-        async with self.session.get('https://api.hypixel.net/playerCount?key=' + API_KEY) as response:
-            data = await response.json()
+        data = await hypixel.counts()
         if data['success'] != True:
+            con.log(f"Couldn't set status.\nSuccess: {data['success']}")
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.streaming, name="on the Hypixel Network.", url = 'https://www.twitch.tv/technoblade'))
         else:
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.streaming, name=f"{utils.comma(data['playerCount'])} player's stats.", url = 'https://www.twitch.tv/technoblade'))

@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
-from aiohttp import ClientSession
 from configparser import ConfigParser
 from datetime import datetime
-from utils.utils import utils
+from utils.utils import hypixel, utils
 import random
 
 parser = ConfigParser()
@@ -14,10 +13,6 @@ class GuildCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.session = ClientSession()
-
-    def cog_unload(self):
-        self.session.close()
 
     @commands.command(aliases=['g'])
     async def guild(self, ctx, *, guildname:str=None):
@@ -27,23 +22,17 @@ class GuildCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             gnamesearch = guildname.replace(' ','%20')
-            async with self.session.get('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + gnamesearch) as response:
-                data = await response.json()
-            gid = data['guild']
-            if gid == None:
+            try:
+                data = hypixel.guild(gnamesearch)
+            except ValueError:
                 embed = discord.Embed(title="Error", description="""The guild """ + guildname + ' does not exist.', color=0xff0000)
                 await ctx.send(embed=embed)
                 return
-            else:
-                async with ClientSession() as session:
-                    async with session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid) as response:
-                        data = await response.json()
             try:
                 glevel = utils.guildlevel(xp=data['guild']['exp'])
             except Exception as e:
                 glevel = 'N/A'
                 print(f"Couldn't get guild level: {e}")
-
             try:
                 gname = data['guild']['name']
             except Exception as e:
@@ -75,19 +64,17 @@ class GuildCMD(commands.Cog):
                 desc = data['guild']['description']
             except Exception as e:
                 desc = 'N/A'
-                print(f"Couldn't get guild description: {e}")
             try:
                 tag = data['guild']['tag']
             except Exception as e:
                 tag = 'N/A'
-                print(f"Couldn't get guild tag: {e}")
             try:
                 mbrs = 0
                 for m in data['guild']['members']:
                     mbrs = mbrs + 1
             except Exception as e:
                 mbrs = 'N/A'
-                print(f"Couldn't get guild members: {e}")
+
             try:
                 gmuuid = data['guild']['members'][0]['uuid']
                 async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + gmuuid) as response:

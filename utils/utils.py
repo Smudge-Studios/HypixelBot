@@ -1,6 +1,11 @@
 import datetime
 from datetime import datetime
-from mojang import MojangAPI
+from aiohttp import ClientSession
+from configparser import ConfigParser
+
+parser = ConfigParser()
+parser.read('botconfig.ini')
+API_KEY = parser.get('CONFIG', 'api_key')
 
 class con:
     def log(text):
@@ -152,4 +157,39 @@ class utils:
         except:
             level = 'N/A'
 
+class hypixel:
+    def __init__(self):
+        self.session = ClientSession()
+
+    async def player(self, uuid):
+        async with self.session.get('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid) as response:
+            return await response.json()
+
+    async def counts(self):
+        async with self.session.get('https://api.hypixel.net/gameCounts?key=' + API_KEY ) as response:
+            return await response.json()
+
+    async def leaderboards(self):
+        async with self.session.get('https://api.hypixel.net/leaderboards?key=' + API_KEY) as response:
+            return await response.json()
+
+    async def key(self):
+        async with self.session.get('https://api.hypixel.net/key?key=' + API_KEY) as response:
+            return await response.json()
+
+    async def watchdog(self):
+        async with self.session.get('https://api.hypixel.net/watchdogstats?key=' + API_KEY) as response:
+            return await response.json()
+
+    async def guild(self, name):
+        async with self.session.get('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + name) as response:
+            data = await response.json()
+            gid = data['guild']
+        if gid is None:
+            raise ValueError
+        async with ClientSession() as session:
+            async with session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid) as response:
+                return await response.json()
+
 utils = utils()
+hypixel = hypixel()

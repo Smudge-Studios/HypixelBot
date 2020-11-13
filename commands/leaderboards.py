@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-from aiohttp import ClientSession
 from configparser import ConfigParser
+from utils.utils import hypixel
 import random
 
 parser = ConfigParser()
@@ -11,9 +11,6 @@ API_KEY = parser.get('CONFIG', 'api_key')
 class LeaderboardCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    def cog_unload(self):
-        self.session.close()
 
     @commands.command(aliases=['lb'])   
     async def leaderboard(self, ctx, game: str=None, *, type: str=None):
@@ -28,8 +25,7 @@ class LeaderboardCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             #send request
-            async with self.session.get('https://api.hypixel.net/leaderboards?key=' + API_KEY) as response:
-                data = await response.json()
+            data = await hypixel.leaderboards()
             #errors
             if data['success'] == False:
                 embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)

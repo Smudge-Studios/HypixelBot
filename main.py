@@ -1,4 +1,5 @@
 from utils.utils import con
+con.wipe()
 con.log("Starting bot...")
 import discord
 from discord.ext import commands
@@ -47,7 +48,7 @@ initial_extensions = ['commands.help',
 
                       'events.commanderror',
                       'events.ready',
-                      
+
                       'tasks.statuses']
 
 for extension in initial_extensions:

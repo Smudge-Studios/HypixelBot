@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from utils.utils import utils
-from aiohttp import ClientSession
+from utils.utils import utils, hypixel
 from configparser import ConfigParser
 import random
 
@@ -13,16 +12,11 @@ class OnReady(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.session = ClientSession()
-
-    def cog_unload(self):
-        self.session.close()
 
     @commands.command(aliases=['players','count'])
     async def playercount(self, ctx):
         try:
-            async with self.session.get('https://api.hypixel.net/gameCounts?key=' + API_KEY) as response:
-                data = await response.json()
+            data = await hypixel.counts()
             if data['success'] == True:
                 try:
                     lobby = data['games']['MAIN_LOBBY']['players']

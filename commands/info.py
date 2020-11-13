@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
-from aiohttp import ClientSession
 from configparser import ConfigParser
-from utils.utils import utils
+from utils.utils import hypixel, utils
 import random
 
 parser = ConfigParser()
@@ -13,16 +12,11 @@ class InfoCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.session = ClientSession()
-
-    def cog_unload(self):
-        self.session.close()
 
     @commands.command()
     async def info(self, ctx):
         try:
-            async with self.session.get('https://api.hypixel.net/key?key=' + API_KEY) as response:
-                data = await response.json()
+            data = await hypixel.key()
             try:
                 queries = data['record']['totalQueries']
             except:

@@ -1,11 +1,8 @@
 import discord
 from discord.ext import commands
-from utils.utils import utils
-from aiohttp import ClientSession
+from utils.utils import hypixel, utils
 from configparser import ConfigParser
-import json
 import random
-
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -15,16 +12,11 @@ class WatchDogCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.session = ClientSession()
-
-    def cog_unload(self):
-        self.session.close()
 
     @commands.command(aliases=['wd','watchdog','wds'])
     async def watchdogstats(self, ctx):
         try:
-            async with self.session.get('https://api.hypixel.net/watchdogstats?key=' + API_KEY) as response:
-                data = await response.json()
+            data = await hypixel.watchdog()
             if data['success'] == True:
                 try:
                     wdtotal = data['watchdog_total']

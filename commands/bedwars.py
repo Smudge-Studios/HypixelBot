@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
-from aiohttp import ClientSession
 from mojang import MojangAPI
 from configparser import ConfigParser
-from utils.utils import utils
+from utils.utils import utils, hypixel
 import random
 
 parser = ConfigParser()
@@ -13,10 +12,6 @@ API_KEY = parser.get('CONFIG', 'api_key')
 class BedwarsCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.session = ClientSession()
-
-    def cog_unload(self):
-        self.session.close()
 
     @commands.command(aliases=['bw'])   
     async def bedwars(self, ctx, username:str=None):
@@ -36,8 +31,7 @@ class BedwarsCMD(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             #send request
-            async with self.session.get('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid) as response:
-                data = await response.json()
+            data = await hypixel.player(uuid)
             #errors
             if data['success'] == False:
                 if data['cause'] == 'Malformed UUID':
