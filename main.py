@@ -53,7 +53,10 @@ initial_extensions = ['commands.help',
                       'tasks.statuses']
 
 for extension in initial_extensions:
-    bot.load_extension(extension)
+    try:
+        bot.load_extension(extension)
+    except Exception as e:
+        con.log(f"Couldn't load {extension}: {e}")
 
 con.log('Logging In...')
 try:
