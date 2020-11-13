@@ -20,8 +20,8 @@ class UHCCMD(commands.Cog):
     def cog_unload(self):
         self.session.close()
 
-    @commands.command(aliases=['wd','watchdog','wds'])
-    async def watchdogstats(self, ctx, username:str=None):
+    @commands.command()
+    async def uhc(self, ctx, username:str=None):
         try:
             #verify if player exists
             if username==None:
