@@ -48,7 +48,6 @@ initial_extensions = ['commands.help',
                       'events.commanderror',
                       'events.ready',
                       
-                      'tasks.botlists',
                       'tasks.statuses']
 
 for extension in initial_extensions:
