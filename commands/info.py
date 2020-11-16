@@ -31,6 +31,11 @@ This bot is also open-sourced. You can view the source code [here](https://githu
             embed.add_field(name="Stats", value=f"""Amount of API Requests made in the past minute: {queriesmin}
 Total API Requests: {queries}
 Guilds: {utils.comma(len(self.bot.guilds))}""", inline=False)
+            embed.add_field(name="Invite", value=f"""You can invite the bot by clicking [here](https://plun1331.github.io/hypixelbot/add)""", inline=False)
+            embed.add_field(name="Vote", value=f"""You can vote for the bot on the following bot lists:
+[Top.GG](https://top.gg/bot/764677833820995605/vote)
+[Discord Bot List](https://discordbotlist.com/bots/hypixelbot/upvote)""", inline=False)
+            embed.add_field(name="Support", value=f"""You can join the support server at [https://discord.gg/gxB8mRC](https://discord.gg/gxB8mRC)""", inline=False)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
             await ctx.send(embed=embed)
         except discord.Forbidden:

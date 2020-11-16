@@ -24,56 +24,18 @@ This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypi
 - [discord.py](https://pypi.org/project/discord.py/)
 
 # Commands
-
 ## Public Commands
-
-These commands can be used by anyone.
-
-### Bot Info
-
-- `h!help` - Displays this.
-
-- `h!ping` - Displays the bot's latency.
-
-- `h!info` - Displays some info and stats about the bot.
-
-### Hypixel Stats
-
-- `h!player <player>` - Returns the specified player's profile.
-
-- `h!bedwars <player>` - Returns the specified player's Bedwars statistics.
-
-- `h!skywars <player>` - Returns the specified player's Skywars statistics.
-
-- `h!pit <player>` - Returns the specified player's Pit statistics.
-
-- `h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
-
-- `h!buildbattle <player>` - Returns the specified player’s Build Battle statistics.
-
-- `h!uhc <player>` - Returns the specified player's UHC statistics.
-
-- `h!leaderboard <game> <type>` - Returns the leaders on the specified leaderboard.
-
-- `h!guild <guild name>` - Returns information on the specified guild.
-
-### Hypixel Info
-
-- `h!playercount` - Returns Hypixel player counts.
-
-- `h!watchdog` - Returns Hypixel Watchdog statistics.
+I have decided to remove this list of commands, as it is quite annoying to keep up-to-date. Instead, please run `h!help` for public commands.
 
 ## Restricted Commands
+- `h!load <extension>` - Load an extension.
 
-These commands can only be used by a bot owner.
+- `h!unload <extension>` - Unload an extension.
 
-- `h!load <extension>` - Load a discord.py extension.
+- `h!reload <extension>` - Reload an extension.
 
-- `h!unload <extension>` - Unload a discord.py extension.
+- `h!
 
-- `h!reload <extension>` - Reload a discord.py extension.
-
-- `h!stop` - Shutdown the bot.
 
 # Invite
 To add this bot to your server, click [here](https://plun1331.github.io/hypixelbot/add).

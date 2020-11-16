@@ -108,8 +108,7 @@ class BedwarsCMD(commands.Cog):
                     winstreak = data['player']['stats']['Bedwars']['winstreak']
                 except:
                     winstreak = 'N/A'
-                async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
-                    data = await response.json()
+                data = await hypixel.getname(uuid)
                 color=random.randint(1, 16777215) 
                 embed = discord.Embed(title=data['name'] + "'s Bedwars Stats", color=color)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)

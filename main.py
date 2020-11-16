@@ -2,6 +2,7 @@ from utils.utils import con
 con.wipe()
 con.log("Starting bot...")
 import discord
+import os
 from discord.ext import commands
 from configparser import ConfigParser
 
@@ -24,38 +25,27 @@ def get_prefix(bot, message):
 bot = commands.Bot(command_prefix = get_prefix, case_insensitive=True, intents=intents)
 bot.remove_command('help')
 
-initial_extensions = ['commands.help',
-                      'commands.info',
-                      'commands.ping',
-
-                      'commands.player',
-                      'commands.bedwars',
-                      'commands.skywars',
-                      'commands.pit',
-                      'commands.murdermystery',
-                      'commands.guild',
-                      'commands.buildbattle',
-                      'commands.uhc',
-                      'commands.leaderboards',
-
-                      'commands.playercount',
-                      'commands.watchdog',
-
-                      'commands.owner.load',
-                      'commands.owner.unload',
-                      'commands.owner.reload',
-                      'commands.owner.stop',
-
-                      'events.commanderror',
-                      'events.ready',
-
-                      'tasks.statuses']
-
-for extension in initial_extensions:
+def load_extension(extension):
     try:
         bot.load_extension(extension)
     except Exception as e:
         con.log(f"Couldn't load {extension}: {e}")
+
+for file in os.listdir("commands"):
+    if file.endswith(".py"):
+        load_extension(f"commands.{file}".replace('.py',''))
+
+for file in os.listdir("commands/owner"):
+    if file.endswith(".py"):
+        load_extension(f"commands.owner.{file}".replace('.py',''))
+
+for file in os.listdir("events"):
+    if file.endswith(".py"):
+        load_extension(f"events.{file}".replace('.py',''))
+
+for file in os.listdir("tasks"):
+    if file.endswith(".py"):
+        load_extension(f"tasks.{file}".replace('.py',''))
 
 con.log('Logging In...')
 try:

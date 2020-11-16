@@ -31,6 +31,7 @@ class utils:
             return num
 
     def guildlevel(self, xp):
+        """ Return a guild's level from XP. """
         REQ_EXP = [
         100000,
         150000,
@@ -57,12 +58,13 @@ class utils:
                 needed = REQ_EXP[i]
             xp -= needed
             if xp < 0:
-                return lvl
+                return int(lvl)
             else:
                 lvl += 1
         return 'N/A'
 
     def gameconverter(self, game):
+        """ Convert a Hypixel game to a readable format. """
         if game == "QUAKECRAFT":
             game = "Quake"
         elif game == "WALLS":
@@ -122,66 +124,61 @@ class utils:
         return game
 
     def timeconverter(self, login, logout):
+        """ Converts Hypixel login/out time to the appropriate format. """
         try:
             if login > logout:
                 status = 'Online'
             elif login < logout:
                 time = datetime.fromtimestamp(logout/1000.0)
                 date = time.strftime("%m/%d/%Y")
-                minute = time.strftime("%M")
-                if int(time.strftime('%H')) == 12:
-                    ampm = 'PM'
-                    hour = time.strftime('%H')
-                elif int(time.strftime('%H')) > 12:
-                    hour = int(time.strftime('%H')) - 12
-                    ampm = 'PM'
-                elif int(time.strftime('%H')) < 12:
-                    ampm = 'AM'
-                    hour = time.strftime('%H')
-                else: # should never happen
-                    hour = None
-                    ampm = None
-
-                date_time = time.strftime("%m/%d/%Y at %H:%M")
-                status = 'Offline - Last seen on ' + str(date) + ' at ' + str(hour) + ':' + str(minute) + ' ' + ampm + ', EST'
+                status = 'Offline - Last seen on ' + str(date)
+                return status
             else:
-                status = 'N/A'
+                return 'N/A'
         except Exception as e:
-            status = 'N/A'
+            return 'N/A'
 
     def networklevel(self, exp):
+        """ Gets a user's Network level from their network xp. """
         try:
             network_level = (((2 * exp) + 30625)**(1/2) / 50) - 2.5
             level = round(network_level, 0)
-            level = int(level)
+            return int(level)
         except:
-            level = 'N/A'
+            return 'N/A'
 
 class hypixel:
+    """ Class for interacting with Hypixel's API """
     def __init__(self):
-        self.session = ClientSession()
+        self.session = ClientSession() # Define aiohttp session. 
 
     async def player(self, uuid):
+        """ Get Hypixel player data. """
         async with self.session.get('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid) as response:
             return await response.json()
 
     async def counts(self):
+        """ Get Hypixel server counts. """
         async with self.session.get('https://api.hypixel.net/gameCounts?key=' + API_KEY ) as response:
             return await response.json()
 
     async def leaderboards(self):
+        """ Get Hypixel leaderboards. """
         async with self.session.get('https://api.hypixel.net/leaderboards?key=' + API_KEY) as response:
             return await response.json()
 
     async def key(self):
+        """ Get info on your Hypixel API key. """
         async with self.session.get('https://api.hypixel.net/key?key=' + API_KEY) as response:
             return await response.json()
 
     async def watchdog(self):
+        """ Get Hypixel Watchdog stats. """
         async with self.session.get('https://api.hypixel.net/watchdogstats?key=' + API_KEY) as response:
             return await response.json()
 
     async def guild(self, name):
+        """ Find a guild by name and return guild data. """
         async with self.session.get('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + name) as response:
             data = await response.json()
             gid = data['guild']
@@ -191,5 +188,32 @@ class hypixel:
             async with session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid) as response:
                 return await response.json()
 
+    async def getname(self, uuid):
+        """ Get a player's name using Mojang API. """
+        async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
+            return await response.json()
+
+    async def playerguild(self, uuid):
+        """ Get the name of the guild a player is in. """
+        async with self.session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&player=' + uuid) as response:
+            data = await response.json()
+            if data['guild'] is None:
+                return 'None'
+            return data['guild']['name']
+
+    class skyblock:
+        """ Class for interacting with Hypixel's Skyblock API. """
+        def __init__(self):
+            self.session = ClientSession()
+
+        async def profile(self, profile):
+            async with self.session.get('https://api.hypixel.net/skyblock/profile?key=' + API_KEY + '&profile=' + profile) as response:
+                return await response.json()
+        
+        async def auctions(self, profile):
+            async with self.session.get('https://api.hypixel.net/skyblock/auction?key=' + API_KEY + '&profile=' + profile) as response:
+                return await response.json()
+
 utils = utils()
 hypixel = hypixel()
+hypixel.skyblock = hypixel.skyblock()

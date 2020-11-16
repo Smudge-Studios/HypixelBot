@@ -1,6 +1,11 @@
 import discord
 from discord.ext import commands
 from utils.utils import con
+from configparser import ConfigParser
+
+parser = ConfigParser()
+parser.read('botconfig.ini')
+TOKEN = parser.get('CONFIG', 'token')
 
 class StopCMD(commands.Cog):
 
@@ -14,6 +19,7 @@ class StopCMD(commands.Cog):
         await ctx.send('Stopping the bot...')
         try:
             await self.bot.logout()
+            await self.bot.run(TOKEN, bot=True, reconnect=True)
         except Exception as e:
             embed = discord.Embed(title='Error', description=str(e), color=0xff0000)
             await ctx.send(embed=embed)

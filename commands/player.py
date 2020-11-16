@@ -80,14 +80,8 @@ class PlayerCMD(commands.Cog):
                     embed = discord.Embed(title="Error", description="""An error occured while retriving data on """ + username + f" - {e}", color=0xff0000)
                     await ctx.send(embed=embed)
                     return
-                try:
-                    guild = data['guild']['name']
-                    if guild == None:
-                        guild = 'None'
-                except:
-                    guild = 'None'
-                async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
-                    data = await response.json()
+                guild = await hypixel.playerguild(uuid)
+                data = await hypixel.getname(uuid)
                 color=random.randint(1, 16777215)
                 embed = discord.Embed(title=data['name'] + "'s Profile", color=color)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)

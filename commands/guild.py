@@ -23,7 +23,7 @@ class GuildCMD(commands.Cog):
                 return
             gnamesearch = guildname.replace(' ','%20')
             try:
-                data = hypixel.guild(gnamesearch)
+                data = await hypixel.guild(gnamesearch)
             except ValueError:
                 embed = discord.Embed(title="Error", description="""The guild """ + guildname + ' does not exist.', color=0xff0000)
                 await ctx.send(embed=embed)
@@ -69,16 +69,13 @@ class GuildCMD(commands.Cog):
             except Exception as e:
                 tag = 'N/A'
             try:
-                mbrs = 0
-                for m in data['guild']['members']:
-                    mbrs = mbrs + 1
+                mbrs = len(data['guild']['members'])
             except Exception as e:
                 mbrs = 'N/A'
 
             try:
                 gmuuid = data['guild']['members'][0]['uuid']
-                async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + gmuuid) as response:
-                    data = await response.json()
+                data = await hypixel.getname(gmuuid)
                 gm = data['name']
             except Exception as e:
                 gm = 'N/A'
@@ -87,9 +84,9 @@ class GuildCMD(commands.Cog):
             embed = discord.Embed(title='Guild Info', color=color)
             embed.add_field(name="Guild Name", value=str(gname), inline=True)
             embed.add_field(name="Guild Manager", value=str(gm), inline=True)
-            embed.add_field(name="Members", value=str(mbrs), inline=True)
+            embed.add_field(name="Members", value=str(utils.comma(mbrs)), inline=True)
             embed.add_field(name="Created On", value=str(created), inline=True)
-            embed.add_field(name="Guild Level", value=str(utils.comma(int(glevel))), inline=True)
+            embed.add_field(name="Guild Level", value=str(utils.comma(glevel)), inline=True)
             embed.add_field(name="Guild Description", value=str(desc), inline=True)
             embed.add_field(name="Guild Tag", value=str(tag), inline=True)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
