@@ -16,7 +16,7 @@ class Skyblock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group()
+    @commands.group(aliases=['sb'])
     async def skyblock(self, ctx):
         if ctx.invoked_subcommand is None:
             try:
@@ -221,7 +221,7 @@ If you require more assistance, [join the support server](https://discord.gg/gxB
                 except discord.Forbidden:
                     return
 
-    @skyblock.command()
+    @skyblock.command(aliases=['ah'])
     async def auctions(self, ctx, username: str=None, profile: str=None):
         try:
             #verify if player exists
@@ -308,7 +308,7 @@ If you require more assistance, [join the support server](https://discord.gg/gxB
                 except discord.Forbidden:
                     return
     
-    @skyblock.command()
+    @skyblock.command(aliases=['a'])
     async def auction(self, ctx, username: str=None, profile: str=None, auction_id: str=None):
         try:
             #verify if player exists
