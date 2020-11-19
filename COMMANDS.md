@@ -26,11 +26,14 @@
 |`h!watchdog`|Returns Hypixel Watchdog statistics.|`wd`|
 
 ## Skyblock
+Note that `h!skyblock` will prefix all Skyblock commands.
+
+Eg. `h!skyblock help`
+
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
-|`h!skyblock`|Main skyblock command. Does nothing without a subcommand.|`sb`|
-|`h!skyblock help`|Skyblock command help.|`sb help`|
-|`h!skyblock profiles <player>`|Returns a list of a player's Skyblock profiles.|`sb profiles`|
-|`h!skyblock profile <player> <profile>`|Returns a player's Skyblock stats on a specified profile.|`sb profile`|
-|`h!skyblock auctions <player> <profile>`|Returns a list of a player's Skyblock auctions on a specified profile.|`sb profiles`, `sb ah`|
-|`h!skyblock auction <player> <profile> <auction ID>`|Returns a player's Skyblock auction on a specified profile.|`sb a`|
+|`help`|Skyblock command help.|`sb help`|
+|`profiles <player>`|Returns a list of a player's Skyblock profiles.||
+|`profile <player> <profile>`|Returns a player's Skyblock stats on a specified profile.||
+|`auctions <player> <profile>`|Returns a list of a player's Skyblock auctions on a specified profile.|`ah`|
+|`auction <player> <profile> <auction ID>`|Returns a player's Skyblock auction on a specified profile.|`a`|
