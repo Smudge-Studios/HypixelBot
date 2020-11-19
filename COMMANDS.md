@@ -1,4 +1,6 @@
 # Commands
+A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
+
 ## Bot Info
 |Command|Description|
 |:---:|:---:|
@@ -32,7 +34,7 @@ Eg. `h!skyblock help`
 
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
-|`help`|Skyblock command help.|`sb help`|
+|`help`|Skyblock command help.||
 |`profiles <player>`|Returns a list of a player's Skyblock profiles.||
 |`profile <player> <profile>`|Returns a player's Skyblock stats on a specified profile.||
 |`auctions <player> <profile>`|Returns a list of a player's Skyblock auctions on a specified profile.|`ah`|
