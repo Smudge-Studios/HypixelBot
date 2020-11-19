@@ -4,7 +4,6 @@ from configparser import ConfigParser
 from utils.utils import hypixel, utils
 import random
 
-
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
@@ -27,7 +26,8 @@ class InfoCMD(commands.Cog):
             except:
                 queriesmin = 'N/A'
             color=random.randint(1, 16777215)
-            embed = discord.Embed(title="Bot Information", description=desc, color = color)
+            embed = discord.Embed(title="Bot Information", description=f"""This bot was coded by plun1331#5535.
+This bot is also open-sourced. You can view the source code [here](https://github.com/plun1331/HypixelBot)""", color = color)
             embed.add_field(name="Stats", value=f"""Amount of API Requests made in the past minute: {queriesmin}
 Total API Requests: {queries}
 Guilds: {utils.comma(len(self.bot.guilds))}""", inline=False)

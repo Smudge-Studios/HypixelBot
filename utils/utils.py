@@ -2,6 +2,7 @@ import datetime
 from datetime import datetime
 from aiohttp import ClientSession
 from configparser import ConfigParser
+import discord
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -123,6 +124,124 @@ class utils:
             game = 'N/A'
         return game
 
+    def idtogameconverter(self, game):
+        if game == 2:
+            game = 'Quake'
+        elif game == 3:
+            game = 'Walls'
+        elif game == 4:
+            game == 'Paintball'
+        elif game == 5:
+            game = 'Blitz Survival Games'
+        elif game == 6:
+            game = 'TNT Games'
+        elif game == 7:
+            game = 'VampireZ'
+        elif game == 13:
+            game = 'Mega Walls'
+        elif game == 14:
+            game = 'Arcade'
+        elif game == 17:
+            game = 'Arena'
+        elif game == 20:
+            game = 'UHC Champions'
+        elif game == 21:
+            game = 'Cops and Crims'
+        elif game == 23:
+            game = 'Warlords'
+        elif game == 24:
+            game = 'Smash Heroes'
+        elif game == 25:
+            game = 'Turbo Kart Racers'
+        elif game == 26:
+            game = 'Housing'
+        elif game == 51:
+            game = 'Skywars'
+        elif game == 52:
+            game = 'Crazy Walls'
+        elif game == 54:
+            game = 'Speed UHC'
+        elif game == 55:
+            game = 'SkyClash'
+        elif game == 56:
+            game = 'Classic Games'
+        elif game == 57:
+            game = 'Prototype'
+        elif game == 58:
+            game = 'BedWars'
+        elif game == 59:
+            game = 'Murder Mystery'
+        elif game == 60:
+            game = 'Build Battle'
+        elif game == 61:
+            game = 'Duels'
+        elif game == 63:
+            game = 'Skyblock'
+        elif game == 64:
+            game = 'The Pit'
+        return game
+
+    def gameidconverter(self, game):
+        game = game.lower()
+        game = game.replace('_',' ')
+        if game == 'quake':
+            game = 2
+        elif game == 'walls':
+            game = 3
+        elif game == 'paintball':
+            game == 4
+        elif game == 'blitz survival games':
+            game = 5
+        elif game == 'vampirez':
+            game = 6
+        elif game == 'tnt games':
+            game = 7
+        elif game == 'mega walls':
+            game = 13
+        elif game == 'arcade':
+            game = 14
+        elif game == 'arena':
+            game = 17
+        elif game == 'uhc':
+            game = 20
+        elif game == 'cops and crims':
+            game = 21
+        elif game == 'warlords':
+            game = 23
+        elif game == 'smash heroes':
+            game = 24
+        elif game == 'turbo kart racers':
+            game = 25
+        elif game == 'housing':
+            game = 26
+        elif game == 'skywars':
+            game = 51
+        elif game == 'crazy walls':
+            game = 52
+        elif game == 'speed uhc':
+            game = 54
+        elif game == 'skyclash':
+            game = 55
+        elif game == 'classic games':
+            game = 56
+        elif game == 'prototype':
+            game = 57
+        elif game == 'bedwars':
+            game = 58
+        elif game == 'murder mystery':
+            game = 59
+        elif game == 'build battle':
+            game = 60
+        elif game == 'duels':
+            game = 61
+        elif game == 'skyblock':
+            game = 63
+        elif game == 'pit':
+            game = 64
+        else:
+            raise ValueError
+        return game
+
     def timeconverter(self, login, logout):
         """ Converts Hypixel login/out time to the appropriate format. """
         try:
@@ -151,6 +270,7 @@ class hypixel:
     """ Class for interacting with Hypixel's API """
     def __init__(self):
         self.session = ClientSession() # Define aiohttp session. 
+        
 
     async def player(self, uuid):
         """ Get Hypixel player data. """
@@ -191,7 +311,8 @@ class hypixel:
     async def getname(self, uuid):
         """ Get a player's name using Mojang API. """
         async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
-            return await response.json()
+            data = await response.json()
+            return data['name']
 
     async def playerguild(self, uuid):
         """ Get the name of the guild a player is in. """
@@ -200,6 +321,18 @@ class hypixel:
             if data['guild'] is None:
                 return 'None'
             return data['guild']['name']
+
+    async def boosters(self, game: str=None):
+        async with self.session.get('https://api.hypixel.net/boosters?key=' + API_KEY) as response:
+            data = await response.json()
+        if game is None:
+            return len(data['boosters'])
+        else:
+            boosters = data['boosters']
+            if len(boosters) == 0:
+                raise ValueError
+            return boosters
+
 
     class skyblock:
         """ Class for interacting with Hypixel's Skyblock API. """

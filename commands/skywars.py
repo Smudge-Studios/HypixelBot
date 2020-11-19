@@ -81,7 +81,7 @@ class SkywarsCMD(commands.Cog):
                     except:
                         top_winstreak = 'N/A'
                     try:
-                        coins = data['player']['stats']['SkyWars']['coins']
+                        coins = int(data['player']['stats']['SkyWars']['coins'])
                     except:
                         coins = 'N/A'
                     try:
