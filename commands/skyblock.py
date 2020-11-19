@@ -7,6 +7,12 @@ from utils.utils import utils, hypixel
 import random
 from datetime import datetime
 
+helpcmd = """`h!skyblock help` - Displays this.
+`h!skyblock profiles <player>`
+`h!skyblock profile <player> <profile>`
+
+If you require more assistance, [join the support server](https://discord.gg/gxB8mRC)."""
+
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
@@ -21,11 +27,7 @@ class Skyblock(commands.Cog):
         if ctx.invoked_subcommand is None:
             try:
                 color=random.randint(1, 16777215)
-                embed = discord.Embed(title="Skyblock help", description="""`h!skyblock help` - Displays this.
-`h!skyblock profiles <player>`
-`h!skyblock profile <player> <profile>`
-
-If you require more assistance, [join the support server](https://discord.gg/gxB8mRC).""", color = color)
+                embed = discord.Embed(title="Skyblock help", description=helpcmd, color = color)
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')
                 await ctx.send(embed=embed)
             except discord.Forbidden:
