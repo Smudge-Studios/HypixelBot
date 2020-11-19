@@ -1,4 +1,6 @@
 # HypixelBot
+[![HitCount](http://hits.dwyl.com/plun1331/HypixelBot.svg)](http://hits.dwyl.com/plun1331/HypixelBot)
+
 [![TOP.GG](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
 [![Discord Bot List](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
 
