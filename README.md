@@ -24,8 +24,8 @@ This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypi
 - [discord.py](https://pypi.org/project/discord.py/)
 
 # Commands
-## Public Commands
-I have decided to remove this list of commands, as it is quite annoying to keep up-to-date. Instead, please run `h!help` for public commands.
+
+You may find a list of public commands [here](https://github.com/plun1331/HypixelBot/blob/main/COMMANDS.md).
 
 ## Restricted Commands
 - `h!load <extension>` - Load an extension.
