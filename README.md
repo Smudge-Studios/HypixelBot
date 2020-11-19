@@ -34,7 +34,7 @@ I have decided to remove this list of commands, as it is quite annoying to keep 
 
 - `h!reload <extension>` - Reload an extension.
 
-- `h!
+- `h!stop` - Stop the bot.
 
 
 # Invite
