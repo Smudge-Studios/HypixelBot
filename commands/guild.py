@@ -75,8 +75,7 @@ class GuildCMD(commands.Cog):
 
             try:
                 gmuuid = data['guild']['members'][0]['uuid']
-                data = await hypixel.getname(gmuuid)
-                gm = data['name']
+                gm = await hypixel.getname(gmuuid)
             except Exception as e:
                 gm = 'N/A'
                 print(f"Couldn't get guild manager: {e}")

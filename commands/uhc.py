@@ -71,7 +71,7 @@ class UHCCMD(commands.Cog):
                 wins = 'N/A'
             data = await hypixel.getname(uuid)
             color=random.randint(1, 16777215)
-            embed = discord.Embed(title=data['name'] + "'s Pit Stats", color=color)
+            embed = discord.Embed(title=data + "'s Pit Stats", color=color)
             embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
             embed.add_field(name="Coins", value=str(utils.comma(coins)), inline=True)
             embed.add_field(name="Score", value=str(utils.comma(score)), inline=True)

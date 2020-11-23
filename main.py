@@ -6,8 +6,7 @@ import os
 from discord.ext import commands
 from configparser import ConfigParser
 
-intents = discord.Intents.all()
-intents.presences = False
+intents = discord.Intents.default()
 parser = ConfigParser()
 parser.read('botconfig.ini')
 TOKEN = parser.get('CONFIG', 'token')

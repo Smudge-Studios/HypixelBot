@@ -83,7 +83,7 @@ class PlayerCMD(commands.Cog):
                 guild = await hypixel.playerguild(uuid)
                 data = await hypixel.getname(uuid)
                 color=random.randint(1, 16777215)
-                embed = discord.Embed(title=data['name'] + "'s Profile", color=color)
+                embed = discord.Embed(title=data + "'s Profile", color=color)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                 embed.add_field(name="Rank", value=str(rank), inline=True)
                 embed.add_field(name="Karma", value=str(utils.comma(karma)), inline=True)

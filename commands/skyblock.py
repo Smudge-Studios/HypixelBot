@@ -84,7 +84,7 @@ class Skyblock(commands.Cog):
                         msg = "This player has no skyblock profiles."
                     data = await hypixel.getname(uuid)
                     color=random.randint(1, 16777215)
-                    embed = discord.Embed(title=f"{data['name']}'s Skyblock Profiles", description=msg, color=color)
+                    embed = discord.Embed(title=f"{data}'s Skyblock Profiles", description=msg, color=color)
                     await ctx.send(embed=embed)
         except discord.Forbidden:
             try:
@@ -194,7 +194,7 @@ class Skyblock(commands.Cog):
                     except:
                         purse = 'N/A'
                     data = await hypixel.getname(uuid)
-                    name = data['name']
+                    name = data
                     color=random.randint(1, 16777215)
                     embed = discord.Embed(title = f"{name}'s Skyblock Stats on {pname}", color = color)
                     embed.add_field(name="Profile Members", value=utils.comma(members))
@@ -289,12 +289,12 @@ class Skyblock(commands.Cog):
                     color=random.randint(1, 16777215)
                     if length == 0:
                         data = await hypixel.getname(uuid)
-                        name = data['name']
+                        name = data
                         embed = discord.Embed(title = f"{name}'s Skyblock Auctions on {pname}", description=f"{name} has no auctions on profile {pname}.", color = color)
                         await ctx.send(embed=embed)
                         return
                     i = await hypixel.getname(uuid)
-                    name = i['name']
+                    name = i
                     msg = f'{name} on profile {pname} has {length} auctions.\n\n'
                     for auction in ah['auctions']:
                         msg = msg+f"{auction['tier'].lower().capitalize()} {auction['item_name']} - ID: {auction['_id']}\n"
@@ -379,12 +379,12 @@ class Skyblock(commands.Cog):
                 color=random.randint(1, 16777215)
                 if length == 0:
                     data = await hypixel.getname(uuid)
-                    name = data['name']
+                    name = data
                     embed = discord.Embed(title = f"{name}'s Skyblock Auction on {pname}", description=f"{name} has no auctions on profile {pname}.", color = color)
                     await ctx.send(embed=embed)
                     return
                 i = await hypixel.getname(uuid)
-                name = i['name']
+                name = i
                 success = False
                 for auction in ah['auctions']:
                     if auction['_id'] == auction_id:

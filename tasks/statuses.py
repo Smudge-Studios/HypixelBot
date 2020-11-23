@@ -6,6 +6,11 @@ from configparser import ConfigParser
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
+try:
+    logchannel = int(parser.get('CONFIG', 'log_channel'))
+except Exception as e:
+    print(f"Couldn't define logchannel: {e}")
+    logchannel = None
 
 class Statuses(commands.Cog):
     def __init__(self, bot):
@@ -20,6 +25,10 @@ class Statuses(commands.Cog):
         data = await hypixel.counts()
         if data['success'] != True:
             con.log(f"Couldn't set status.\nSuccess: {data['success']}")
+            if logchannel is not None:
+                channel = self.bot.get_channel(logchannel)
+                embed = discord.Embed(title=f"Couldn't set custom status.", description=f"```\nAPI Success: {data['success']}\n```", color=0xff0000)
+                await channel.send(embed=embed)
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.streaming, name="on the Hypixel Network.", url = 'https://www.twitch.tv/technoblade'))
         else:
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.streaming, name=f"{utils.comma(data['playerCount'])} player's stats.", url = 'https://www.twitch.tv/technoblade'))

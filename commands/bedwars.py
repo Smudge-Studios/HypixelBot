@@ -110,7 +110,7 @@ class BedwarsCMD(commands.Cog):
                     winstreak = 'N/A'
                 data = await hypixel.getname(uuid)
                 color=random.randint(1, 16777215) 
-                embed = discord.Embed(title=data['name'] + "'s Bedwars Stats", color=color)
+                embed = discord.Embed(title=data + "'s Bedwars Stats", color=color)
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                 embed.add_field(name="Level", value=str(level), inline=True)
                 embed.add_field(name="Games Played", value=str(utils.comma(games_played)), inline=True)

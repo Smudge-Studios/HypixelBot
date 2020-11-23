@@ -52,9 +52,7 @@ class LeaderboardCMD(commands.Cog):
                 async with ctx.channel.typing():
                     for uid in leaders:
                         uid = uid.replace('-','')
-                        async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uid) as response:
-                            data = await response.json()
-                        name = data['name']
+                        name = await hypixel.getname(uid)
                         msg = msg + f"{name}\n"
                     color=random.randint(1, 16777215)
                     embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg, color=color)

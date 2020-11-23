@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 from configparser import ConfigParser
-
-from win32con import EXCEPTION_ACCESS_VIOLATION
 from utils.utils import utils, hypixel
 import random
 import os

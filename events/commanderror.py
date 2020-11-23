@@ -1,8 +1,17 @@
+from attr import __description__
 import discord
 from discord.ext import commands
-import sys
 import traceback
+from configparser import ConfigParser
 from utils.utils import con
+
+parser = ConfigParser()
+parser.read('botconfig.ini')
+try:
+    logchannel = int(parser.get('CONFIG', 'log_channel'))
+except Exception as e:
+    print(f"Couldn't define logchannel: {e}")
+    logchannel = None
 
 class CMDError(commands.Cog):
 
@@ -25,13 +34,22 @@ class CMDError(commands.Cog):
             embed = discord.Embed(title="Error", description="""An unknown error occurred. This error has been reported.
             `""" + str(error) + '`', color=0xff0000)
             await ctx.send(embed=embed)
-            con.log("")
+            try:
+                raise error
+            except:
+                tb = traceback.format_exc()
+            print("")
             con.log('Ignoring exception in command {}:'.format(ctx.command))
             con.log("=====(BEGIN ERROR OUTPUT)=====")
-            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+            print(tb)
             con.log("=====(END ERROR OUTPUT)=====")
+            print("")
             with open('utils\\logs\\error.log', 'a') as logfile:
-                traceback.print_exception(type(error), error, error.__traceback__, file=logfile)
+                logfile.write(tb)
+            if logchannel is not None:
+                channel = self.bot.get_channel(logchannel)
+                embed = discord.Embed(title=f"Exception in '{ctx.command}'", description=f"```\n{tb}\n```", color=0xff0000)
+                await channel.send(embed=embed)
             return
 
 def setup(bot):
