@@ -48,8 +48,14 @@ class CMDError(commands.Cog):
                 logfile.write(tb)
             if logchannel is not None:
                 channel = self.bot.get_channel(logchannel)
-                embed = discord.Embed(title=f"Exception in '{ctx.command}'", description=f"```\n{tb}\n```", color=0xff0000)
-                await channel.send(embed=embed)
+                if channel is not None:
+                    embed = discord.Embed(title=f"Exception in '{ctx.command}'", description=f"```\n{tb}\n```", color=0xff0000)
+                    try:
+                        await channel.send(embed=embed)
+                    except discord.Forbidden:
+                        raise ValueError("The bot does not have permissions to send messages in the logchannel specified in botconfig.ini.")
+                else:
+                    raise ValueError("The logchannel specified in botconfig.ini is not visible to the bot, or does not exist.")
             return
 
 def setup(bot):
