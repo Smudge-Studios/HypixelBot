@@ -18,6 +18,7 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`h!murdermystery <player>`|Returns the specified player's Murder Mystery statistics.|`mm`|
 |`h!buildbattle <player>`|Returns the specified player's Build Battle statistics.|`bb`|
 |`h!uhc <player>`|Returns the specified player's UHC Champions statistics.||
+|`h!skyblock`|Main skyblock command. For subcommands, view the [Skyblock Category](#skyblock) below.|`sb`|
 
 ## Hypixel Statistics
 |Command|Description|Aliases|
@@ -28,10 +29,6 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`h!watchdog`|Returns Hypixel Watchdog statistics.|`wd`|
 
 ## Skyblock
-Note that `h!skyblock` will prefix all Skyblock commands.
-
-Eg. `h!skyblock help`
-
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
 |`help`|Skyblock command help.||
