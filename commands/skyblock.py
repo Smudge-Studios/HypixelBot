@@ -7,10 +7,13 @@ from utils.utils import utils, hypixel
 import random
 from datetime import datetime
 
-helpcmd = """`h!skyblock help` - Displays this.
-`h!skyblock profiles <player>`
-`h!skyblock profile <player> <profile>`
+sb = """`help` - Skyblock command help.
+`profiles <player>` - Returns a list of a player's Skyblock profiles.
+`profile <player> <profile>` - Returns a player's Skyblock stats on a specified profile.
+`auctions <player> <profile>` - Returns a list of a player's Skyblock auctions on a specified profile.
+`auction <player> <profile> <auction ID>` - Returns a player's Skyblock auction on a specified profile."""
 
+other = """For a more detailed list of Skyblock commands, [click here](https://github.com/plun1331/HypixelBot/blob/main/COMMANDS.md#skyblock).
 If you require more assistance, [join the support server](https://discord.gg/gxB8mRC)."""
 
 parser = ConfigParser()
@@ -27,7 +30,9 @@ class Skyblock(commands.Cog):
         if ctx.invoked_subcommand is None:
             try:
                 color=random.randint(1, 16777215)
-                embed = discord.Embed(title="Skyblock help", description=helpcmd, color = color)
+                embed = discord.Embed(title="Help", color = color)
+                embed.add_field(name="Skyblock Commands", value=sb, inline=False)
+                embed.add_field(name="Other Information", value=other, inline=False)
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')
                 await ctx.send(embed=embed)
             except discord.Forbidden:

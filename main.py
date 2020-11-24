@@ -6,7 +6,8 @@ import os
 from discord.ext import commands
 from configparser import ConfigParser
 
-intents = discord.Intents.default()
+intents = discord.Intents()
+intents.members = True
 parser = ConfigParser()
 parser.read('botconfig.ini')
 TOKEN = parser.get('CONFIG', 'token')
@@ -27,6 +28,7 @@ bot.remove_command('help')
 def load_extension(extension):
     try:
         bot.load_extension(extension)
+        con.log(f"{extension} loaded.")
     except Exception as e:
         con.log(f"Couldn't load {extension}: {e}")
 
