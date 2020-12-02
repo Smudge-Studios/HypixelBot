@@ -311,7 +311,7 @@ class hypixel:
         """ Get a player's name using Mojang API. """
         async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
             data = await response.json()
-            return data['name']
+            return data['name'].replace('_', '\_')
 
     async def playerguild(self, uuid):
         """ Get the name of the guild a player is in. """
