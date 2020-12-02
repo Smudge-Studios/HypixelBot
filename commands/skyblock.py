@@ -17,7 +17,7 @@ sb = """`help` - Skyblock command help.
 `bazaar <item>` - Returns information about an item in the Bazaar."""
 
 other = """For a more detailed list of Skyblock commands, [click here](https://github.com/plun1331/HypixelBot/blob/main/COMMANDS.md#skyblock).
-If you require more assistance, [join the support server](https://discord.gg/gxB8mRC)."""
+If you require more assistance, [join the support server](https://discord.gg/k6fgvUn3aF)."""
 
 mystbin_client = mystbin.MystbinClient()
 parser = ConfigParser()

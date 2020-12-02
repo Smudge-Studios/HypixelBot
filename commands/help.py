@@ -20,7 +20,7 @@ hypixelstats = """`h!leaderboard <game> <type>` - Returns the leaders on the spe
 `h!watchdog` - Returns Hypixel Watchdog statistics."""
 
 other = """For a more detailed list of commands, [click here](https://github.com/plun1331/HypixelBot/blob/main/COMMANDS.md).
-If you require more assistance, [join the support server](https://discord.gg/gxB8mRC)."""
+If you require more assistance, [join the support server](https://discord.gg/k6fgvUn3aF)."""
 
 class HelpCMD(commands.Cog):
 
