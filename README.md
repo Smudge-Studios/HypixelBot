@@ -1,6 +1,4 @@
 # HypixelBot
-[![HitCount](http://hits.dwyl.com/plun1331/HypixelBot.svg)](http://hits.dwyl.com/plun1331/HypixelBot)
-
 [![TOP.GG](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
 [![Discord Bot List](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
 
@@ -19,6 +17,9 @@ This bot is currently in development, there may be some bugs.
 
 # Disclaimer
 This bot is in no way affiliated with or endorsed by [Hypixel, Inc](https://hypixel.net). All logos, brands, trademarks, and registered trademarks are property of their respective owners.
+
+# Support Server
+If you require help with the bot, or anything related to coding really, you can join our support server, [Smudge Studios](https://discord.gg/k6fgvUn3aF)
 
 # Requirements
 - [mojang](https://pypi.org/project/mojang/)
