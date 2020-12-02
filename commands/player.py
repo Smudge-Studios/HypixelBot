@@ -69,12 +69,25 @@ class PlayerCMD(commands.Cog):
                         rank = "Moderator"
                     elif rank == "HELPER":
                         rank = "Helper"
-                    recent = utils.gameconverter(data['player']['mostRecentGameType'])
+                    try:
+                        recent = utils.gameconverter(data['player']['mostRecentGameType'])
+                    except:
+                        recent = 'N/A'
                     try:
                         karma = data["player"]["karma"] if "karma" in data["player"] else 0
                     except:
                         karma = 'N/A'
-                    status = utils.timeconverter(data['player']['lastLogin'], data['player']['lastLogout'])
+                    try:
+                        lastlogin = data['player']['lastLogin']
+                        try:
+                            lastlogout = data['player']['lastLogout']
+                            status = utils.timeconverter(lastlogin, lastlogout)
+                            if status is None:
+                                status = 'N/A'
+                        except:
+                            status = 'N/A'
+                    except:
+                        status = 'N/A'
                     level = utils.networklevel(data['player']['networkExp'])
                 except Exception as e:
                     embed = discord.Embed(title="Error", description="""An error occured while retriving data on """ + username + f" - {e}", color=0xff0000)

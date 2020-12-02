@@ -1,4 +1,3 @@
-from attr import __description__
 import discord
 from discord.ext import commands
 import traceback
@@ -28,6 +27,10 @@ class CMDError(commands.Cog):
             return
         elif isinstance(error, commands.NotOwner):
             embed = discord.Embed(title="Error", description="""This command is restricted.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        elif isinstance(error, commands.CommandOnCooldown):
+            embed = discord.Embed(title="Cooldown", description="""That command is on cooldown, you may use it again once all data has been retrieved.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
         else:

@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from discord.ext import commands
 from configparser import ConfigParser
@@ -5,7 +6,10 @@ from utils.utils import utils, hypixel
 import random
 import os
 from datetime import datetime
+import mystbin
+import time as thyme
 
+mystbin_client = mystbin.MystbinClient()
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
@@ -16,6 +20,7 @@ class BoosterCMDs(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=['boosts'])
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def boosters(self, ctx, *, game:str=None):
         color=random.randint(1, 16777215)
         try:
@@ -36,49 +41,34 @@ class BoosterCMDs(commands.Cog):
                 await ctx.send(embed=embed)
                 return
             _game = game.replace(' ','_')
-            id = utils.gameidconverter(_game)
-            msg = ''
+            try:
+                id = utils.gameidconverter(_game)
+            except ValueError:
+                embed = discord.Embed(title="Error", description=f"Invalid game.", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
+            msg1 = ''
+            amnt = 0
+            embed = discord.Embed(title="Hypixel Boosters", description=f"Collecting data, please wait.\nThis message will be edited once data is ready.", color=color)
+            embed.set_footer(text='Unofficial Hypixel Discord Bot')
+            message = await ctx.send(embed=embed)
             for booster in data:
                 if booster['gameType'] == id:
                     user = await hypixel.getname(booster['purchaserUuid'])
-                    msg = msg+f"{user} - ID: {booster['_id']}\n"
-            if msg == '':
-                msg = f"There are currently 0 {game.lower().capitalize()} boosters active."
-            embed = discord.Embed(title="Hypixel Boosters", description=msg)
+                    msg1 += f"{user} - ID: {booster['_id']}\n"
+                    amnt += 1
+            if msg1 == '':
+                msg1 = f"There are currently 0 {game.lower().capitalize()} boosters active."
+            await asyncio.sleep(2)
+            paste = await mystbin_client.post(msg1, syntax="text")
+            url = str(paste)
+            embed = discord.Embed(title="Hypixel Boosters", description=f"There are {amnt} {game.lower().capitalize()} boosters on the network.\nBoosters have been uploaded to {url}.", color=color)
             embed.set_footer(text='Unofficial Hypixel Discord Bot')
-            try:
-                await ctx.send(embed=embed)
-            except discord.HTTPException:
-                msg = ''
-                for booster in data:
-                    if booster['gameType'] == id:
-                        msg = msg+f"ID: {booster['_id']}\n"
-                embed = discord.Embed(title="Hypixel Boosters", description=msg, color=color)
-                embed.set_footer(text='Unofficial Hypixel Discord Bot')
-                try:
-                    await ctx.send(embed=embed)
-                except discord.HTTPException:
-                    fid = random.randint(766674, 478394367980)
-                    with open(f'files\\boosters{fid}.txt', 'w', encoding='utf-8') as file:
-                        content = ''
-                        for booster in data:
-                            if booster['gameType'] == id:
-                                id = booster['_id']
-                                user = await hypixel.getname(booster['purchaserUuid'])
-                                content = content+f"{user} - ID: {id}\n"
-                        file.write(content)
-                    with open(f'files\\boosters{fid}.txt', 'r', encoding='utf-8') as file:
-                        try:
-                            await ctx.send(file=discord.File(file, f"Boosters.txt"))
-                        except discord.Forbidden:
-                            embed = discord.Embed(title="Error", description="""Cannot send files in this channel.""", color=0xff0000)
-                            await ctx.send(embed=embed)
-                            return
-                        except discord.HTTPException:
-                            embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
-                            await ctx.send(embed=embed)
-                        if os.path.exists(f'files\\boosters{fid}.txt'):
-                            os.remove(f'files\\boosters{fid}.txt')
+            await message.edit(embed=embed)
+            embed = discord.Embed(title=f"Your data is ready!", description=f"I have collected all of the {game.lower().capitalize()} boosters.\n[Jump to message]({message.jump_url})", color=color)
+            embed.set_footer(text='Unofficial Hypixel Discord Bot')
+            await ctx.send(f"{ctx.author.mention}", embed=embed)
+            self.boosters.reset_cooldown(ctx)
         except discord.Forbidden:
             try:
                 await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
@@ -92,6 +82,7 @@ class BoosterCMDs(commands.Cog):
     @commands.command(aliases=['boost'])
     async def booster(self, ctx, booster: str=None):
         color=random.randint(1, 16777215)
+        current = int(thyme.time())
         try:
             if booster is None:
                 embed = discord.Embed(title="Error", description="""Please provide a booster ID.""", color=0xff0000)
@@ -112,35 +103,34 @@ class BoosterCMDs(commands.Cog):
                 embed = discord.Embed(title="Hypixel Boosters", description=f"Invalid booster.", color=0xff0000)
                 await ctx.send(embed=embed)
                 return
-            try:
-                exp = 'N/A'
-                seconds = int(float(info['length']))
-                min, sec = divmod(seconds, 60) 
-                hour, min = divmod(min, 60) 
-                if hour == 0:
-                    if min == 0:
-                        exp = f'0:{sec}'
-                    elif min > 0:
-                        if len(min) == 1:
-                            if len(sec) == 1:
-                                exp = f"0{min}:0{sec}"
-                            else:
-                                exp = f"0{min}:{sec}"
+            exp = 'N/A'
+            passed = current-(info['dateActivated']/1000)
+            remaining = info['length']-passed
+            seconds = int(float(remaining))
+            min, sec = divmod(seconds, 60) 
+            hour, min = divmod(min, 60) 
+            if hour == 0:
+                if min == 0:
+                    exp = f'{sec} seconds'
+                elif min > 0:
+                    if len(str(min)) == 1:
+                        if len(str(sec)) == 1:
+                            exp = f"0:0{min}:0{sec}"
                         else:
-                            if len(sec) == 1:
-                                exp = f"{min}:0{sec}"
-                            else:
-                                exp = f"{min}:{sec}"
-                elif hour > 0:
-                    if len(hour) == 1:
-                        if len(min) == 1:
-                            exp = f"0{hour}:0{min}"
-                        else:
-                            exp = f"0{hour}:{min}"
+                            exp = f"0:0{min}:{sec}"
                     else:
-                        exp = f"{hour}:{min}"
-            except:
-                exp = 'N/A'
+                        if len(str(sec)) == 1:
+                            exp = f"0:{min}:0{sec}"
+                        else:
+                            exp = f"0:{min}:{sec}"
+            elif hour > 0:
+                if len(str(hour)) == 1:
+                    if len(str(min)) == 1:
+                        exp = f"0{hour}:0{min}"
+                    else:
+                        exp = f"0{hour}:{min}"
+                else:
+                    exp = f"{hour}:{min}"
             try:
                 user = await hypixel.getname(info['purchaserUuid'])
             except:
@@ -162,19 +152,19 @@ class BoosterCMDs(commands.Cog):
                     if min == 0:
                         length = f'0:{sec}'
                     elif min > 0:
-                        if len(min) == 1:
-                            if len(sec) == 1:
-                                length = f"0{min}:0{sec}"
+                        if len(str(min)) == 1:
+                            if len(str(sec)) == 1:
+                                length = f"0:0{min}:0{sec}"
                             else:
-                                length = f"0{min}:{sec}"
+                                length = f"0:0{min}:{sec}"
                         else:
-                            if len(sec) == 1:
-                                length = f"{min}:0{sec}"
+                            if len(str(sec)) == 1:
+                                length = f"0:{min}:0{sec}"
                             else:
-                                length = f"{min}:{sec}"
+                                length = f"0:{min}:{sec}"
                 elif hour > 0:
-                    if len(hour) == 1:
-                        if len(min) == 1:
+                    if len(str(hour)) == 1:
+                        if len(str(min)) == 1:
                             length = f"0{hour}:0{min}"
                         else:
                             length = f"0{hour}:{min}"

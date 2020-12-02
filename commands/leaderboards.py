@@ -48,14 +48,17 @@ class LeaderboardCMD(commands.Cog):
                     embed = discord.Embed(title='Error', description='Invalid leaderboard.', color=0xff0000)
                     await ctx.send(embed=embed)
                     return
-                msg = ''
+                msg = '```\n'
                 async with ctx.channel.typing():
                     for uid in leaders:
                         uid = uid.replace('-','')
                         name = await hypixel.getname(uid)
-                        msg = msg + f"{name}\n"
+                        msg += f"{name}\n"
+                    msg += '\n```'
                     color=random.randint(1, 16777215)
-                    embed = discord.Embed(title=f'{game.lower().capitalize()}: {path.capitalize()} leaderboard', description=msg, color=color)
+                    path = path.capitalize()
+                    path = path.replace('_', '')
+                    embed = discord.Embed(title=f'{game.lower().capitalize()}: {path} leaderboard', description=msg, color=color)
                     await ctx.send(embed=embed)
         except discord.Forbidden:
             try:

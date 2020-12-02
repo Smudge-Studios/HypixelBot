@@ -114,7 +114,10 @@ class BedwarsCMD(commands.Cog):
                 embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                 embed.add_field(name="Level", value=str(level), inline=True)
                 embed.add_field(name="Games Played", value=str(utils.comma(games_played)), inline=True)
-                embed.add_field(name="Experience", value=str(utils.comma(round(exp, 0))), inline=True)
+                try:
+                    embed.add_field(name="Experience", value=str(utils.comma(round(exp, 0))), inline=True)
+                except:
+                    embed.add_field(name="Experience", value=str('N/A'), inline=True)
                 embed.add_field(name="Normal Deaths", value=str(utils.comma(normal_deaths)), inline=True)
                 embed.add_field(name="Final Deaths", value=str(utils.comma(final_deaths)), inline=True)
                 embed.add_field(name="Total Deaths", value=str(utils.comma(total_deaths)), inline=True)

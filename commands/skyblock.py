@@ -1,3 +1,4 @@
+import asyncio
 from attr import __description__
 import discord
 from discord.ext import commands
@@ -6,16 +7,19 @@ from configparser import ConfigParser
 from utils.utils import utils, hypixel
 import random
 from datetime import datetime
+import mystbin
 
 sb = """`help` - Skyblock command help.
 `profiles <player>` - Returns a list of a player's Skyblock profiles.
 `profile <player> <profile>` - Returns a player's Skyblock stats on a specified profile.
 `auctions <player> <profile>` - Returns a list of a player's Skyblock auctions on a specified profile.
-`auction <player> <profile> <auction ID>` - Returns a player's Skyblock auction on a specified profile."""
+`auction <player> <profile> <auction ID>` - Returns a player's Skyblock auction on a specified profile.
+`bazaar <item>` - Returns information about an item in the Bazaar."""
 
 other = """For a more detailed list of Skyblock commands, [click here](https://github.com/plun1331/HypixelBot/blob/main/COMMANDS.md#skyblock).
 If you require more assistance, [join the support server](https://discord.gg/gxB8mRC)."""
 
+mystbin_client = mystbin.MystbinClient()
 parser = ConfigParser()
 parser.read('botconfig.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
@@ -229,6 +233,7 @@ class Skyblock(commands.Cog):
                     return
 
     @skyblock.command(aliases=['ah'])
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def auctions(self, ctx, username: str=None, profile: str=None):
         try:
             #verify if player exists
@@ -298,13 +303,26 @@ class Skyblock(commands.Cog):
                         embed = discord.Embed(title = f"{name}'s Skyblock Auctions on {pname}", description=f"{name} has no auctions on profile {pname}.", color = color)
                         await ctx.send(embed=embed)
                         return
-                    i = await hypixel.getname(uuid)
-                    name = i
-                    msg = f'{name} on profile {pname} has {length} auctions.\n\n'
+                    name = await hypixel.getname(uuid)
+                    msg1 = ''
+                    amnt = 0
+                    embed = discord.Embed(title=f"{name}'s Skyblock Auctions on {pname}", description=f"Collecting data, please wait.\nThis message will be edited once data is ready.", color=color)
+                    embed.set_footer(text='Unofficial Hypixel Discord Bot')
+                    message = await ctx.send(embed=embed)
                     for auction in ah['auctions']:
-                        msg = msg+f"{auction['tier'].lower().capitalize()} {auction['item_name']} - ID: {auction['_id']}\n"
-                    embed = discord.Embed(title=f"{name}'s Skyblock Auctions on {pname}", description=msg, color=color)
-                    await ctx.send(embed=embed)
+                        msg1 += f"{auction['tier'].lower().capitalize()} {auction['item_name']} - ID: {auction['_id']}\n"
+                        amnt += 1
+                    if msg1 == '':
+                        msg1 = f"{name} has no auctions on {pname}"
+                    paste = await mystbin_client.post(msg1, syntax="text")
+                    url = str(paste)
+                    embed = discord.Embed(title=f"{name}'s Skyblock Auctions on {pname}", description=f"{name} has {amnt} auctions on profile {pname}\nAuctions have been uploaded to {url}.", color=color)
+                    embed.set_footer(text='Unofficial Hypixel Discord Bot')
+                    await message.edit(embed=embed)
+                    embed = discord.Embed(title=f"Your data is ready!", description=f"I have collected all of {name}'s Skyblock auctions on their {pname} profile.\n[Jump to message]({message.jump_url})", color=color)
+                    embed.set_footer(text='Unofficial Hypixel Discord Bot')
+                    await ctx.send(f"{ctx.author.mention}", embed=embed)
+                    self.auctions.reset_cooldown(ctx)
         except discord.Forbidden:
             try:
                 await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
@@ -431,6 +449,91 @@ class Skyblock(commands.Cog):
                     embed = discord.Embed(title = f"Error", description=f"Invalid auction.", color = 0xff0000)
                     await ctx.send(embed=embed)
                     return 
+        except discord.Forbidden:
+            try:
+                await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
+                return
+            except discord.Forbidden:
+                try:
+                    await ctx.author.send("Error: Cannot send messages in that channel. Please contact a server administrator to fix this issue.")
+                except discord.Forbidden:
+                    return
+
+    @skyblock.command(aliases=['baz'])
+    async def bazaar(self, ctx, *, item: str=None):
+        try:
+            if item is None:
+                await ctx.send("Please provide an item.")
+                return
+            data = await hypixel.skyblock.bazaar()
+            _item = None
+            for i in data['products']:
+                if i.lower().replace('_', ' ') == item.lower():
+                    _item = data['products'][i]['quick_status']
+                    break
+            if _item is None:
+                await ctx.send("Invalid item.")
+                return
+            try:
+                time = datetime.fromtimestamp(data['lastUpdated']/1000.0)
+                updated = time.strftime("%m/%d/%Y at %H:%M EST")
+            except:
+                updated = 'N/A'
+            try:
+                itemname = ''
+                for i in _item['productId'].split('_'):
+                    itemname += i.lower().capitalize()
+                    itemname += ' '
+            except:
+                itemname = 'N/A'
+            try:
+                sellprice = f"${utils.comma(round((_item['sellPrice']), 2))}"
+            except:
+                sellprice = 'N/A'
+            try:
+                sellvolume = utils.comma(_item['sellVolume'])
+            except:
+                sellvolume = 'N/A'
+            try:
+                soldperweek = utils.comma(_item['sellMovingWeek'])
+            except:
+                soldperweek = 'N/A'
+            try:
+                sellorders = utils.comma(_item['sellOrders'])
+            except:
+                sellorders = 'N/A'
+            try:
+                buyprice = f"${utils.comma(round(_item['buyPrice'], 2))}"
+            except:
+                buyprice = 'N/A'
+            try:
+                buyvolume = utils.comma(_item['buyVolume'])
+            except:
+                buyvolume = 'N/A'
+            try:
+                buyperweek = utils.comma(_item['buyMovingWeek'])
+            except:
+                buyperweek = 'N/A'
+            try:
+                buyorders = utils.comma(_item['buyOrders'])
+            except:
+                buyorders = 'N/A'
+            color=random.randint(1, 16777215)
+            embed = discord.Embed(title="Hypixel Bazaar", color=color)
+            embed.add_field(name='Item', value=itemname, inline=True)
+            embed.add_field(name='Sell Value', value=sellprice, inline=True)
+            embed.add_field(name='Buy Price', value=buyprice, inline=True)
+            embed.add_field(name='Sell Orders', value=sellorders, inline=True)
+            embed.add_field(name='Sell Volume', value=sellvolume, inline=True)
+            embed.add_field(name='Sold per Week', value=soldperweek, inline=True)
+            embed.add_field(name='Buy Orders', value=buyorders, inline=True)
+            embed.add_field(name='Buy Volume', value=buyvolume, inline=True)
+            embed.add_field(name='Bought per Week', value=buyperweek, inline=True)
+            if updated != 'N/A':
+                embed.set_footer(text=f"Unofficial Hypixel Discord Bot - Bazaar Updated {updated}")
+            else:
+                embed.set_footer(text=f"Unofficial Hypixel Discord Bot")
+            await ctx.send(embed=embed)
         except discord.Forbidden:
             try:
                 await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")

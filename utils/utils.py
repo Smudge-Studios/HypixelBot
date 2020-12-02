@@ -2,7 +2,6 @@ import datetime
 from datetime import datetime
 from aiohttp import ClientSession
 from configparser import ConfigParser
-import discord
 
 parser = ConfigParser()
 parser.read('botconfig.ini')
@@ -345,6 +344,10 @@ class hypixel:
         
         async def auctions(self, profile):
             async with self.session.get('https://api.hypixel.net/skyblock/auction?key=' + API_KEY + '&profile=' + profile) as response:
+                return await response.json()
+
+        async def bazaar(self):
+            async with self.session.get('https://api.hypixel.net/skyblock/bazaar?key=' + API_KEY) as response:
                 return await response.json()
 
 utils = utils()

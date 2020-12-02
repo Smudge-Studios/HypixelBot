@@ -36,3 +36,4 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`profile <player> <profile>`|Returns a player's Skyblock stats on a specified profile.||
 |`auctions <player> <profile>`|Returns a list of a player's Skyblock auctions on a specified profile.|`ah`|
 |`auction <player> <profile> <auction ID>`|Returns a player's Skyblock auction on a specified profile.|`a`|
+|`bazaar <item>`|Returns information about an item in the Bazaar.|`baz`|

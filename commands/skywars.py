@@ -101,7 +101,7 @@ class SkywarsCMD(commands.Cog):
                     embed = discord.Embed(title=data + "'s Skywars Stats", color=color)
                     embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
                     try:
-                        embed.add_field(name="Level", value=str(level)+' ⭐', inline=True)
+                        embed.add_field(name="Level", value=str(int(level))+' ⭐', inline=True)
                     except:
                         embed.add_field(name="Level", value='N/A', inline=True)
                     embed.add_field(name="Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
