@@ -24,7 +24,9 @@ playerstats = """`h!player <player>` - Returns some general stats for the specif
 hypixelstats = """`h!leaderboard <game> <type>` - Returns the leaders on the specified leaderboard.
 `h!guild <guild name>` - Returns information on the specified guild.
 `h!playercount` - Returns Hypixel player counts.
-`h!watchdog` - Returns Hypixel Watchdog statistics."""
+`h!watchdog` - Returns Hypixel Watchdog statistics.
+`h!boosters [game]` - Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.
+`h!booster <id>` - Returns a info on the specified booster."""
 
 class Embeds:
     class Bedwars:
