@@ -4,7 +4,7 @@ from configparser import ConfigParser
 from utils.utils import *
 
 parser = ConfigParser()
-parser.read('botconfig.ini')
+parser.read('config.ini')
 try:
     logchannel = int(parser.get('CONFIG', 'log_channel'))
 except Exception as e:

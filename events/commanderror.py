@@ -5,7 +5,7 @@ from configparser import ConfigParser
 from utils.utils import con
 
 parser = ConfigParser()
-parser.read('botconfig.ini')
+parser.read('config.ini')
 try:
     logchannel = int(parser.get('CONFIG', 'log_channel'))
 except Exception as e:
@@ -35,18 +35,13 @@ class CMDError(commands.Cog):
             return
         else:
             embed = discord.Embed(title="Error", description="""An unknown error occurred. This error has been reported.
-            `""" + str(error) + '`', color=0xff0000)
+            ```\n""" + str(error) + '\n```', color=0xff0000)
             await ctx.send(embed=embed)
             try:
                 raise error
             except:
                 tb = traceback.format_exc()
-            print("")
-            con.log('Ignoring exception in command {}:'.format(ctx.command))
-            con.log("=====(BEGIN ERROR OUTPUT)=====")
-            print(tb)
-            con.log("=====(END ERROR OUTPUT)=====")
-            print("")
+            con.log(error)
             with open('utils\\logs\\error.log', 'a') as logfile:
                 logfile.write(tb)
             if logchannel is not None:

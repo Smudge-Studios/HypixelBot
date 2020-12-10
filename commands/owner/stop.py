@@ -4,7 +4,7 @@ from utils.utils import con
 from configparser import ConfigParser
 
 parser = ConfigParser()
-parser.read('botconfig.ini')
+parser.read('config.ini')
 TOKEN = parser.get('CONFIG', 'token')
 try:
     logchannel = int(parser.get('CONFIG', 'log_channel'))

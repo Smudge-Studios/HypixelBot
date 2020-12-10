@@ -4,7 +4,7 @@ from utils.utils import con, utils, hypixel
 from configparser import ConfigParser
 
 parser = ConfigParser()
-parser.read('botconfig.ini')
+parser.read('config.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
 try:
     logchannel = int(parser.get('CONFIG', 'log_channel'))

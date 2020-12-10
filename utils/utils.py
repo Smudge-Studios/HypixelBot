@@ -4,58 +4,60 @@ from aiohttp import ClientSession
 from configparser import ConfigParser
 
 parser = ConfigParser()
-parser.read('botconfig.ini')
+parser.read('config.ini')
 API_KEY = parser.get('CONFIG', 'api_key')
 
+
 class con:
-    def log(text):
+    def log(text: str) -> None:
         with open('utils\\logs\\bot.log', 'a') as logfile:
             now = datetime.now()
             time = now.strftime("%m/%d/%Y %H:%M")
             logfile.write(f"{time}: {text}\n\n")
         print(f"{time}: {text}")
-    
-    def wipe():
+
+    def wipe() -> None:
         with open('utils\\logs\\bot.log', 'w'):
             pass
 
+
 class utils:
     def comma(self, num):
-        '''Add comma to every 3rd digit. Takes int or float and
-        returns string.'''
+        """Add comma to every 3rd digit. Takes int or float and
+        returns string."""
         if type(num) == int:
             return '{:,}'.format(num)
         elif type(num) == float:
-            return '{:,.2f}'.format(num) # Rounds to 2 decimal places
+            return '{:,.2f}'.format(num)  # Rounds to 2 decimal places
         elif type(num) == str:
             return num
+        else:
+            return None
 
-    def guildlevel(self, xp):
+    def guildlevel(self, xp: int):
         """ Return a guild's level from XP. """
-        REQ_EXP = [
-        100000,
-        150000,
-        250000,
-        500000,
-        750000,
-        1000000,
-        1250000,
-        1500000,
-        2000000,
-        2500000,
-        2500000,
-        2500000,
-        2500000,
-        2500000,
-        3000000
-        ]
+        req_exp = [100000,
+                   150000,
+                   250000,
+                   500000,
+                   750000,
+                   1000000,
+                   1250000,
+                   1500000,
+                   2000000,
+                   2500000,
+                   2500000,
+                   2500000,
+                   2500000,
+                   2500000,
+                   3000000]
         lvl = 0
         for i in range(1000):
             needed = 0
-            if  i >= len(REQ_EXP):
-                needed = REQ_EXP[len(REQ_EXP) - 1]
+            if i >= len(req_exp):
+                needed = req_exp[len(req_exp) - 1]
             else:
-                needed = REQ_EXP[i]
+                needed = req_exp[i]
             xp -= needed
             if xp < 0:
                 return int(lvl)
@@ -63,14 +65,14 @@ class utils:
                 lvl += 1
         return 'N/A'
 
-    def gameconverter(self, game):
+    def gameconverter(self, game: str) -> str:
         """ Convert a Hypixel game to a readable format. """
         if game == "QUAKECRAFT":
             game = "Quake"
         elif game == "WALLS":
             game = 'Walls'
         elif game == 'PAINTBALL':
-            game == 'paintball'
+            game = 'paintball'
         elif game == 'SURVIVAL_GAMES':
             game = 'Blitz Survival Games'
         elif game == 'TNTGAMES':
@@ -123,13 +125,13 @@ class utils:
             game = 'N/A'
         return game
 
-    def idtogameconverter(self, game):
+    def idtogameconverter(self, game: int) -> str:
         if game == 2:
             game = 'Quake'
         elif game == 3:
             game = 'Walls'
         elif game == 4:
-            game == 'Paintball'
+            game = 'Paintball'
         elif game == 5:
             game = 'Blitz Survival Games'
         elif game == 6:
@@ -180,15 +182,15 @@ class utils:
             game = 'The Pit'
         return game
 
-    def gameidconverter(self, game):
+    def gameidconverter(self, game: str) -> int:
         game = game.lower()
-        game = game.replace('_',' ')
+        game = game.replace('_', ' ')
         if game == 'quake':
             game = 2
         elif game == 'walls':
             game = 3
         elif game == 'paintball':
-            game == 4
+            game = 4
         elif game == 'blitz survival games':
             game = 5
         elif game == 'vampirez':
@@ -244,59 +246,58 @@ class utils:
     def timeconverter(self, login, logout):
         """ Converts Hypixel login/out time to the appropriate format. """
         try:
+            status = 'N/A'
             if login > logout:
                 status = 'Online'
             elif login < logout:
-                time = datetime.fromtimestamp(logout/1000.0)
+                time = datetime.fromtimestamp(logout / 1000.0)
                 date = time.strftime("%m/%d/%Y")
                 status = 'Offline - Last seen on ' + str(date)
-                return status
-            else:
-                return 'N/A'
-        except Exception as e:
+            return status
+        except:
             return 'N/A'
 
-    def networklevel(self, exp):
+    def networklevel(self, exp: int):
         """ Gets a user's Network level from their network xp. """
         try:
-            network_level = (((2 * exp) + 30625)**(1/2) / 50) - 2.5
+            network_level = (((2 * exp) + 30625) ** (1 / 2) / 50) - 2.5
             level = round(network_level, 0)
             return int(level)
         except:
             return 'N/A'
 
+
 class hypixel:
     """ Class for interacting with Hypixel's API """
     def __init__(self):
-        self.session = ClientSession() # Define aiohttp session. 
-        
+        self.session = ClientSession()  # Define aiohttp session.
 
-    async def player(self, uuid):
+    async def player(self, uuid: str) -> dict:
         """ Get Hypixel player data. """
         async with self.session.get('https://api.hypixel.net/player?key=' + API_KEY + '&uuid=' + uuid) as response:
             return await response.json()
 
-    async def counts(self):
+    async def counts(self) -> dict:
         """ Get Hypixel server counts. """
-        async with self.session.get('https://api.hypixel.net/gameCounts?key=' + API_KEY ) as response:
+        async with self.session.get('https://api.hypixel.net/gameCounts?key=' + API_KEY) as response:
             return await response.json()
 
-    async def leaderboards(self):
+    async def leaderboards(self) -> dict:
         """ Get Hypixel leaderboards. """
         async with self.session.get('https://api.hypixel.net/leaderboards?key=' + API_KEY) as response:
             return await response.json()
 
-    async def key(self):
+    async def key(self) -> dict:
         """ Get info on your Hypixel API key. """
         async with self.session.get('https://api.hypixel.net/key?key=' + API_KEY) as response:
             return await response.json()
 
-    async def watchdog(self):
+    async def watchdog(self) -> dict:
         """ Get Hypixel Watchdog stats. """
         async with self.session.get('https://api.hypixel.net/watchdogstats?key=' + API_KEY) as response:
             return await response.json()
 
-    async def guild(self, name):
+    async def guild(self, name: str) -> dict:
         """ Find a guild by name and return guild data. """
         async with self.session.get('https://api.hypixel.net/findGuild?key=' + API_KEY + '&byName=' + name) as response:
             data = await response.json()
@@ -307,13 +308,16 @@ class hypixel:
             async with session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&id=' + gid) as response:
                 return await response.json()
 
-    async def getname(self, uuid):
+    async def getname(self, uuid: str):
         """ Get a player's name using Mojang API. """
         async with self.session.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid) as response:
             data = await response.json()
+        try:
             return data['name'].replace('_', '\_')
+        except:
+            return None
 
-    async def playerguild(self, uuid):
+    async def playerguild(self, uuid) -> str:
         """ Get the name of the guild a player is in. """
         async with self.session.get('https://api.hypixel.net/guild?key=' + API_KEY + '&player=' + uuid) as response:
             data = await response.json()
@@ -321,7 +325,7 @@ class hypixel:
                 return 'None'
             return data['guild']['name']
 
-    async def boosters(self, game: str=None):
+    async def boosters(self, game: str = None):
         async with self.session.get('https://api.hypixel.net/boosters?key=' + API_KEY) as response:
             data = await response.json()
         if game is None:
@@ -332,23 +336,38 @@ class hypixel:
                 raise ValueError
             return boosters
 
-
     class skyblock:
         """ Class for interacting with Hypixel's Skyblock API. """
+
         def __init__(self):
             self.session = ClientSession()
 
-        async def profile(self, profile):
-            async with self.session.get('https://api.hypixel.net/skyblock/profile?key=' + API_KEY + '&profile=' + profile) as response:
-                return await response.json()
-        
-        async def auctions(self, profile):
-            async with self.session.get('https://api.hypixel.net/skyblock/auction?key=' + API_KEY + '&profile=' + profile) as response:
+        async def profile(self, profile) -> dict:
+            async with self.session.get(
+                    'https://api.hypixel.net/skyblock/profile?key=' + API_KEY + '&profile=' + profile) as response:
                 return await response.json()
 
-        async def bazaar(self):
-            async with self.session.get('https://api.hypixel.net/skyblock/bazaar?key=' + API_KEY) as response:
+        async def auctions(self, profile) -> dict:
+            async with self.session.get(
+                    'https://api.hypixel.net/skyblock/auction?key=' + API_KEY + '&profile=' + profile) as response:
                 return await response.json()
+
+        async def bazaar(self) -> dict:
+            async with self.session.get(
+                    'https://api.hypixel.net/skyblock/bazaar?key=' + API_KEY) as response:
+                return await response.json()
+
+        async def news(self, title):
+            async with self.session.get(
+                    'https://api.hypixel.net/skyblock/news?key=' + API_KEY) as response:
+                data = await response.json()
+            if title is None:
+                return data['items']
+            for item in data['items']:
+                if item['title'].lower() == title.lower():
+                    return item
+            return None
+
 
 utils = utils()
 hypixel = hypixel()

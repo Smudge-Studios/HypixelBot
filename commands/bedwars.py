@@ -1,13 +1,11 @@
 import discord
+from discord.embeds import Embed
 from discord.ext import commands
 from mojang import MojangAPI
-from configparser import ConfigParser
-from utils.utils import utils, hypixel
-import random
+from utils.utils import hypixel
+from utils.embeds import Embeds
 
-parser = ConfigParser()
-parser.read('botconfig.ini')
-API_KEY = parser.get('CONFIG', 'api_key')
+bwembed = Embeds().Bedwars()
 
 class BedwarsCMD(commands.Cog):
     def __init__(self, bot):
@@ -15,147 +13,57 @@ class BedwarsCMD(commands.Cog):
 
     @commands.command(aliases=['bw'])   
     async def bedwars(self, ctx, username:str=None):
+        perms = None
+        if ctx.guild is not None:
+            me = ctx.guild.get_member(self.bot.user.id)
+            perms = ctx.channel.permissions_for(me)
+            if perms.send_messages:
+                if not perms.embed_links:
+                    await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
+                    return
+                if perms.embed_links:
+                    pass
+            if not perms.send_messages:
+                return
+        #verify if player exists
+        if username==None:
+            embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
         try:
-            #verify if player exists
-            if username==None:
-                embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
-                await ctx.send(embed=embed)
-                return
             uuid = MojangAPI.get_uuid(str(username))
-            if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
-                embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+        except:
+            embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
+            embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        elif not uuid:
+            embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        #send request
+        data = await hypixel.player(uuid)
+        #errors
+        if data['success'] == False:
+            if data['cause'] == 'Malformed UUID':
+                embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
                 await ctx.send(embed=embed)
                 return
-            elif not uuid:
-                embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+            else:
+                embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
                 await ctx.send(embed=embed)
                 return
-            #send request
-            data = await hypixel.player(uuid)
-            #errors
-            if data['success'] == False:
-                if data['cause'] == 'Malformed UUID':
-                    embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
-                    await ctx.send(embed=embed)
-                    return
-                else:
-                    embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
-                    await ctx.send(embed=embed)
-                    return
-            #it worked!
-            elif data['success'] == True:
-                if data['player'] == None:
-                    embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
-                    await ctx.send(embed=embed)
-                    return
-                try:
-                    level = str(utils.comma(int(data['player']['achievements']['bedwars_level']))) + ' ⭐'
-                except:
-                    level = 'N/A'
-                try:
-                    games_played = data['player']['stats']['Bedwars']['games_played_bedwars']
-                except:
-                    games_played = 'N/A'
-                try:
-                    exp = data['player']['stats']['Bedwars']['Experience']
-                except:
-                    exp = 'N/A'
-                try:
-                    final_deaths = data['player']['stats']['Bedwars']['final_deaths_bedwars']
-                except:
-                    final_deaths = 'N/A'
-                try:
-                    normal_deaths = data['player']['stats']['Bedwars']['deaths_bedwars']
-                except:
-                    normal_deaths = 'N/A'
-                try:
-                    total_deaths = final_deaths+normal_deaths
-                    if total_deaths == 'N/AN/A':
-                        raise ValueError
-                except:
-                    total_deaths = 'N/A'
-                try:
-                    beds_lost = data['player']['stats']['Bedwars']['beds_lost_bedwars']
-                except:
-                    beds_lost = 'N/A'
-                try:
-                    beds_broken = data['player']['stats']['Bedwars']['beds_broken_bedwars']
-                except:
-                    beds_broken = 'N/A'
-                try:
-                    normal_kills = data['player']['stats']['Bedwars']['kills_bedwars']
-                except:
-                    normal_kills = 'N/A'
-                try:
-                    final_kills = data['player']['stats']['Bedwars']['final_kills_bedwars']
-                except:
-                    final_kills = 'N/A'
-                try:
-                    total_kills = final_kills+normal_kills
-                    if total_kills == 'N/AN/A':
-                        raise ValueError
-                except:
-                    total_kills = 'N/A'
-                try:
-                    wins = data['player']['stats']['Bedwars']['wins_bedwars']
-                except:
-                    wins = 'N/A'
-                try:
-                    losses = data['player']['stats']['Bedwars']['losses_bedwars']
-                except:
-                    losses = 'N/A'
-                try:
-                    winstreak = data['player']['stats']['Bedwars']['winstreak']
-                except:
-                    winstreak = 'N/A'
-                data = await hypixel.getname(uuid)
-                color=random.randint(1, 16777215) 
-                embed = discord.Embed(title=data + "'s Bedwars Stats", color=color)
-                embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
-                embed.add_field(name="Level", value=str(level), inline=True)
-                embed.add_field(name="Games Played", value=str(utils.comma(games_played)), inline=True)
-                try:
-                    embed.add_field(name="Experience", value=str(utils.comma(round(exp, 0))), inline=True)
-                except:
-                    embed.add_field(name="Experience", value=str('N/A'), inline=True)
-                embed.add_field(name="Normal Deaths", value=str(utils.comma(normal_deaths)), inline=True)
-                embed.add_field(name="Final Deaths", value=str(utils.comma(final_deaths)), inline=True)
-                embed.add_field(name="Total Deaths", value=str(utils.comma(total_deaths)), inline=True)
-                embed.add_field(name="Normal Kills", value=str(utils.comma(normal_kills)), inline=True)
-                embed.add_field(name="Final Kills", value=str(utils.comma(final_kills)), inline=True)
-                embed.add_field(name="Total Kills", value=str(utils.comma(total_kills)), inline=True)
-                try:
-                    embed.add_field(name="Normal K/D Ratio", value=str(utils.comma(round(normal_kills/normal_deaths, 2))), inline=True)
-                except:
-                    embed.add_field(name="Normal K/D Ratio", value=str('N/A'), inline=True)
-                try:
-                    embed.add_field(name="Final K/D Ratio", value=str(utils.comma(round(final_kills/final_deaths, 2))), inline=True)
-                except:
-                    embed.add_field(name="Final K/D Ratio", value=str('N/A'), inline=True)
-                try:
-                    embed.add_field(name="K/D Ratio", value=str(utils.comma(round(total_kills/total_deaths, 2))), inline=True)
-                except:
-                    embed.add_field(name="K/D Ratio", value=str('N/A'), inline=True)
-                embed.add_field(name="Wins", value=str(utils.comma(wins)), inline=True)
-                embed.add_field(name="Losses", value=str(utils.comma(losses)), inline=True)
-                try:
-                    embed.add_field(name="W/L Ratio", value=str(utils.comma(round(wins/losses, 2))), inline=True)
-                except:
-                    embed.add_field(name="W/L Ratio", value=str('N/A'), inline=True)
-                embed.add_field(name="Beds Lost", value=str(utils.comma(beds_lost)), inline=True)
-                embed.add_field(name="Beds Broken", value=str(utils.comma(beds_broken)), inline=True)
-                embed.add_field(name="Winstreak", value=str(utils.comma(winstreak)), inline=True)
-                embed.set_footer(text='Unofficial Hypixel Discord Bot')
+        elif data['success'] == True:
+            if data['player'] == None:
+                embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
                 await ctx.send(embed=embed)
-        except discord.Forbidden:
-            try:
-                await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                 return
-            except discord.Forbidden:
-                try:
-                    await ctx.author.send("Error: Cannot send messages in that channel. Please contact a server administrator to fix this issue.")
-                except discord.Forbidden:
-                    return
+        name = await hypixel.getname(uuid)
+        embeds, paginator = await bwembed.generate(ctx, name, data, perms)
+        await paginator.run(embeds)
 
 def setup(bot):
     bot.add_cog(BedwarsCMD(bot))
