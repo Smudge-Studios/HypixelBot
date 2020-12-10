@@ -7,6 +7,7 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`h!help`|Returns a list of commands.|
 |`h!info`|Returns some information and stats about the bot.|
 |`h!ping`|Returns the bot's latency.|
+|`h!invite`|Returns the bot's invite link.|
 
 ## Player Stats
 |Command|Description|Aliases|
@@ -25,15 +26,17 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |:---:|:---:|:---:|
 |`h!leaderboard <game> <type>`|Returns the leaders on the specified leaderboard.|`lb`|
 |`h!guild <guild name>`|Returns information on the specified guild.|`g`|
-|`h!playercount`|Returns Hypixel player counts.|`players`, `count`|
+|`h!playercount`|Returns Hypixel player counts.|`players`, `count`, `pc`|
 |`h!watchdog`|Returns Hypixel Watchdog statistics.|`wd`|
+|`h!boosters [game]`|Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.|`boosts`|
+|`h!booster <id>`|Returns a info on the specified booster.|`boost`|
 
 ## Skyblock
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
 |`help`|Skyblock command help.||
-|`profiles <player>`|Returns a list of a player's Skyblock profiles.||
-|`profile <player> <profile>`|Returns a player's Skyblock stats on a specified profile.||
+|`profiles <player>`|Returns a list of a player's Skyblock profiles, and their stats.||
 |`auctions <player> <profile>`|Returns a list of a player's Skyblock auctions on a specified profile.|`ah`|
 |`auction <player> <profile> <auction ID>`|Returns a player's Skyblock auction on a specified profile.|`a`|
 |`bazaar <item>`|Returns information about an item in the Bazaar.|`baz`|
+|`news [article]`|Returns the specified article, or all articles if no article is specified.||
