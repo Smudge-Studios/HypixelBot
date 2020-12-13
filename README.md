@@ -1,7 +1,4 @@
 # HypixelBot
-[![TOP.GG](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
-[![Discord Bot List](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
-[![Discord Boats](https://discord.boats/api/widget/764677833820995605)](https://discord.boats/bot/764677833820995605)
 
 A Hypixel Discord Bot made purely for displaying Hypixel statistics.
 
@@ -45,3 +42,10 @@ You may find a list of public commands [here](https://github.com/plun1331/Hypixe
 
 # Invite
 To add this bot to your server, click [here](https://plun1331.github.io/hypixelbot/add).
+
+# Widgets
+[![TOP.GG](https://top.gg/api/widget/764677833820995605.svg)](https://top.gg/bot/764677833820995605)
+
+[![Discord Bot List](https://discordbotlist.com/bots/764677833820995605/widget)](https://discordbotlist.com/bots/764677833820995605)
+
+[![Discord Boats](https://discord.boats/api/widget/764677833820995605)](https://discord.boats/bot/764677833820995605)
