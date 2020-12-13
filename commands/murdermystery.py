@@ -81,7 +81,7 @@ class MurderMysteryCMD(commands.Cog):
             return
         color=random.randint(1, 16777215)
         embed = discord.Embed(title=data + "'s Murder Mystery Stats", color=color)
-        embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
+        embed.set_thumbnail(url='https://crafatar.com/renders/head/' + uuid)
         embed.add_field(name='Games Played', value=str(utils.comma(played)))
         embed.add_field(name='Wins', value=str(utils.comma(wins)))
         embed.add_field(name='Deaths', value=str(utils.comma(deaths)))

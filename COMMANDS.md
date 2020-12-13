@@ -19,6 +19,7 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`h!murdermystery <player>`|Returns the specified player's Murder Mystery statistics.|`mm`|
 |`h!buildbattle <player>`|Returns the specified player's Build Battle statistics.|`bb`|
 |`h!uhc <player>`|Returns the specified player's UHC Champions statistics.||
+|`h!tntgames <player>`|Returns the specified player's TNT Games statistics.|`tnt`|
 |`h!skyblock`|Main skyblock command. For subcommands, view the [Skyblock Category](#skyblock) below.|`sb`|
 
 ## Hypixel Statistics

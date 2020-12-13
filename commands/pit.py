@@ -105,7 +105,7 @@ class PitCMD(commands.Cog):
             return
         color=random.randint(1, 16777215)
         embed = discord.Embed(title=data + "'s Pit Stats", color=color)
-        embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
+        embed.set_thumbnail(url='https://crafatar.com/renders/head/' + uuid)
         embed.add_field(name="Times Joined", value=str(utils.comma(joins)), inline=True)
         embed.add_field(name="Times Jumped into Pit", value=str(utils.comma(jumped)), inline=True)
         embed.add_field(name="Assists", value=str(utils.comma(assists)), inline=True)

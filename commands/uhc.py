@@ -80,7 +80,7 @@ class UHCCMD(commands.Cog):
             return
         color=random.randint(1, 16777215)
         embed = discord.Embed(title=data + "'s UHC Stats", color=color)
-        embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
+        embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{uuid}")
         embed.add_field(name="Coins", value=str(utils.comma(coins)), inline=True)
         embed.add_field(name="Score", value=str(utils.comma(score)), inline=True)
         embed.add_field(name="Wins", value=str(utils.comma(wins)), inline=True)

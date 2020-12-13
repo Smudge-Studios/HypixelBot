@@ -1,16 +1,19 @@
 import discord
 from discord.ext import commands
 from mojang import MojangAPI
-from utils.utils import utils, hypixel
-import random
+from utils.utils import hypixel
+from utils.embeds import Embeds
 
-class BuildBattleCMD(commands.Cog):
+tntembed = Embeds().TNT()
+
+class TNTGamesCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['bb'])
-    async def buildbattle(self, ctx, username:str=None):
+    @commands.command(aliases=['tnt'])
+    async def tntgames(self, ctx, username:str=None):
+        perms = None
         if ctx.guild is not None:
             me = ctx.guild.get_member(self.bot.user.id)
             perms = ctx.channel.permissions_for(me)
@@ -36,7 +39,6 @@ class BuildBattleCMD(commands.Cog):
             embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
-        #send request
         data = await hypixel.player(uuid)
         #errors
         if data['success'] == False:
@@ -54,33 +56,13 @@ class BuildBattleCMD(commands.Cog):
                 embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
                 await ctx.send(embed=embed)
                 return
-        try:
-            wins = data['player']['stats']['BuildBattle']['wins']
-        except:
-            wins = 'N/A'
-        try:
-            played = data['player']['stats']['BuildBattle']['games_played']
-        except:
-            played = 'N/A'
-        try:
-            coins = data['player']['stats']['BuildBattle']['coins']
-        except:
-            coins = 'N/A'
-        data = await hypixel.getname(uuid)
-        if data is None:
+        name = await hypixel.getname(uuid)
+        if name is None:
             embed = discord.Embed(title="Error", description="""Something went wrong. Please try again later.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
-        color=random.randint(1, 16777215)
-        embed = discord.Embed(title=data + "'s Build battle Stats", color=color)
-        embed.set_thumbnail(url='https://crafatar.com/renders/head/' + uuid)
-        embed.add_field(name='Games Played', value=str(utils.comma(played)))
-        embed.add_field(name='Wins', value=str(utils.comma(wins)))
-        embed.add_field(name='Coins', value=str(utils.comma(coins)))
-        embed.set_footer(text='Unofficial Hypixel Discord Bot')
-        await ctx.send(embed=embed)
-        
-        
+        embeds, paginator = await tntembed.generate(ctx, name, data, perms)
+        await paginator.run(embeds)
 
 def setup(bot):
-    bot.add_cog(BuildBattleCMD(bot))
+    bot.add_cog(TNTGamesCMD(bot))

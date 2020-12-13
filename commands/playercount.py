@@ -5,7 +5,7 @@ from utils.embeds import Embeds
 
 pcembed = Embeds().PlayerCount()
 
-class OnReady(commands.Cog):
+class PlayerCountCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -34,4 +34,4 @@ class OnReady(commands.Cog):
             return
 
 def setup(bot):
-    bot.add_cog(OnReady(bot))
+    bot.add_cog(PlayerCountCMD(bot))

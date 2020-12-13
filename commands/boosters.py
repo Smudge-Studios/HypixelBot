@@ -196,7 +196,7 @@ class BoosterCMDs(commands.Cog):
             game = 'N/A'
         color=random.randint(1, 16777215)
         embed = discord.Embed(title=f"{user}'s {game} booster", color = color)
-        embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
+        embed.set_thumbnail(url='https://crafatar.com/renders/head/' + uuid)
         embed.add_field(name="Player", value=user)
         embed.add_field(name="Game", value=game)
         embed.add_field(name="Multiplier", value=multiplier)

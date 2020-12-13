@@ -19,7 +19,8 @@ playerstats = """`h!player <player>` - Returns some general stats for the specif
 `h!pit <player>` - Returns the specified player's Pit statistics.
 `h!murdermystery <player>` - Returns the specified player's Murder Mystery statistics.
 `h!buildbattle <player>` - Returns the specified player's Build Battle statistics.
-`h!uhc <player>` - Returns the specified player's UHC Champions statistics."""
+`h!uhc <player>` - Returns the specified player's UHC Champions statistics.
+`h!tntgames <player>` - Returns the specified player's TNT Games statistics."""
 
 hypixelstats = """`h!leaderboard <game> <type>` - Returns the leaders on the specified leaderboard.
 `h!guild <guild name>` - Returns information on the specified guild.
@@ -27,6 +28,8 @@ hypixelstats = """`h!leaderboard <game> <type>` - Returns the leaders on the spe
 `h!watchdog` - Returns Hypixel Watchdog statistics.
 `h!boosters [game]` - Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.
 `h!booster <id>` - Returns a info on the specified booster."""
+
+minecraft = """`h!skin <player>` - Returns the player's skin"""
 
 class Embeds:
     class Bedwars:
@@ -92,7 +95,7 @@ class Embeds:
             except:
                 winstreak = 'N/A'
             embed = discord.Embed(title=name + "'s Bedwars Stats - Overall", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Bedwars Level", value=str(level), inline=True)
             try:
                 embed.add_field(name="Bedwars Experience", value=str(utils.comma(round(exp, 0))), inline=True)
@@ -191,7 +194,7 @@ class Embeds:
             except:
                 winstreak = 'N/A'
             embed = discord.Embed(title=name + "'s Bedwars Stats - Solo", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Bedwars Level", value=str(level), inline=True)
             try:
                 embed.add_field(name="Bedwars Experience", value=str(utils.comma(round(exp, 0))), inline=True)
@@ -290,7 +293,7 @@ class Embeds:
             except:
                 winstreak = 'N/A'
             embed = discord.Embed(title=name + "'s Bedwars Stats - Doubles", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Bedwars Level", value=str(level), inline=True)
             try:
                 embed.add_field(name="Bedwars Experience", value=str(utils.comma(round(exp, 0))), inline=True)
@@ -389,7 +392,7 @@ class Embeds:
             except:
                 winstreak = 'N/A'
             embed = discord.Embed(title=name + "'s Bedwars Stats - 3v3v3v3", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Bedwars Level", value=str(level), inline=True)
             try:
                 embed.add_field(name="Bedwars Experience", value=str(utils.comma(round(exp, 0))), inline=True)
@@ -488,7 +491,7 @@ class Embeds:
             except:
                 winstreak = 'N/A'
             embed = discord.Embed(title=name + "'s Bedwars Stats - 4v4v4v4", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Bedwars Level", value=str(level), inline=True)
             try:
                 embed.add_field(name="Bedwars Experience", value=str(utils.comma(round(exp, 0))), inline=True)
@@ -587,7 +590,7 @@ class Embeds:
             except:
                 winstreak = 'N/A'
             embed = discord.Embed(title=name + "'s Bedwars Stats - 4v4", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Bedwars Level", value=str(level), inline=True)
             try:
                 embed.add_field(name="Bedwars Experience", value=str(utils.comma(round(exp, 0))), inline=True)
@@ -695,7 +698,7 @@ class Embeds:
             except:
                 losses = 'N/A'
             embed = discord.Embed(title=name + "'s Skywars Stats - Overall", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             try:
                 embed.add_field(name="Skywars Level", value=str(int(level))+' ⭐', inline=True)
             except:
@@ -770,7 +773,7 @@ class Embeds:
             except:
                 losses = 'N/A'
             embed = discord.Embed(title=name + "'s Skywars Stats - Solo Normal", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             try:
                 embed.add_field(name="Skywars Level", value=str(int(level))+' ⭐', inline=True)
             except:
@@ -845,7 +848,7 @@ class Embeds:
             except:
                 losses = 'N/A'
             embed = discord.Embed(title=name + "'s Skywars Stats - Solo Insane", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             try:
                 embed.add_field(name="Skywars Level", value=str(int(level))+' ⭐', inline=True)
             except:
@@ -920,7 +923,7 @@ class Embeds:
             except:
                 losses = 'N/A'
             embed = discord.Embed(title=name + "'s Skywars Stats - Doubles Normal", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             try:
                 embed.add_field(name="Skywars Level", value=str(int(level))+' ⭐', inline=True)
             except:
@@ -995,7 +998,7 @@ class Embeds:
             except:
                 losses = 'N/A'
             embed = discord.Embed(title=name + "'s Skywars Stats - Doubles Insane", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             try:
                 embed.add_field(name="Skywars Level", value=str(int(level))+' ⭐', inline=True)
             except:
@@ -1070,7 +1073,7 @@ class Embeds:
             except:
                 losses = 'N/A'
             embed = discord.Embed(title=name + "'s Skywars Stats - Laboratory", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             try:
                 embed.add_field(name="Skywars Level", value=str(int(level))+' ⭐', inline=True)
             except:
@@ -1121,8 +1124,154 @@ class Embeds:
 
         async def bow(self, name, color, data):
             pass
-    # ^ DO THIS YOU LAZY FUCK
 
+    class TNT:
+        async def main(self, name, color, data):
+            try:
+                coins = utils.comma(int(data['player']['stats']['TNTGames']['coins']))
+            except:
+                coins = 'N/A'
+            try:
+                winstreak = utils.comma(int(data['player']['stats']['TNTGames']['winstreak']))
+            except:
+                winstreak = 'N/A'
+            try:
+                wins = utils.comma(int(data['player']['stats']['TNTGames']['wins']))
+            except:
+                wins = 'N/A'
+            embed = discord.Embed(title=f"{name}'s TNT Games Stats - Overall", color=color)
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
+            embed.add_field(name='TNT Games Coins', value=coins, inline=True)
+            embed.add_field(name='Winstreak', value=winstreak, inline=True)
+            embed.add_field(name='Wins', value=wins, inline=True)
+            embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 1/5")
+            return embed
+
+        async def tntrun(self, name, color, data):
+            try:
+                deaths = utils.comma(int(data['player']['stats']['TNTGames']['deaths_tntrun']))
+            except:
+                deaths = 'N/A'
+            try:
+                wins = utils.comma(int(data['player']['stats']['TNTGames']['wins_tntrun']))
+            except:
+                wins = 'N/A'
+            try:
+                record = int(data['player']['stats']['TNTGames']['record_tntrun'])
+                min, sec = divmod(record, 60) 
+                hour, min = divmod(min, 60) 
+                if hour == 0:
+                    if min == 0:
+                        record = f'{sec} seconds'
+                    elif min > 0:
+                        record = f"{min} minutes, {sec} seconds"
+                elif hour > 0:
+                    record = f"{hour} hours, {min} minutes, {sec} seconds"
+            except:
+                record = 'N/A'
+            embed = discord.Embed(title=f"{name}'s TNT Games Stats - TNT Run", color=color)
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
+            embed.add_field(name='Longest Time Survived', value=record, inline=True)
+            embed.add_field(name="Wins", value=wins, inline=True)
+            embed.add_field(name="Deaths", value=deaths, inline=True)
+            embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 2/5")
+            return embed
+
+        async def tnttag(self, name, color, data):
+            try:
+                kills = utils.comma(int(data['player']['stats']['TNTGames']['kills_tntag']))
+            except:
+                kills = 'N/A'
+            try:
+                wins = utils.comma(int(data['player']['stats']['TNTGames']['wins_tntag']))
+            except:
+                wins = 'N/A'
+            embed = discord.Embed(title=f"{name}'s TNT Games Stats - TNT Tag", color=color)
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
+            embed.add_field(name="Wins", value=wins, inline=True)
+            embed.add_field(name="Kills", value=kills, inline=True)
+            embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 3/5")
+            return embed
+
+        async def bowspleef(self, name, color, data):
+            try:
+                tags = utils.comma(int(data['player']['stats']['TNTGames']['tags_bowspleef']))
+            except:
+                tags = 'N/A'
+            try:
+                deaths = utils.comma(int(data['player']['stats']['TNTGames']['deaths_bowspleef']))
+            except:
+                deaths = 'N/A'
+            try:
+                wins = utils.comma(int(data['player']['stats']['TNTGames']['wins_bowspleef']))
+            except:
+                wins = 'N/A'
+            embed = discord.Embed(title=f"{name}'s TNT Games Stats - Bow Spleef", color=color)
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
+            embed.add_field(name="Wins", value=wins, inline=True)
+            embed.add_field(name="Deaths", value=deaths, inline=True)
+            embed.add_field(name="Tags", value=tags, inline=True)
+            embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 4/5")
+            return embed
+
+        async def pvprun(self, name, color, data):
+            try:
+                deaths = utils.comma(int(data['player']['stats']['TNTGames']['deaths_pvprun']))
+            except:
+                deaths = 'N/A'
+            try:
+                wins = utils.comma(int(data['player']['stats']['TNTGames']['wins_pvprun']))
+            except:
+                wins = 'N/A'
+            try:
+                record = int(data['player']['stats']['TNTGames']['record_pvprun'])
+                min, sec = divmod(record, 60) 
+                hour, min = divmod(min, 60) 
+                if hour == 0:
+                    if min == 0:
+                        record = f'{sec} seconds'
+                    elif min > 0:
+                        record = f"{min} minutes, {sec} seconds"
+                elif hour > 0:
+                    record = f"{hour} hours, {min} minutes, {sec} seconds"
+            except:
+                record = 'N/A'
+            try:
+                kills = utils.comma(int(data['player']['stats']['TNTGames']['kills_pvprun']))
+            except:
+                kills = 'N/A'
+            try:
+                kdr = utils.comma(data['player']['stats']['TNTGames']['kills_pvprun']/data['player']['stats']['TNTGames']['deaths_pvprun'])
+            except:
+                kdr = 'N/A'
+            embed = discord.Embed(title=f"{name}'s TNT Games Stats - PvP Run", color=color)
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
+            embed.add_field(name='Kills', value=kills, inline=True)
+            embed.add_field(name="Deaths", value=deaths, inline=True)
+            embed.add_field(name="K/D Ratio", value=kdr, inline=True)
+            embed.add_field(name='Longest Time Survived', value=record, inline=True)
+            embed.add_field(name="Wins", value=wins, inline=True)
+            embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 5/5")
+            return embed
+
+        async def generate(self, ctx, name, data, perms):
+            color=random.randint(1, 16777215)
+            main = await self.main(name, color, data)
+            tntrun = await self.tntrun(name, color, data)
+            tnttag = await self.tnttag(name, color, data)
+            bowspleef = await self.bowspleef(name, color, data)
+            pvprun = await self.pvprun(name, color, data)
+            paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx, timeout=60, remove_reactions=False)
+            if perms is not None:
+                if perms.manage_messages:
+                    paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx, timeout=60, remove_reactions=True)
+            paginator.add_reaction('⏮️', "first")
+            paginator.add_reaction('⏪', "back")
+            paginator.add_reaction('⏹', "lock")
+            paginator.add_reaction('⏩', "next")
+            paginator.add_reaction('⏭️', "last")
+            embeds = [main, tntrun, tnttag, bowspleef, pvprun]
+            return embeds, paginator
 
     class Help:
         async def botinfo(self, color):
@@ -1137,6 +1286,11 @@ class Embeds:
 
         async def hypixelstats(self, color):
             embed = discord.Embed(title='Help - Hypixel Stats', description=hypixelstats + other, color=color)
+            embed.set_footer(text='Unofficial Hypixel Discord Bot - Page 3/3')
+            return embed
+
+        async def mc(self, color):
+            embed = discord.Embed(title='Help - Minecraft', description=minecraft + other, color=color)
             embed.set_footer(text='Unofficial Hypixel Discord Bot - Page 3/3')
             return embed
 
@@ -1398,7 +1552,7 @@ class Embeds:
             except:
                 guild = 'N/A'
             embed = discord.Embed(title=name + "'s Profile - General Info", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Rank", value=str(rank), inline=True)
             embed.add_field(name="Karma", value=str(utils.comma(karma)), inline=True)
             embed.add_field(name="Guild", value=str(utils.comma(guild)), inline=True)
@@ -1434,7 +1588,7 @@ class Embeds:
             except:
                 twitter = 'None'
             embed = discord.Embed(title=name + "'s Profile - Social", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + data['player']['_id'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="Hypixel Forums", value=str(forums), inline=False)
             embed.add_field(name="Discord", value=str(discorda), inline=False)
             embed.add_field(name="YouTube", value=str(youtube), inline=False)
@@ -1477,7 +1631,7 @@ class Embeds:
             except:
                 uuid = 'N/A'
             embed = discord.Embed(title=name + "'s Profile - Social", color=color)
-            embed.set_thumbnail(url='https://crafatar.com/avatars/' + uuid)
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['_id']}")
             embed.add_field(name="First Joined", value=str(first), inline=True)
             embed.add_field(name="UUID", value=str(uuid), inline=True)
             embed.add_field(name="Recently Played Version", value=str(version), inline=True)
