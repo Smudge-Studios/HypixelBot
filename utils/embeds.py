@@ -29,7 +29,7 @@ hypixelstats = """`h!leaderboard <game> <type>` - Returns the leaders on the spe
 `h!boosters [game]` - Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.
 `h!booster <id>` - Returns a info on the specified booster."""
 
-minecraft = """`h!skin <player>` - Returns the player's skin"""
+minecraft = """`h!skin <player>` - Returns the player's skin."""
 
 class Embeds:
     class Bedwars:

@@ -32,6 +32,11 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`h!boosters [game]`|Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.|`boosts`|
 |`h!booster <id>`|Returns a info on the specified booster.|`boost`|
 
+## Minecraft
+|Command|Description|Aliases|
+|:---:|:---:|:---:|
+|`h!skin`|Returns the player's skin.||
+
 ## Skyblock
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
