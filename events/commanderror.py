@@ -51,9 +51,9 @@ class CMDError(commands.Cog):
                     try:
                         await channel.send(embed=embed)
                     except discord.Forbidden:
-                        raise ValueError("The bot does not have permissions to send messages in the logchannel specified in botconfig.ini.")
+                        raise ValueError("The bot does not have permissions to send messages in the logchannel specified in config.ini.")
                 else:
-                    raise ValueError("The logchannel specified in botconfig.ini is not visible to the bot, or does not exist.")
+                    raise ValueError("The logchannel specified in config.ini is not visible to the bot, or does not exist.")
             return
 
 def setup(bot):
