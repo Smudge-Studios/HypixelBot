@@ -1286,12 +1286,12 @@ class Embeds:
 
         async def hypixelstats(self, color):
             embed = discord.Embed(title='Help - Hypixel Stats', description=hypixelstats + other, color=color)
-            embed.set_footer(text='Unofficial Hypixel Discord Bot - Page 3/3')
+            embed.set_footer(text='Unofficial Hypixel Discord Bot - Page 3/4')
             return embed
 
         async def mc(self, color):
             embed = discord.Embed(title='Help - Minecraft', description=minecraft + other, color=color)
-            embed.set_footer(text='Unofficial Hypixel Discord Bot - Page 3/3')
+            embed.set_footer(text='Unofficial Hypixel Discord Bot - Page 4/4')
             return embed
 
         async def generate(self, ctx, perms):
@@ -1299,6 +1299,7 @@ class Embeds:
             one = await self.botinfo(color)
             two = await self.playerstats(color)
             three = await self.hypixelstats(color)
+            four = await self.mc(color)
             paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx, timeout=60, remove_reactions=False)
             if perms is not None:
                 if perms.manage_messages:
@@ -1308,7 +1309,7 @@ class Embeds:
             paginator.add_reaction('⏹', "lock")
             paginator.add_reaction('⏩', "next")
             paginator.add_reaction('⏭️', "last")
-            embeds = [one, two, three]
+            embeds = [one, two, three, four]
             return embeds, paginator
 
     class PlayerCount:

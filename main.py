@@ -13,7 +13,7 @@ TOKEN = parser.get('CONFIG', 'token')
 
 
 def get_prefix(bots, message):
-    prefixes = ['h!', 'H!']
+    prefixes = ['h!', 'H!', 'h1', 'H1']
     return commands.when_mentioned_or(*prefixes)(bots, message)
 
 
