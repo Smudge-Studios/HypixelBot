@@ -37,6 +37,7 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
 |`h!skin`|Returns the player's skin.||
+|`h!server [ip] [port]`|Returns data on the specified server. Can be either Java or Bedrock Edition. Defaults to Hypixel if no server is specified.||
 
 ## Skyblock
 |Command|Description|Aliases|
