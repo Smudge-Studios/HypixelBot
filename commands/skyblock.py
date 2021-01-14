@@ -12,7 +12,8 @@ sb = """`help` - Skyblock command help.
 `auctions <player> <profile>` - Returns a list of a player's Skyblock auctions on a specified profile.
 `auction <player> <profile> <auction ID>` - Returns a player's Skyblock auction on a specified profile.
 `bazaar <item>` - Returns information about an item in the Bazaar.
-`news [article]` - Returns the specified article, or all articles if no article is specified."""
+`news [article]` - Returns the specified article, or all articles if no article is specified.
+`collections <player> <profile>` - Returns the player's collections on the specified profile."""
 
 other = """For a more detailed list of Skyblock commands, [click here](https://github.com/plun1331/HypixelBot/blob/main/COMMANDS.md#skyblock).
 If you require more assistance, [join the support server](https://discord.gg/gxB8mRC)."""
@@ -57,7 +58,12 @@ class Skyblock(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         #verify if player exists
@@ -98,7 +104,81 @@ class Skyblock(commands.Cog):
                     embed = discord.Embed(title="Error", description="""Something went wrong. Please try again later.""", color=0xff0000)
                     await ctx.send(embed=embed)
                     return
-            embeds, paginator = await sbembeds.SkyblockProfiles().generate(ctx, name, data, perms, uuid)
+            try:
+                embeds, paginator = await sbembeds.SkyblockProfiles().generate(ctx, name, data, perms, uuid)
+            except KeyError:
+                    embed = discord.Embed(title="Error", description="""This user does not have any SkyBlock profiles.""", color=0xff0000)
+                    await ctx.send(embed=embed)
+                    return
+            await paginator.run(embeds)
+
+    @skyblock.command(aliases=['c'])
+    async def collections(self, ctx, username: str=None, profile: str=None):
+        perms = None
+        if ctx.guild is not None:
+            me = ctx.guild.get_member(self.bot.user.id)
+            perms = ctx.channel.permissions_for(me)
+            if perms.send_messages:
+                if not perms.embed_links:
+                    await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
+                    return
+                if perms.embed_links:
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
+            if not perms.send_messages:
+                return
+        #verify if player exists
+        if username==None:
+            embed = discord.Embed(title="Error", description="""Please provide a username.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        if profile is None:
+            embed = discord.Embed(title="Error", description="""Please provide a profile.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        uuid = MojangAPI.get_uuid(str(username))
+        if uuid == '5d1f7b0fdceb472d9769b4e37f65db9f':
+            embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        elif not uuid:
+            embed = discord.Embed(title="Error", description="""That user does not exist.""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
+        data = await hypixel.player(uuid)
+        #errors
+        if data['success'] == False:
+            if data['cause'] == 'Malformed UUID':
+                embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
+            else:
+                embed = discord.Embed(title="Error", description="""Something went wrong.""", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
+        #it worked!
+        elif data['success'] == True:
+            if data['player'] == None:
+                embed = discord.Embed(title="Error", description="""That user has never joined the Hypixel Network.""", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
+            else:
+                data = await hypixel.player(uuid)
+                name = await hypixel.getname(uuid)
+                if name is None:
+                    embed = discord.Embed(title="Error", description="""Something went wrong. Please try again later.""", color=0xff0000)
+                    await ctx.send(embed=embed)
+                    return
+            try:
+                embeds, paginator = await sbembeds.SkyblockProfilesCollection().generate(ctx, name, data, perms, uuid, profile)
+            except ValueError:
+                embed = discord.Embed(title="Error", description="""Invalid Skyblock profile.""", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
             await paginator.run(embeds)
 
     @skyblock.command(aliases=['ah'])
@@ -208,7 +288,7 @@ class Skyblock(commands.Cog):
                 await message.edit(embed=embed)
                 embed = discord.Embed(title=f"Your data is ready!", description=f"I have collected all of {name}'s Skyblock auctions on their {pname} profile.\n[Jump to message]({message.jump_url})", color=color)
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')
-                await message.send(f"{ctx.author.mention}", embed=embed)
+                await message.channel.send(f"{ctx.author.mention}", embed=embed)
                 self.auctions.reset_cooldown(ctx)
     
     @skyblock.command(aliases=['a'])
@@ -366,6 +446,11 @@ class Skyblock(commands.Cog):
             return
         data = await hypixel.skyblock.bazaar()
         _item = None
+        item2 = utils.translateIDName(item, reverse=True)
+        if item2 is not None:
+            item = item2
+        else:
+            item = item.lower().replace(" ", "_")
         for i in data['products']:
             if i.lower().replace('_', ' ') == item.lower():
                 _item = data['products'][i]['quick_status']
@@ -380,10 +465,7 @@ class Skyblock(commands.Cog):
         except:
             updated = 'N/A'
         try:
-            itemname = ''
-            for i in _item['productId'].split('_'):
-                itemname += i.lower().capitalize()
-                itemname += ' '
+            itemname = utils.translateIDName(_item['productId'])
         except:
             itemname = 'N/A'
         try:
@@ -446,7 +528,12 @@ class Skyblock(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         data = await hypixel.skyblock.news(article)

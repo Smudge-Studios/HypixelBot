@@ -43,7 +43,12 @@ class BotInfo(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         embeds, paginator = await Embeds().Help().generate(ctx, perms)
@@ -62,7 +67,7 @@ class BotInfo(commands.Cog):
                     pass
             if not perms.send_messages:
                 return
-        data = await hypixel().key()
+        data = await hypixel.key()
         try:
             queries = data['record']['totalQueries']
         except:
@@ -76,7 +81,7 @@ class BotInfo(commands.Cog):
         "This bot is also open-sourced. You can view the source code [here](https://github.com/plun1331/HypixelBot)", color = color)
         embed.add_field(name="Stats", value=f"Amount of API Requests made in the past minute: {queriesmin}\n" +
         f"Total API Requests: {queries}\n" +
-        f"Guilds: {utils().comma(len(self.bot.guilds))}", inline=False)
+        f"Guilds: {utils.comma(len(self.bot.guilds))}", inline=False)
         embed.add_field(name="Invite", value=f"""You can invite the bot by clicking [here](https://plun1331.github.io/hypixelbot/add)""", inline=False)
         embed.add_field(name="Vote", value=f"You can vote for the bot on the following bot lists:\n" +
         f"[Top.GG](https://top.gg/bot/764677833820995605/vote)\n" +

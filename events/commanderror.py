@@ -21,12 +21,16 @@ class CMDError(commands.Cog):
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
             return
+        elif isinstance(error, discord.Forbidden):
+            embed = discord.Embed(title="Error", description="""I do not have enough permissions to execute this command. I require the following permissions:\nRead Messages, Send Messages, Embed Links, Add Reactions""", color=0xff0000)
+            await ctx.send(embed=embed)
+            return
         elif isinstance(error, commands.MissingRequiredArgument):
             embed = discord.Embed(title="Error", description="""Missing Required Argument.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
         elif isinstance(error, commands.NotOwner):
-            embed = discord.Embed(title="Error", description="""This command is restricted.""", color=0xff0000)
+            embed = discord.Embed(title="Error", description="""This command is either restricted, or is temporarily disabled for testing purposes.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
         elif isinstance(error, commands.CommandOnCooldown):
@@ -34,6 +38,7 @@ class CMDError(commands.Cog):
             await ctx.send(embed=embed)
             return
         else:
+            error = getattr(error, "original", error)
             embed = discord.Embed(title="Error", description="""An unknown error occurred. This error has been reported.
             ```\n""" + str(error) + '\n```', color=0xff0000)
             await ctx.send(embed=embed)

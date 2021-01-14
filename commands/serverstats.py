@@ -7,15 +7,17 @@ import random
 import datetime
 import time as thyme
 import mystbin
+import re
 
 mystbin_client = mystbin.MystbinClient()
 
 class ServerStats(commands.Cog):
-    def _init__(self, bot):
+
+    def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=['lb'])   
-    async def leaderboard(self, ctx, game: str=None, *, type: str=None):
+    async def leaderboard(self, ctx, game: str=None, *, typevar: str=None):
         if ctx.guild is not None:
             me = ctx.guild.get_member(self.bot.user.id)
             perms = ctx.channel.permissions_for(me)
@@ -27,15 +29,19 @@ class ServerStats(commands.Cog):
                     pass
             if not perms.send_messages:
                 return
-        #verify if player exists
         if game is None:
             embed = discord.Embed(title="Error", description="""Please provide a game.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
-        if type is None:
+        if typevar is None:
             embed = discord.Embed(title="Error", description="""Please provide a leaderboard.""", color=0xff0000)
             await ctx.send(embed=embed)
             return
+        if not typevar.lower().startswith('overall') and not typevar.lower().startswith('monthly') and not typevar.lower().startswith('weekly') and not typevar.lower().startswith('daily'):
+            t = "Overall " + typevar
+            typevar = t
+        if typevar.lower() == 'overall level':
+            typevar = "Current Level"
         #send request
         data = await hypixel.leaderboards()
         #errors
@@ -46,14 +52,15 @@ class ServerStats(commands.Cog):
         #it worked!
         elif data['success'] == True:
             game = game.upper()
-            type = type.lower()
+            typevar = typevar.lower()
             leaders = None
-            path = None
+            title = None
             for lb in data['leaderboards']:
                 if lb == game.upper():
                     for reekid in data['leaderboards'][lb]:
-                        if reekid['path'].replace('_', ' ') == type:
-                            path = reekid['path']
+                        titl = reekid['prefix'] + " " + reekid['title']
+                        if titl.lower() == typevar:
+                            title = reekid['prefix'] + " " + reekid['title']
                             leaders = reekid['leaders']
                             break
             if leaders is None:
@@ -71,9 +78,7 @@ class ServerStats(commands.Cog):
                     num += 1
                     msg += f"{num}: {name}\n"
                 color=random.randint(1, 16777215)
-                path = path.capitalize()
-                path = path.replace('_', ' ')
-                embed = discord.Embed(title=f'{game.lower().capitalize()}: {path} leaderboard', description=msg, color=color)
+                embed = discord.Embed(title=f'{game.lower().capitalize()}: {title} leaderboard', description=msg, color=color)
                 embed.set_footer(text='Unofficial Hypixel Discord Bot')
                 await ctx.send(embed=embed)
 
@@ -88,7 +93,12 @@ class ServerStats(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         data = await hypixel.counts()
@@ -184,6 +194,7 @@ class ServerStats(commands.Cog):
 
     @commands.command(aliases=['wd'])
     async def watchdog(self, ctx):
+        perms = None
         if ctx.guild is not None:
             me = ctx.guild.get_member(self.bot.user.id)
             perms = ctx.channel.permissions_for(me)
@@ -273,7 +284,7 @@ class ServerStats(commands.Cog):
         await message.edit(embed=embed)
         embed = discord.Embed(title=f"Your data is ready!", description=f"I have collected all of the {game.lower().capitalize()} boosters.\n[Jump to message]({message.jump_url})", color=color)
         embed.set_footer(text='Unofficial Hypixel Discord Bot')
-        await message.send(f"{ctx.author.mention}", embed=embed)
+        await ctx.send(f"{ctx.author.mention}", embed=embed)
         self.boosters.reset_cooldown(ctx)
         
     @commands.command(aliases=['boost'])
@@ -402,6 +413,32 @@ class ServerStats(commands.Cog):
         embed.add_field(name="Duration", value=length)
         embed.add_field(name="Time Remaining", value=exp)
         embed.set_footer(text='Unofficial Hypixel Discord Bot')
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def status(self, ctx):
+        color=random.randint(1, 16777215) 
+        data = await hypixel.status()
+        cmpnts = ''
+        for component in data['components']:
+            if component['group_id'] == None:
+                s = component['status'].split('_')
+                status = ''
+                for i in s:
+                    status += f"{i.capitalize()} "
+                cmpnts += f"{component['name']}: {status}\n"
+        embed = discord.Embed(title="Hypixel Status", description=cmpnts, color=color)
+        updat = data['page_status']['page']['updated_at'].split('T')
+        updatd2 = updat[1].split('.')[0]
+        try:
+            current = data["months"][0]["incidents"][0]
+            timestamp = re.sub(r"<var data-var='date'>|</var>|<var data-var='time'>", "", current["timestamp"])
+            if 'been resolved' in current['message'].lower() or 'completed' in current['message'].lower():
+                raise IndexError
+            embed.add_field(name=f"{current['name']}", value=f"{current['message']}\nImpact: {current['impact'].capitalize()}\nIncident created {timestamp}")
+        except IndexError:
+            pass
+        embed.set_footer(text=f"Unofficial Hypixel Discord Bot - Status updated {updat[0]} at {updatd2}")
         await ctx.send(embed=embed)
 
 def setup(bot):

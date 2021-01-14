@@ -21,7 +21,12 @@ class PlayerStats(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         if username==None:
@@ -65,7 +70,12 @@ class PlayerStats(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         #verify if player exists
@@ -119,7 +129,12 @@ class PlayerStats(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         if username==None:
@@ -518,7 +533,12 @@ class PlayerStats(commands.Cog):
                     await ctx.send("Error: Cannot send embeds in this channel. Please contact a server administrator to fix this issue.")
                     return
                 if perms.embed_links:
-                    pass
+                    if not perms.add_reactions:
+                        embed=discord.Embed(title="Error", description="Cannot add reactions in this channel. Please contact a server administrator to fix this issue.", color=0xff0000)
+                        await ctx.send(embed=embed)
+                        return
+                    if perms.add_reactions:
+                        pass
             if not perms.send_messages:
                 return
         #verify if player exists

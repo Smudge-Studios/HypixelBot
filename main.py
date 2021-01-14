@@ -3,7 +3,7 @@ import discord
 import os
 from discord.ext import commands
 from configparser import ConfigParser
-con.wipe()
+con.start()
 con.log("Starting bot...")
 
 intents = discord.Intents.default()
@@ -22,28 +22,18 @@ bot.remove_command('help')
 
 
 def load_extension(extension):
+    ext = extension.replace('/', '.')
     try:
-        bot.load_extension(extension)
-        con.log(f"{extension} loaded.")
+        bot.load_extension(ext)
+        con.log(f"{ext} loaded.")
     except Exception as e:
-        con.log(f"Couldn't load {extension}: {e}")
+        con.log(f"Couldn't load {ext}: {e}")
 
 
-for file in os.listdir("commands"):
-    if file.endswith(".py"):
-        load_extension(f"commands.{file}".replace('.py', ''))
-
-for file in os.listdir("commands/owner"):
-    if file.endswith(".py"):
-        load_extension(f"commands.owner.{file}".replace('.py', ''))
-
-for file in os.listdir("events"):
-    if file.endswith(".py"):
-        load_extension(f"events.{file}".replace('.py', ''))
-
-for file in os.listdir("tasks"):
-    if file.endswith(".py"):
-        load_extension(f"tasks.{file}".replace('.py', ''))
+for dir_name in ["commands", "commands/owner", "events", "tasks"]:
+    for file in os.listdir(dir_name):
+        if file.endswith(".py"):
+            load_extension(f"{dir_name}.{file}".replace('.py', ''))
 
 con.log('Logging In...')
 try:

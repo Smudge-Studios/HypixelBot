@@ -27,9 +27,11 @@ hypixelstats = """`h!leaderboard <game> <type>` - Returns the leaders on the spe
 `h!playercount` - Returns Hypixel player counts.
 `h!watchdog` - Returns Hypixel Watchdog statistics.
 `h!boosters [game]` - Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.
-`h!booster <id>` - Returns a info on the specified booster."""
+`h!booster <id>` - Returns a info on the specified booster.
+`h!status` - Displays Hypixel's current status from their [Status Page](https://status.hypixel.net)."""
 
-minecraft = """`h!skin <player>` - Returns the player's skin."""
+minecraft = """`h!skin <player>` - Returns the player's skin.
+`h!server [ip] [port]` - Returns data on the specified server. Can be either Java or Bedrock Edition. Defaults to Hypixel if no server is specified."""
 
 class Embeds:
     class Bedwars:
@@ -780,7 +782,7 @@ class Embeds:
                 embed.add_field(name="Skywars Level", value='N/A', inline=True)
             embed.add_field(name="Skywars Coins", value=str(utils.comma(coins)), inline=True)
             embed.add_field(name="Skywars Souls", value=str(utils.comma(souls)), inline=True)
-            embed.add_field(name="Skywars Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
+            embed.add_field(name="Skywars Games Played", value=str(utils.comma(games_played)), inline=True)
             embed.add_field(name="Skywars Winstreak", value=str(utils.comma(winstreak)), inline=True)
             embed.add_field(name="Skywars Highest Winstreak", value=str(utils.comma(top_winstreak)), inline=True)
             embed.add_field(name="Kills", value=str(utils.comma(kills)), inline=True)
@@ -855,7 +857,7 @@ class Embeds:
                 embed.add_field(name="Skywars Level", value='N/A', inline=True)
             embed.add_field(name="Skywars Coins", value=str(utils.comma(coins)), inline=True)
             embed.add_field(name="Skywars Souls", value=str(utils.comma(souls)), inline=True)
-            embed.add_field(name="Skywars Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
+            embed.add_field(name="Skywars Games Played", value=str(utils.comma(games_played)), inline=True)
             embed.add_field(name="Skywars Winstreak", value=str(utils.comma(winstreak)), inline=True)
             embed.add_field(name="Skywars Highest Winstreak", value=str(utils.comma(top_winstreak)), inline=True)
             embed.add_field(name="Kills", value=str(utils.comma(kills)), inline=True)
@@ -930,7 +932,7 @@ class Embeds:
                 embed.add_field(name="Skywars Level", value='N/A', inline=True)
             embed.add_field(name="Skywars Coins", value=str(utils.comma(coins)), inline=True)
             embed.add_field(name="Skywars Souls", value=str(utils.comma(souls)), inline=True)
-            embed.add_field(name="Skywars Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
+            embed.add_field(name="Skywars Games Played", value=str(utils.comma(games_played)), inline=True)
             embed.add_field(name="Skywars Winstreak", value=str(utils.comma(winstreak)), inline=True)
             embed.add_field(name="Skywars Highest Winstreak", value=str(utils.comma(top_winstreak)), inline=True)
             embed.add_field(name="Kills", value=str(utils.comma(kills)), inline=True)
@@ -958,7 +960,7 @@ class Embeds:
                 else:
                     for i in range(len(xps)):
                         if xp < xps[i]:
-                            level = str(utils.comma(int(round(int(1 + i + float(xp - xps[i-1]) / (xps[i] - xps[i-1], 0)))))) + ' ⭐'
+                            level = str(utils.comma(int(round(int(1 + i + float(xp - xps[i-1]) / (xps[i] - xps[i-1])), 0)))) + ' ⭐'
             except:
                 level = 'N/A'
             try:
@@ -1005,7 +1007,7 @@ class Embeds:
                 embed.add_field(name="Skywars Level", value='N/A', inline=True)
             embed.add_field(name="Skywars Coins", value=str(utils.comma(coins)), inline=True)
             embed.add_field(name="Skywars Souls", value=str(utils.comma(souls)), inline=True)
-            embed.add_field(name="Skywars Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
+            embed.add_field(name="Skywars Games Played", value=str(utils.comma(games_played)), inline=True)
             embed.add_field(name="Skywars Winstreak", value=str(utils.comma(winstreak)), inline=True)
             embed.add_field(name="Skywars Highest Winstreak", value=str(utils.comma(top_winstreak)), inline=True)
             embed.add_field(name="Kills", value=str(utils.comma(kills)), inline=True)
@@ -1080,7 +1082,7 @@ class Embeds:
                 embed.add_field(name="Skywars Level", value='N/A', inline=True)
             embed.add_field(name="Skywars Coins", value=str(utils.comma(coins)), inline=True)
             embed.add_field(name="Skywars Souls", value=str(utils.comma(souls)), inline=True)
-            embed.add_field(name="Skywars Games Played", value=str(utils.comma(round(games_played, 0))), inline=True)
+            embed.add_field(name="Skywars Games Played", value=str(utils.comma(games_played)), inline=True)
             embed.add_field(name="Skywars Winstreak", value=str(utils.comma(winstreak)), inline=True)
             embed.add_field(name="Skywars Highest Winstreak", value=str(utils.comma(top_winstreak)), inline=True)
             embed.add_field(name="Kills", value=str(utils.comma(kills)), inline=True)
@@ -1683,7 +1685,7 @@ class Embeds:
                     profile1 = data['player']['stats']['SkyBlock']['profiles'][profile1]
                     pname = profile1['cute_name']
                     profiles[pname] = {}
-                    profiles[pname]['data'] = (await hypixel.skyblock.profile(profile1['profile_id']))
+                    profiles[pname]['data'] = await hypixel.skyblock.profile(profile1['profile_id'])
                 p = 1
                 for profile in profiles:
                     p += 1
@@ -1728,20 +1730,105 @@ class Embeds:
                         purse = round(memberdata['coin_purse'], 2)
                     except:
                         purse = 'N/A'
-                    embed = discord.Embed(title = f"{name}'s Skyblock Profile - {profile}", description="Some data may be unavailable because of the player's API settings.", color = color)
-                    embed.add_field(name="Profile Members", value=utils.comma(members))
-                    embed.add_field(name="Profile Bank", value=utils.comma(bank))
-                    embed.add_field(name="First Join", value=first_join)
-                    embed.add_field(name="Kills", value=utils.comma(kills))
-                    embed.add_field(name="Deaths", value=utils.comma(deaths))
                     try:
-                        embed.add_field(name="K/D Ratio", value=utils.comma(round(kills/deaths, 2)))
+                        skillz = ""
+                        skill_list = []
+                        try:
+                            skillz += f"Combat: {utils.getSkillLevel(memberdata['experience_skill_combat'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_combat']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Mining: {utils.getSkillLevel(memberdata['experience_skill_mining'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_mining']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Alchemy: {utils.getSkillLevel(memberdata['experience_skill_alchemy'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_alchemy']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Farming: {utils.getSkillLevel(memberdata['experience_skill_farming'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_farming']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Taming: {utils.getSkillLevel(memberdata['experience_skill_taming'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_taming']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Enchanting: {utils.getSkillLevel(memberdata['experience_skill_enchanting'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_enchanting']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Fishing: {utils.getSkillLevel(memberdata['experience_skill_fishing'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_fishing']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Foraging: {utils.getSkillLevel(memberdata['experience_skill_foraging'])}\n"
+                            skill_list.append(utils.getSkillLevelNumber(memberdata['experience_skill_foraging']))
+                        except:
+                            pass
+                        try:
+                            skillz += f"Carpentry: {utils.getSkillLevel(memberdata['experience_skill_carpentry'])}\n"
+                        except:
+                            pass
+                        try:
+                            skillz += f"Runecrafting: {utils.getRuneCraftLevel(memberdata['experience_skill_runecrafting'])}\n"
+                        except:
+                            pass
+                        skill_average = utils.getAverage(skill_list)
+                        skillz += f"\nSkill Average: {skill_average}"
                     except:
-                        embed.add_field(name="K/D Ratio", value='N/A')
-                    embed.add_field(name="Bids", value=utils.comma(bids))
-                    embed.add_field(name="Highest Bid", value=utils.comma(topbid))
-                    embed.add_field(name="Auctions Won", value=utils.comma(awon))
-                    embed.add_field(name="Purse", value=utils.comma(purse))
+                        skillz = "N/A"
+                    if skillz == "":
+                        skillz = "N/A"    
+                    try:
+                        minion_slots = utils.getMinionSlots(profiledata)
+                    except Exception as e:
+                        print(e)
+                        minion_slots = "N/A"
+                    try:
+                        catacombs_level = utils.getCatacombsLevel(memberdata['dungeons']['dungeon_types']['catacombs']['experience'])
+                    except:
+                        catacombs_level = 'N/A'
+                    try:
+                        slayerz = ''
+                        totalxp = 0
+                        slayer_dict = {}
+                        for boss in memberdata['slayer_bosses']:
+                            slayer_dict[boss] = memberdata['slayer_bosses'][boss]['xp']
+                            totalxp += memberdata['slayer_bosses'][boss]['xp']
+                        slayerz += f"Total XP: {utils.comma(totalxp)}\n"
+                        for boss in slayer_dict:
+                            xp = slayer_dict[boss]
+                            slayerz += f"{boss.lower().capitalize()}: {utils.comma(xp)}\n"
+                    except:
+                        slayerz = 'N/A'
+                    if slayerz == '':
+                        slayerz = "N/A"
+                    embed = discord.Embed(title = f"{name}'s Skyblock Profile - {profile}", description="Some data may be unavailable because of the player's API settings.", color = color)
+                    embed.add_field(name="Profile Members", value=utils.comma(members), inline=True)
+                    embed.add_field(name="Profile Bank", value=utils.comma(bank), inline=True)
+                    embed.add_field(name="First Join", value=first_join, inline=True)
+                    embed.add_field(name="Kills", value=utils.comma(kills), inline=True)
+                    embed.add_field(name="Deaths", value=utils.comma(deaths), inline=True)
+                    try:
+                        embed.add_field(name="K/D Ratio", value=utils.comma(round(kills/deaths, 2)), inline=True)
+                    except:
+                        embed.add_field(name="K/D Ratio", value='N/A', inline=True)
+                    embed.add_field(name="Bids", value=utils.comma(bids), inline=True)
+                    embed.add_field(name="Highest Bid", value=utils.comma(topbid), inline=True)
+                    embed.add_field(name="Auctions Won", value=utils.comma(awon), inline=True)
+                    embed.add_field(name="Purse", value=utils.comma(purse), inline=True)
+                    embed.add_field(name="Crafted Minion Slots", value=minion_slots)
+                    embed.add_field(name="Catacombs Level", value=catacombs_level)
+                    embed.add_field(name="Slayers", value=slayerz, inline=True)
+                    embed.add_field(name="Skills", value=skillz, inline=True)
                     embed.set_footer(text=f'Unofficial Hypixel Discord Bot - Page {p}/{length}')
                     embeds.append(embed)
                 return embeds, length
@@ -1762,6 +1849,87 @@ class Embeds:
                 embeds = [main]
                 for embed in profiles:
                     embeds.append(embed)
+                return embeds, paginator
+                
+        class SkyblockProfilesCollection:
+            async def farming(self, name, color, data, uuid, profile):
+                memberdata = data['profile']['members'][uuid]
+                try:
+                    combatmax, combattotal, combat = utils.farmingCollection(memberdata)
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Farming", description = f"**{combatmax}/{combattotal} Collections Maxed**\n{combat}", color=color)
+                except Exception as e:
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Farming", description = f"N/A", color=color)
+                embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 1/5")
+                return embed
+
+            async def mining(self, name, color, data, uuid, profile):
+                memberdata = data['profile']['members'][uuid]
+                try:
+                    combatmax, combattotal, combat = utils.miningCollection(memberdata)
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Mining", description = f"**{combatmax}/{combattotal} Collections Maxed**\n{combat}", color=color)
+                except Exception as e:
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Mining", description = f"N/A", color=color)
+                embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 2/5")
+                return embed
+
+            async def combat(self, name, color, data, uuid, profile):
+                memberdata = data['profile']['members'][uuid]
+                try:
+                    combatmax, combattotal, combat = utils.combatCollection(memberdata)
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Combat", description = f"**{combatmax}/{combattotal} Collections Maxed**\n{combat}", color=color)
+                except Exception as e:
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Combat", description = f"N/A", color=color)
+                embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 3/5")
+                return embed
+
+            async def foraging(self, name, color, data, uuid, profile):
+                memberdata = data['profile']['members'][uuid]
+                try:
+                    combatmax, combattotal, combat = utils.foragingCollection(memberdata)
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Foraging", description = f"**{combatmax}/{combattotal} Collections Maxed**\n{combat}", color=color)
+                except Exception as e:
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Foraging", description = f"N/A", color=color)
+                embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 4/5")
+                return embed
+
+            async def fishing(self, name, color, data, uuid, profile):
+                memberdata = data['profile']['members'][uuid]
+                try:
+                    fishingmax, fishingtotal, fishing = utils.fishingCollection(memberdata)
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Fishing", description = f"**{fishingmax}/{fishingtotal} Collections Maxed**\n{fishing}", color=color)
+                except Exception as e:
+                    embed=discord.Embed(title=f"{name}'s Collections on {profile} - Fishing", description = f"N/A", color=color)
+                embed.set_footer(text="Unofficial Hypixel Discord Bot - Page 5/5")
+                return embed
+
+            async def generate(self, ctx, name, data, perms, uuid, profile):
+                color=random.randint(1, 16777215)
+                pname = ''
+                success = False
+                for profile1 in data['player']['stats']['SkyBlock']['profiles']:
+                    profile1 = data['player']['stats']['SkyBlock']['profiles'][profile1]
+                    pname = profile1['cute_name']
+                    if pname.lower() == profile:
+                        data = await hypixel.skyblock.profile(profile1['profile_id'])
+                        success = True
+                        break
+                if not success:
+                    raise ValueError
+                farming = await self.farming(name, color, data, uuid, pname)
+                mining = await self.mining(name, color, data, uuid, pname)
+                combat = await self.combat(name, color, data, uuid, pname)
+                foraging = await self.foraging(name, color, data, uuid, pname)
+                fishing = await self.fishing(name, color, data, uuid, pname)
+                paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx, timeout=60, remove_reactions=False)
+                if perms is not None:
+                    if perms.manage_messages:
+                        paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx, timeout=60, remove_reactions=True)
+                paginator.add_reaction('⏮️', "first")
+                paginator.add_reaction('⏪', "back")
+                paginator.add_reaction('⏹', "lock")
+                paginator.add_reaction('⏩', "next")
+                paginator.add_reaction('⏭️', "last")
+                embeds = [farming, mining, combat, foraging, fishing]
                 return embeds, paginator
 
         class News:
