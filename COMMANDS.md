@@ -31,11 +31,13 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`h!watchdog`|Returns Hypixel Watchdog statistics.|`wd`|
 |`h!boosters [game]`|Returns a list of boosters for the specified game, or the amount of boosters currently active if no game is specified.|`boosts`|
 |`h!booster <id>`|Returns a info on the specified booster.|`boost`|
+|`h!status`|Displays Hypixel's current status from their [Status Page](https://status.hypixel.net).||
 
 ## Minecraft
 |Command|Description|Aliases|
 |:---:|:---:|:---:|
 |`h!skin`|Returns the player's skin.||
+|`h!server [ip] [port]`|Returns data on the specified server. Can be either Java or Bedrock Edition. Defaults to Hypixel if no server is specified.||
 
 ## Skyblock
 |Command|Description|Aliases|
@@ -46,3 +48,4 @@ A list of commands for [HypixelBot](https://plun1331.github.io/hypixelbot)
 |`auction <player> <profile> <auction ID>`|Returns a player's Skyblock auction on a specified profile.|`a`|
 |`bazaar <item>`|Returns information about an item in the Bazaar.|`baz`|
 |`news [article]`|Returns the specified article, or all articles if no article is specified.||
+|`collections <player> <profile>`|Returns the player's collections on the specified profile.|`c`|
