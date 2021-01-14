@@ -40,6 +40,8 @@ You may find a list of public commands [here](https://github.com/plun1331/Hypixe
 
 - `h!logs` - Uploads the logs to [mystbin](https://mystb.in) and DMs them to you.
 
+- `h!eval <code>` - Evaluates Python code. This can be used with code blocks as well.
+
 
 # Invite
 To add this bot to your server, click [here](https://plun1331.github.io/hypixelbot/add).
